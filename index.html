@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Plataforma que permite a pequeños productores agrícolas publicar campañas de financiamiento y a inversionistas aportar capital a cambio de acuerdos de compra futura de la producción.">
+        <meta name="author" content="Richardson">
+        <meta name="keywords" content="agricultura, financiamiento, cosechas, inversionistas, agroconecta, compra futura">
+       
+        <title>AGROCONECTA - Plataforma de Financiamiento Agrícola</title>
+        <link rel="icon" href="logo.ico" type="image/x-icon">
+    </head>
+    <body bgcolor="#F6F8F6" text="#1C2D27">
+        <!--ENCABEZADO DE LA PÁGINA-->
+        <header>
+            <!-- BARRA PRINCIPAL: NAVEGACIÓN -->
+            <table width="100%" bgcolor="#0F3027" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td align="center">
+                        <table width="95%" cellpadding="12" cellspacing="0" border="0">
+                            <tr>
+                                <!-- IDENTIDAD DE MARCA: LOGOTIPO + NOMBRE + LEMA -->
+                                <td width="35%" align="left" valign="middle">
+                                    <table cellpadding="0" cellspacing="0" border="0">
+                                        <tr>
+                                            <td valign="middle">
+                                                <a href="index.html">
+                                                    <img src="dist/imagenes/logo.png" width="55" height="55" alt="Logo de AgroConecta">
+                                                </a>
+                                            </td>
+                                            <td width="14">&nbsp;</td>
+                                            <td valign="middle">
+                                                <a href="index.html">
+                                                    <font color="#FFFFFF" size="+2"><strong>AGROCONECTA</strong></font>
+                                                </a>
+                                                <br>
+                                                <font color="#82DDB0" size="-1"><small>FINANCIAMIENTO &bull; COMPRA FUTURA AGRÍCOLA</small></font>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <!-- MENÚ DE NAVEGACIÓN ESTRUCTURADO -->
+                                <td width="65%" align="right" valign="middle">
+                                    <nav>
+                                        <table cellpadding="8" cellspacing="5" border="0" align="right">
+                                            <tr>
+                                                <td bgcolor="#1E6B52" align="center" valign="middle">
+                                                    <a href="index.html">
+                                                        <font color="#FFFFFF"><strong>&nbsp;&bull; Inicio &bull;&nbsp;</strong></font>
+                                                    </a>
+                                                </td>
+                                                <td bgcolor="#174A3D" align="center" valign="middle">
+                                                    <a href="page/nosotros.html">
+                                                        <font color="#FFFFFF"><strong>&nbsp;&nbsp;Nosotros&nbsp;&nbsp;</strong></font>
+                                                    </a>
+                                                </td>
+                                                <td bgcolor="#174A3D" align="center" valign="middle">
+                                                    <a href="#campanas">
+                                                        <font color="#FFFFFF"><strong>&nbsp;&nbsp;Campañas&nbsp;&nbsp;</strong></font>
+                                                    </a>
+                                                </td>
+                                                <td bgcolor="#174A3D" align="center" valign="middle">
+                                                    <a href="#faq">
+                                                        <font color="#FFFFFF"><strong>&nbsp;&nbsp;Preguntas&nbsp;&nbsp;</strong></font>
+                                                    </a>
+                                                </td>
+                                                <td bgcolor="#B86E18" align="center" valign="middle">
+                                                    <a href="page/contacto.html">
+                                                        <font color="#FFFFFF"><strong>&nbsp;&nbsp;Postular Campaña&nbsp;&nbsp;</strong></font>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </nav>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- SUB-BARRA DE ACCESO RÁPIDO A CULTIVOS -->
+            <table width="100%" bgcolor="#143D32" cellpadding="7" cellspacing="0" border="0">
+                <tr>
+                    <td align="center">
+                        <font color="#D6E2DA" size="-1">
+                            <strong>CATÁLOGO DE CULTIVOS:</strong>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="page/cafe.html"><font color="#82DDB0">Café Orgánico</font></a>
+                            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                            <a href="page/cacao.html"><font color="#82DDB0">Cacao Criollo</font></a>
+                            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                            <a href="page/palta.html"><font color="#82DDB0">Palta Hass</font></a>
+                            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                            <a href="page/maiz.html"><font color="#82DDB0">Maíz Morado</font></a>
+                            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                            <a href="page/quinua.html"><font color="#82DDB0">Quinua Real</font></a>
+                            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                            <a href="page/mango.html"><font color="#82DDB0">Mango Kent</font></a>
+                        </font>
+                    </td>
+                </tr>
+            </table>
+        </header>
+
+        <!--CONTENIDO PRINCIPAL-->
+        <main>
+            <br>
+            <!--BANNER DE BIENVENIDA-->
+            <section>
+                <table width="95%" align="center" cellpadding="25" cellspacing="0">
+                    <tr>
+                        <td width="60%">
+                            <h1>Bienvenidos a AgroConecta</h1>
+                            <h3>Donde el campo y la inversión inteligente se dan la mano</h3>
+                            <p>
+                                Somos la primera plataforma tecnológica Peruana que permite que un <strong>pequeño productor</strong> 
+                                publique una campaña productiva que necesita financiamiento, y que un <strong>inversionista</strong> 
+                                aporte el capital necesario a cambio de un <em>acuerdo de compra futura de la cosecha</em>.
+                            </p>
+                            <p>
+                                ¡Impulsa el desarrollo agrícola sostenible, elimina la intermediación innecesaria y asegura alimentos de alta calidad!
+                            </p>
+                            <br>
+                            <table cellpadding="10" cellspacing="0" border="0">
+                                <tr>
+                                    <td bgcolor="#B86E18" align="center" valign="middle">
+                                        <a href="page/contacto.html">
+                                            <font color="#FFFFFF"><strong>&nbsp;&nbsp;&nbsp;Publicar Campaña&nbsp;&nbsp;&nbsp;</strong></font>
+                                        </a>
+                                    </td>
+                                    <td width="14">&nbsp;</td>
+                                    <td bgcolor="#143D32" align="center" valign="middle">
+                                        <a href="page/nosotros.html">
+                                            <font color="#FFFFFF"><strong>&nbsp;&nbsp;&nbsp;Conoce el Modelo&nbsp;&nbsp;&nbsp;</strong></font>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
+                        </td>
+                        <td width="40%" align="center">
+                            <img src="dist/imagenes/mage 31.png" width="90%" alt="Productor agrícola utilizando AgroConecta">
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <br>
+
+            <!--SECCIÓN DE CARDS-->
+            <br>
+            <hr color="#D6E2DA" width="95%">
+            <br>
+            <section id="campanas">
+                <center>
+                    <h2>Campañas Agrícolas Disponibles para Financiamiento</h2>
+                    <p>Explora nuestras principales campañas y apoya a agricultores locales en diferentes valles del país.</p>
+                </center>
+                <br>
+                <table width="100%" cellpadding="10" cellspacing="15">
+                    <tr>
+                        <td width="5%"></td>
+                        <td width="15%" align="center" bgcolor="#FFFFFF" valign="top">
+                            <figure>
+                                <img src="dist/imagenes/cafe.portada.png" width="100%" alt="Café Orgánico de Altura">
+                                <figcaption>
+                                    <h3>Café Orgánico</h3>
+                                    <p>Valle de Chanchamayo. Financiamiento para cosecha y secado ecológico.</p>
+                                    <br>
+                                    <table cellpadding="7" cellspacing="0" border="0" bgcolor="#143D32" align="center">
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <a href="page/cafe.html">
+                                                    <font color="#FFFFFF" size="-1"><strong>&nbsp;&nbsp;Más información&nbsp;&nbsp;</strong></font>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </figcaption>
+                            </figure>
+                        </td>
+                        <td width="15%" align="center" bgcolor="#FFFFFF" valign="top">
+                            <figure>
+                                <img src="dist/imagenes/cacao.portada.png" width="100%" alt="Cacao Criollo Fino">
+                                <figcaption>
+                                    <h3>Cacao Criollo</h3>
+                                    <p>Selva Central. Cosecha selecta para exportación a chocolaterías artesanales.</p>
+                                    <br>
+                                    <table cellpadding="7" cellspacing="0" border="0" bgcolor="#143D32" align="center">
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <a href="page/cacao.html">
+                                                    <font color="#FFFFFF" size="-1"><strong>&nbsp;&nbsp;Más información&nbsp;&nbsp;</strong></font>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </figcaption>
+                            </figure>
+                        </td>
+                        <td width="15%" align="center" bgcolor="#FFFFFF" valign="top">
+                            <figure>
+                                <img src="dist/imagenes/palta.portada.png" width="100%" alt="Palta Hass">
+                                <figcaption>
+                                    <h3>Palta Hass</h3>
+                                    <p>Costa Norte. Riego tecnificado para optimizar rendimiento por hectárea.</p>
+                                    <br>
+                                    <table cellpadding="7" cellspacing="0" border="0" bgcolor="#143D32" align="center">
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <a href="page/palta.html">
+                                                    <font color="#FFFFFF" size="-1"><strong>&nbsp;&nbsp;Más información&nbsp;&nbsp;</strong></font>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </figcaption>
+                            </figure>
+                        </td>
+                        <td width="15%" align="center" bgcolor="#FFFFFF" valign="top">
+                            <figure>
+                                <img src="dist/imagenes/maizmorado.portada.png" width="100%" alt="Maíz Morado">
+                                <figcaption>
+                                    <h3>Maíz Morado</h3>
+                                    <p>Sierra Sur. Producción andina con alta demanda de antocianinas y derivados.</p>
+                                    <br>
+                                    <table cellpadding="7" cellspacing="0" border="0" bgcolor="#143D32" align="center">
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <a href="page/maiz.html">
+                                                    <font color="#FFFFFF" size="-1"><strong>&nbsp;&nbsp;Más información&nbsp;&nbsp;</strong></font>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </figcaption>
+                            </figure>
+                        </td>
+                        <td width="15%" align="center" bgcolor="#FFFFFF" valign="top">
+                            <figure>
+                                <img src="dist/imagenes/quinua.portada.png" width="100%" alt="Quinua Real">
+                                <figcaption>
+                                    <h3>Quinua Real</h3>
+                                    <p>Altiplano. Grano de oro andino cultivado con métodos ancestrales limpios.</p>
+                                    <br>
+                                    <table cellpadding="7" cellspacing="0" border="0" bgcolor="#143D32" align="center">
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <a href="page/quinua.html">
+                                                    <font color="#FFFFFF" size="-1"><strong>&nbsp;&nbsp;Más información&nbsp;&nbsp;</strong></font>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </figcaption>
+                            </figure>
+                        </td>
+                        <td width="15%" align="center" bgcolor="#FFFFFF" valign="top">
+                            <figure>
+                                <img src="dist/imagenes/mango.portada.png" width="100%" alt="Mango Kent">
+                                <figcaption>
+                                    <h3>Mango Kent</h3>
+                                    <p>Piura. Fruta de estación certificada para comercialización nacional e internacional.</p>
+                                    <br>
+                                    <table cellpadding="7" cellspacing="0" border="0" bgcolor="#143D32" align="center">
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <a href="page/mango.html">
+                                                    <font color="#FFFFFF" size="-1"><strong>&nbsp;&nbsp;Más información&nbsp;&nbsp;</strong></font>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </figcaption>
+                            </figure>
+                        </td>
+                        <td width="5%"></td>
+                    </tr>
+                </table>
+            </section>
+            <br>
+
+            <!--SECCIÓN DE CONTENIDO -->
+            <hr color="#D6E2DA" width="95%">
+            <br>
+            <section>
+                <center>
+                    <h2>Innovación y Tecnología en el Agro</h2>
+                    <p>Conoce a través de este recurso cómo la digitalización transforma la productividad agrícola rural.</p>
+                    <br>
+                    <iframe width="700" height="380" src="https://www.youtube.com/embed/I3K7sI_cW0M" title="Así transforma la tecnología el futuro del campo en Latinoamérica - DW Español" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </center>
+            </section>
+            <br><br>
+
+            <!--SECCIÓN DE MULTIMEDIA-->
+            <hr color="#D6E2DA" width="95%">
+            <br>
+            <section>
+                <table width="95%" align="center" cellpadding="22" cellspacing="16">
+                    <tr>
+                        <td width="50%" align="center" valign="top" bgcolor="#EBF3EE">
+                            <article>
+                                <h3>Video Informativo del Productor</h3>
+                                <p>Reportaje audiovisual sobre el impacto del financiamiento directo en las familias campesinas:</p>
+                                <br>
+                                <video width="360" height="240" controls poster="dist/imagenes/Image 3.png" preload="metadata">
+                                    <source src="dist/videos/presentacion.mp4" type="video/mp4">
+                                    <source src="dist/videos/presentacion.webm" type="video/webm">
+                                    Tu navegador no admite el elemento video.
+                                </video>
+                            </article>
+                        </td>
+                        <td width="50%" align="center" valign="top" bgcolor="#EBF3EE">
+                            <aside>
+                                <h3>Testimonio Radial del Agricultor</h3>
+                                <p>Escucha el testimonio de don Pedro Huamán, caficultor beneficiado por AgroConecta:</p>
+                                <br>
+                                <audio controls preload="auto">
+                                    <source src="dist/audios/testimonio.mp3" type="audio/mp3">
+                                    Tu navegador no admite el elemento audio.
+                                </audio>
+                                <br><br>
+                                <p><strong>Transcripción del Testimonio:</strong></p>
+                            </aside>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <br>
+
+            <!--SECCIÓN DE CAMPAÑAS Y RENDIMIENTOS-->
+            <hr color="#D6E2DA" width="95%">
+            <br>
+            <section>
+                <center>
+                    <h2>Cuadro Comparativo de Campañas Productivas</h2>
+                    <p>Transparencia total en metas de financiamiento, periodos de cosecha y estimados de retorno.</p>
+                    <br>
+                    <table border="1" width="90%" cellpadding="12" cellspacing="0" bgcolor="#FFFFFF">
+                        <caption><strong>Comparativa de Rendimiento y Financiamiento por Campaña (Campaña 2026)</strong></caption>
+                        <tr bgcolor="#143D32">
+                            <th rowspan="2"><font color="#FFFFFF">Cultivo</font></th>
+                            <th rowspan="2"><font color="#FFFFFF">Región / Valle</font></th>
+                            <th colspan="2"><font color="#FFFFFF">Inversión y Retorno</font></th>
+                            <th rowspan="2"><font color="#FFFFFF">Mes de Cosecha</font></th>
+                            <th rowspan="2"><font color="#FFFFFF">Estado de Financiamiento</font></th>
+                        </tr>
+                        <tr bgcolor="#D8E5DD">
+                            <th><font color="#1C2D27">Meta Financiera (S/.)</font></th>
+                            <th><font color="#1C2D27">Retorno Proyectado</font></th>
+                        </tr>
+                        <tr bgcolor="#FFFFFF">
+                            <td><strong>Café Orgánico</strong></td>
+                            <td>Chanchamayo, Junín</td>
+                            <td align="right">S/. 25,000.00</td>
+                            <td align="center">14.5%</td>
+                            <td><time datetime="2026-06">Junio 2026</time></td>
+                            <td align="center"><mark>85% financiado</mark></td>
+                        </tr>
+                        <tr bgcolor="#F8FAF8">
+                            <td><strong>Cacao Criollo</strong></td>
+                            <td>Quillabamba, Cusco</td>
+                            <td align="right">S/. 18,500.00</td>
+                            <td align="center">12.0%</td>
+                            <td><time datetime="2026-08">Agosto 2026</time></td>
+                            <td align="center"><mark>60% financiado</mark></td>
+                        </tr>
+                        <tr bgcolor="#FFFFFF">
+                            <td><strong>Palta Hass</strong></td>
+                            <td>Huaral, Lima</td>
+                            <td align="right">S/. 32,000.00</td>
+                            <td align="center">16.0%</td>
+                            <td><time datetime="2026-05">Mayo 2026</time></td>
+                            <td align="center"><mark>100% financiado</mark></td>
+                        </tr>
+                        <tr bgcolor="#F8FAF8">
+                            <td><strong>Quinua Real</strong></td>
+                            <td>Puno, Altiplano</td>
+                            <td align="right">S/. 15,000.00</td>
+                            <td align="center">11.8%</td>
+                            <td><time datetime="2026-07">Julio 2026</time></td>
+                            <td align="center"><mark>45% financiado</mark></td>
+                        </tr>
+                        <tr bgcolor="#EBF3EE">
+                            <th colspan="2" align="right">Total Proyectado en Cartera:</th>
+                            <th align="right">S/. 90,500.00</th>
+                            <th align="center">13.6% promedio</th>
+                            <th colspan="2" align="center">4 Campañas activas</th>
+                        </tr>
+                    </table>
+                </center>
+            </section>
+            <br><br>
+
+            <!--SECCIÓN DE PREGUNTAS FRECUENTES (FAQ)-->
+            <hr color="#D6E2DA" width="95%">
+            <br>
+            <section id="faq">
+                <center>
+                    <h2>Preguntas Frecuentes (FAQ)</h2>
+                    <p>Todo lo que necesitas saber sobre el financiamiento agrícola, acuerdos de compra futura y garantías de cosecha.</p>
+                </center>
+                <br>
+                <table width="90%" align="center" cellpadding="22" cellspacing="16">
+                    <tr>
+                        <td width="50%" valign="top" bgcolor="#FFFFFF">
+                            <h3>Modelo y Financiamiento</h3>
+                            <br>
+                            <details open>
+                                <summary><strong>¿Qué es un acuerdo de compra futura?</strong></summary>
+                                <p>
+                                    Es un compromiso formal mediante el cual el inversionista o comprador comercial adelanta capital para insumos, 
+                                    fertilización y jornales de campo, garantizando comprar la cosecha a un precio preferencial previamente acordado.
+                                </p>
+                            </details>
+                            <br>
+                            <details>
+                                <summary><strong>¿Cómo se evalúa y selecciona a los productores?</strong></summary>
+                                <p>
+                                    Un equipo técnico agronómico audita en campo el historial del cultivo, la titularidad o posesión formal del predio, 
+                                    la fuente de agua y las condiciones fitosanitarias antes de publicar cualquier campaña.
+                                </p>
+                            </details>
+                            <br>
+                            <details>
+                                <summary><strong>¿Cuál es el monto mínimo para participar?</strong></summary>
+                                <p>
+                                    En AgroConecta se puede participar desde fracciones de S/. 500.00 en campañas colectivas de pequeños productores, 
+                                    o financiar campañas completas de hasta S/. 50,000.00 para compradores comerciales mayoristas.
+                                </p>
+                            </details>
+                            <br>
+                            <details>
+                                <summary><strong>¿Cómo se transfieren los fondos al agricultor?</strong></summary>
+                                <p>
+                                    Los fondos no se entregan en una sola armada; se desembolsan de forma escalonada contra entrega de comprobantes 
+                                    y verificación de hitos de campo (siembra, abonamiento, floración y cosecha).
+                                </p>
+                            </details>
+                        </td>
+                        <td width="50%" valign="top" bgcolor="#FFFFFF">
+                            <h3>Garantías y Retornos</h3>
+                            <br>
+                            <details open>
+                                <summary><strong>¿Qué garantías existen ante contingencias climáticas?</strong></summary>
+                                <p>
+                                    Todas las campañas cuentan obligatoriamente con una póliza de seguro agrícola catastrófico y asesoría técnica 
+                                    preventiva continua de nuestro equipo agrónomo para mitigar riesgos climáticos o plagas.
+                                </p>
+                            </details>
+                            <br>
+                            <details>
+                                <summary><strong>¿Cuándo y cómo se liquida la rentabilidad proyectada?</strong></summary>
+                                <p>
+                                    La rentabilidad estimada (entre 11.8% y 16.0% según el cultivo) y el capital se liquidan al culminar el acopio, 
+                                    secado y comercialización del lote cosechado, depositándose directamente a la cuenta bancaria del inversionista.
+                                </p>
+                            </details>
+                            <br>
+                            <details>
+                                <summary><strong>¿Cómo se realiza el seguimiento del cultivo financiado?</strong></summary>
+                                <p>
+                                    Cada inversionista accede a informes técnicos quincenales con fotografías geoetiquetadas, avance de fenología, 
+                                    y la opción de participar en visitas guiadas a las parcelas durante las fases de floración y precosecha.
+                                </p>
+                            </details>
+                            <br>
+                            <details>
+                                <summary><strong>¿Qué ocurre si la cosecha supera el volumen pactado?</strong></summary>
+                                <p>
+                                    Los excedentes de producción se comercializan en el mercado spot formal con opción preferencial de compra 
+                                    para el mismo financiador, generando un retorno adicional proporcional al volumen extra obtenido.
+                                </p>
+                            </details>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <br>
+        </main>
+        
+        <!--PIE DE PÁGINA-->
+        <footer>
+            <table width="100%" bgcolor="#0F3027" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td align="center">
+                        <br><br>
+                        <!-- CONTENEDOR PRINCIPAL DEL FOOTER (ALINEADO AL 95%) -->
+                        <table width="95%" cellpadding="0" cellspacing="16" border="0">
+                            <tr>
+                                <!-- COLUMNA 1: IDENTIDAD CORPORATIVA Y PROPÓSITO -->
+                                <td width="30%" valign="top">
+                                    <table cellpadding="0" cellspacing="0" border="0">
+                                        <tr>
+                                            <td valign="middle">
+                                                <a href="index.html">
+                                                    <img src="dist/imagenes/logo.png" width="48" height="48" alt="Logo de AgroConecta">
+                                                </a>
+                                            </td>
+                                            <td width="12">&nbsp;</td>
+                                            <td valign="middle">
+                                                <a href="index.html">
+                                                    <font color="#FFFFFF" size="+1"><strong>AGROCONECTA</strong></font>
+                                                </a>
+                                                <br>
+                                                <font color="#82DDB0" size="-1"><small>COMPRA FUTURA AGRÍCOLA</small></font>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                    <font color="#D6E2DA">
+                                        <p>
+                                            <small>
+                                                Plataforma peruana de financiamiento colaborativo que conecta a pequeños productores 
+                                                agrarios con inversionistas y compradores comerciales a través de acuerdos justos de compra futura.
+                                            </small>
+                                        </p>
+                                        <p>
+                                            <small>
+                                                <strong>RUC:</strong> 20609876541 &bull; <strong>Sede:</strong> Lima, Perú
+                                            </small>
+                                        </p>
+                                    </font>
+                                </td>
+
+                                <!-- COLUMNA 2: NAVEGACIÓN INSTITUCIONAL -->
+                                <td width="22%" valign="top">
+                                    <font color="#FFFFFF">
+                                        <h4>PLATAFORMA</h4>
+                                    </font>
+                                    <font color="#D6E2DA" size="-1">
+                                        <ul type="square">
+                                            <li><a href="index.html"><font color="#82DDB0">Inicio</font></a></li>
+                                            <li><a href="page/nosotros.html"><font color="#82DDB0">Quiénes Somos</font></a></li>
+                                            <li><a href="#campanas"><font color="#82DDB0">Campañas Activas</font></a></li>
+                                            <li><a href="#faq"><font color="#82DDB0">Preguntas Frecuentes</font></a></li>
+                                            <li><a href="page/contacto.html"><font color="#82DDB0">Postular como Productor</font></a></li>
+                                        </ul>
+                                    </font>
+                                </td>
+
+                                <!-- COLUMNA 3: CATÁLOGO DE CULTIVOS -->
+                                <td width="24%" valign="top">
+                                    <font color="#FFFFFF">
+                                        <h4>CULTIVOS DISPONIBLES</h4>
+                                    </font>
+                                    <font color="#D6E2DA" size="-1">
+                                        <ul type="square">
+                                            <li><a href="page/cafe.html"><font color="#82DDB0">Café Orgánico (Junín)</font></a></li>
+                                            <li><a href="page/cacao.html"><font color="#82DDB0">Cacao Criollo (San Martín)</font></a></li>
+                                            <li><a href="page/palta.html"><font color="#82DDB0">Palta Hass (Lima)</font></a></li>
+                                            <li><a href="page/maiz.html"><font color="#82DDB0">Maíz Morado (Canta)</font></a></li>
+                                            <li><a href="page/quinua.html"><font color="#82DDB0">Quinua Real (Puno)</font></a></li>
+                                            <li><a href="page/mango.html"><font color="#82DDB0">Mango Kent (Piura)</font></a></li>
+                                        </ul>
+                                    </font>
+                                </td>
+
+                                <!-- COLUMNA 4: ATENCIÓN Y CONTACTO -->
+                                <td width="24%" valign="top">
+                                    <font color="#FFFFFF">
+                                        <h4>CENTRAL DE ATENCIÓN</h4>
+                                    </font>
+                                    <font color="#D6E2DA" size="-1">
+                                        <p><strong>Dirección:</strong> Av. Javier Prado Este 2465, San Borja, Lima</p>
+                                        <p><strong>Correo:</strong> <a href="mailto:contacto@agroconecta.pe"><font color="#82DDB0">contacto@agroconecta.pe</font></a></p>
+                                        <p><strong>Teléfono:</strong> <a href="tel:+51930736214"><font color="#82DDB0">+51 930 736 214</font></a></p>
+                                        <p><strong>Horario:</strong> Lun - Vie: 8:30 am - 6:00 pm</p>
+                                    </font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- LÍNEA SEPARADORA -->
+                        <table width="95%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td>
+                                    <hr color="#1D4A3C">
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table width="95%" cellpadding="14" cellspacing="0" border="0">
+                            <tr>
+                                <td width="60%" align="left" valign="middle">
+                                    <font color="#D6E2DA" size="-1">
+                                        <small>&copy; <time datetime="2026">2026</time> <strong>AGROCONECTA S.A.C.</strong> Todos los derechos reservados. Plataforma de Financiamiento Agrícola Sostenible.</small>
+                                    </font>
+                                </td>
+                                <td width="40%" align="right" valign="middle">
+                                    <font color="#82DDB0" size="-1">
+                                        <small>Desarrollado por <strong>Richardson Yelstin T.</strong> | Desarrollo Web | IDAT</small>
+                                    </font>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                    </td>
+                </tr>
+            </table>
+        </footer>
+    </body>
+</html>
