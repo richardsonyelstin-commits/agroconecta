@@ -32,18 +32,21 @@ window.AGROCONECTA_CONFIG = {
   // Modelo: Meta Muse Spark 1.3 Contributor (https://api.meta.ai/v1/responses)
   // ==============================================================================
   //
-  // OPCIÓN 1 (RECOMENDADA - PROTOCOLO ESTRICTO DE SEGURIDAD):
-  // Usar la Edge Function de Supabase como proxy seguro.
-  // Tu MODEL_API_KEY se almacena únicamente en Supabase Secrets (en la nube)
-  // y NUNCA se expone en el navegador del usuario ni en las herramientas de desarrollador (F12).
-  // Comando para guardar la clave en el servidor:
+  // OPCIÓN 1 (RECOMENDADA SI DESPLIEGAS EN VERCEL):
+  // La clave se guarda directamente en Vercel Dashboard -> Settings -> Environment Variables
+  // Nombre: MODEL_API_KEY
+  // Valor: tu_clave_secreta_de_meta
+  // La ruta serverless '/api/chat' se activa automáticamente en Vercel.
+  AGROBOT_PROXY_URL: '/api/chat',
+
+  // OPCIÓN 2 (SI PREFIERES USAR SUPABASE EDGE FUNCTIONS):
+  // Si deseas centralizar la IA en Supabase en vez de Vercel:
   // supabase secrets set MODEL_API_KEY="tu_clave_secreta"
   // supabase functions deploy agrobot-chat --no-verify-jwt
-  AGROBOT_PROXY_URL: 'https://ldtblrixpwigcwawpluh.supabase.co/functions/v1/agrobot-chat',
+  // AGROBOT_PROXY_URL: 'https://ldtblrixpwigcwawpluh.supabase.co/functions/v1/agrobot-chat',
 
-  // OPCIÓN 2 (DIRECTA PARA DESARROLLO LOCAL AISLADO):
-  // Si no usas proxy, puedes colocar tu API key aquí (en js/config.js, que está protegido por .gitignore).
-  // Nota: Llamar a api.meta.ai directamente desde el navegador puede requerir habilitar CORS.
+  // OPCIÓN 3 (DIRECTA PARA DESARROLLO LOCAL AISLADO):
+  // Si no usas proxy, puedes colocar tu API key en js/config.js (protegido por .gitignore).
   LLM_API_KEY: 'TU_MODEL_API_KEY_AQUI',
   LLM_ENDPOINT: 'https://api.meta.ai/v1/responses',
   LLM_MODEL: 'muse-spark-1.3-contributor'

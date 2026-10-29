@@ -21,7 +21,7 @@
       apiKey: (window.AGROCONECTA_LLM_KEY || cfg.LLM_API_KEY || '').trim(),
       endpoint: (window.AGROCONECTA_LLM_ENDPOINT || cfg.LLM_ENDPOINT || 'https://api.meta.ai/v1/responses').trim(),
       model: (window.AGROCONECTA_LLM_MODEL || cfg.LLM_MODEL || 'muse-spark-1.3-contributor').trim(),
-      proxyUrl: (window.AGROCONECTA_LLM_PROXY || cfg.AGROBOT_PROXY_URL || '').trim()
+      proxyUrl: (window.AGROCONECTA_LLM_PROXY || cfg.AGROBOT_PROXY_URL || (typeof window !== 'undefined' && window.location.protocol.startsWith('http') ? '/api/chat' : '')).trim()
     };
   }
 
