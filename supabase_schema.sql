@@ -1,6 +1,17 @@
 -- ==============================================================================
--- AGROCONECTA - Esquema de Base de Datos para Supabase
--- Tabla: postulaciones
+-- AGROCONECTA - Esquema de Base de Datos y Políticas de Seguridad RLS
+-- Tabla: public.postulaciones | Storage: documentos_postulacion
+-- ==============================================================================
+--
+-- DIRECTRICES DE SEGURIDAD PARA PRODUCCIÓN:
+-- 1. NUNCA utilices la clave "service_role" (o claves privadas administrativas) en código del navegador.
+--    Esa clave elude el RLS y otorga privilegios administrativos totales.
+-- 2. En el cliente web, utiliza siempre la clave pública "anon" (Publishable Key).
+-- 3. Las políticas RLS configuradas abajo limitan el rol "anon" ÚNICAMENTE a operaciones
+--    INSERT. Esto significa que ningún atacante o visitante puede listar, leer,
+--    modificar o borrar registros de otros postulantes, garantizando confidencialidad.
+-- 4. Si expusiste involuntariamente una "Secret Key" en algún canal público o chat,
+--    debes revocarla y regenerarla en: Supabase Dashboard -> Project Settings -> API.
 -- ==============================================================================
 
 -- 1. Crear la tabla de postulaciones y registros
@@ -29,6 +40,7 @@ CREATE TABLE IF NOT EXISTS public.postulaciones (
 ALTER TABLE public.postulaciones ENABLE ROW LEVEL SECURITY;
 
 -- 3. Crear política para permitir inserciones públicas desde el formulario web (anon key)
+DROP POLICY IF EXISTS "Permitir inserción pública de postulaciones" ON public.postulaciones;
 CREATE POLICY "Permitir inserción pública de postulaciones"
 ON public.postulaciones
 FOR INSERT
@@ -36,18 +48,20 @@ TO anon
 WITH CHECK (true);
 
 -- 4. Crear política para lectura exclusiva de administradores autenticados
+DROP POLICY IF EXISTS "Lectura restringida para administradores" ON public.postulaciones;
 CREATE POLICY "Lectura restringida para administradores"
 ON public.postulaciones
 FOR SELECT
 TO authenticated
 USING (true);
 
--- 5. (Opcional) Crear bucket para almacenamiento de documentos adjuntos
+-- 5. Crear bucket para almacenamiento de documentos adjuntos
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('documentos_postulacion', 'documentos_postulacion', true)
 ON CONFLICT (id) DO NOTHING;
 
--- Permitir subir archivos al bucket por usuarios anónimos
+-- 6. Permitir subir archivos al bucket por usuarios anónimos (solo INSERT)
+DROP POLICY IF EXISTS "Permitir subida de documentos anonimos" ON storage.objects;
 CREATE POLICY "Permitir subida de documentos anonimos"
 ON storage.objects
 FOR INSERT

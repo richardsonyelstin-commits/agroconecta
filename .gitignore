@@ -1,0 +1,28 @@
+# ==============================================================================
+# AGROCONECTA - Git Ignore & Security Policy
+# ==============================================================================
+
+# Archivos de configuración local y credenciales privadas
+js/config.js
+config.js
+.env
+.env.local
+.env.*.local
+
+# Dependencias de paquetes y módulos
+node_modules/
+package-lock.json
+
+# Archivos temporales del sistema y del entorno
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Directorios de pruebas y temporales
+/tmp/
+/scratch/
+.idea/
+.vscode/
