@@ -165,8 +165,22 @@ a:hover {
   width: 100%;
 }
 
-.navbar-brand {
+.navbar-brand,
+.navbar-agro .navbar-brand,
+.navbar-agro .navbar-brand:link,
+.navbar-agro .navbar-brand:visited,
+.navbar-agro .navbar-brand:hover,
+.navbar-agro .navbar-brand:focus,
+.navbar-agro .navbar-brand:active {
+  color: #FFFFFF !important;
+  text-decoration: none !important;
   max-width: 100%;
+}
+
+.navbar-brand span,
+.navbar-agro .navbar-brand span {
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .navbar-brand img {
