@@ -1,6 +1,6 @@
 /**
- * AGROCONECTA - AgroBot (Asistente Virtual Inteligente)
- * Chatbot flotante interactivo para resolver dudas sobre postulación, ganancias, requisitos y cultivos.
+ * AGROCONECTA - AgroBot (Asistente Virtual Inteligente con Soporte LLM Meta Muse Spark 1.3)
+ * Chatbot flotante con motor dual: Integración de LLM en la nube y motor semántico local de respaldo.
  */
 
 (function () {
@@ -12,17 +12,60 @@
   const BASE_PAGE_URL = isSubdir ? '' : 'page/';
   const BASE_IMG_URL = isSubdir ? '../dist/imagenes/' : 'dist/imagenes/';
 
-  // Base de Conocimiento Inteligente de AgroConecta
+  // ==============================================================================
+  // CONFIGURACIÓN DEL LLM (Meta Muse Spark 1.3 Contributor)
+  // ==============================================================================
+  function obtenerConfiguracionLLM() {
+    const cfg = (typeof window !== 'undefined' && window.AGROCONECTA_CONFIG) || {};
+    return {
+      apiKey: (window.AGROCONECTA_LLM_KEY || cfg.LLM_API_KEY || '').trim(),
+      endpoint: (window.AGROCONECTA_LLM_ENDPOINT || cfg.LLM_ENDPOINT || 'https://openrouter.ai/api/v1/chat/completions').trim(),
+      model: (window.AGROCONECTA_LLM_MODEL || cfg.LLM_MODEL || 'muse-spark-1.3-contributor').trim()
+    };
+  }
+
+  const SYSTEM_PROMPT = `Eres AgroBot, el Asistente de IA oficial de AGROCONECTA (agroconecta.pe), plataforma peruana de financiamiento colaborativo y contratos de compra futura agrícola.
+
+Tu misión es asesorar con empatía, profesionalismo y precisión técnica a tres tipos de usuarios:
+1. Pequeños Productores Agrarios: Explica cómo postular sus cosechas, requisitos (DNI/RUC, predio demostrable, mín 0.5 Ha), financiamiento oportuno sin usura bancaria, venta asegurada a Precio Justo pactado antes de la siembra (25%-40% más margen neto frente a intermediarios), y cobertura de seguro agrícola catastrófico (SBS).
+2. Inversionistas / Compradores Futuros: Explica cómo invertir desde S/. 500, retornos anuales proyectados entre el 12% y 18% respaldados por cosechas físicas, y opciones de compra de lotes exportables.
+3. Cooperativas / Asociaciones: Explica financiamiento consolidado para acopio, infraestructura y certificaciones (Orgánico, Fairtrade).
+
+Portafolio de 7 cultivos en Perú:
+• Café Orgánico de Altura (Chanchamayo, Junín)
+• Cacao Criollo de Aroma (Quillabamba, Cusco)
+• Palta Hass de Exportación (Huaral, Lima)
+• Maíz Morado Canteño (Canta, Lima)
+• Quinua Real del Altiplano (Puno)
+• Mango Kent Orgánico (Valle del Chira, Piura)
+• Espárrago Verde (Ica)
+
+Canales oficiales:
+• WhatsApp / Teléfono: +51 930 736 214
+• Correo: contacto@agroconecta.pe / financiamiento@agroconecta.pe
+• Formulario de Postulación: ${BASE_PAGE_URL}contacto.html
+
+Directrices de respuesta:
+• Responde siempre en español, con tono cercano, profesional y positivo.
+• Utiliza formato legible con viñetas, negritas y emojis agrícolas.
+• Mantén las respuestas concisas (máximo 2 a 3 párrafos breves) para que se lean cómodamente en el widget móvil.`;
+
+  // Historial multi-turno de conversación
+  const historialConversacion = [
+    { role: 'system', content: SYSTEM_PROMPT }
+  ];
+
+  // Base de Conocimiento Local de Respaldo (Funciona 100% offline o sin API key)
   const KNOWLEDGE_BASE = [
     {
       keywords: ['como postular', 'cómo postular', 'postulacion', 'postulación', 'postular', 'inscribirme', 'inscribir', 'registro', 'solicitar', 'pasos'],
       title: '¿Cómo postular mi campaña en AgroConecta?',
       response: `Postular es muy rápido y 100% gratuito. Sigue estos 4 pasos:<br><br>
         1️⃣ Ingresa a nuestro <a href="${BASE_PAGE_URL}contacto.html" class="fw-bold text-success text-decoration-underline">Formulario Oficial de Postulación</a>.<br>
-        2️⃣ Completa tus datos personales (DNI/RUC, teléfono de contacto y valle agrario).<br>
-        3️⃣ Selecciona tu línea de cultivo, hectáreas disponibles y monto de financiamiento estimado.<br>
+        2️⃣ Selecciona tu perfil (Pequeño Productor, Inversionista o Cooperativa).<br>
+        3️⃣ Completa tu correo y datos agronómicos o financieros requeridos.<br>
         4️⃣ Adjunta tu documento de posesión o regante (opcional en el primer contacto).<br><br>
-        ⏱️ Nuestro equipo técnico agronómico evaluará tu solicitud en un plazo máximo de <strong>48 horas hábiles</strong>.`
+        ⏱️ Nuestro equipo técnico evaluará tu solicitud en un plazo máximo de <strong>48 horas hábiles</strong>.`
     },
     {
       keywords: ['cuanto se gana', 'cuánto se gana', 'ganancia', 'rentabilidad', 'ganar', 'ganancias', 'retorno', 'precio', 'utilidad', 'margen', 'precio justo'],
@@ -30,8 +73,8 @@
       response: `Los beneficios económicos dependen de tu rol en AgroConecta:<br><br>
         🌾 <strong>Para Pequeños Productores:</strong><br>
         • Aseguras la compra de tu cosecha a <em>Precio Justo</em> pactado antes de la siembra.<br>
-        • Eliminas a intermediarios abusivos, obteniendo entre un <strong>25% y 40% más de margen neto</strong> frente a la venta tradicional en chacra.<br>
-        • Recibes financiamiento oportuno sin intereses bancarios asfixiantes.<br><br>
+        • Eliminas intermediarios, obteniendo entre un <strong>25% y 40% más de margen neto</strong> frente a la venta tradicional en chacra.<br>
+        • Recibes financiamiento oportuno para semillas, abonos y jornales.<br><br>
         💼 <strong>Para Inversionistas / Compradores Futuros:</strong><br>
         • Rentabilidades anuales estimadas entre el <strong>12% y 18%</strong>, respaldadas por cosechas físicas reales de alta demanda exportable.`
     },
@@ -40,13 +83,15 @@
       title: '¿Cuáles son los requisitos para participar?',
       response: `Los requisitos básicos son muy accesibles:<br><br>
         ✅ <strong>Productores Agrarios:</strong><br>
-        • DNI o RUC vigente (persona natural o cooperativa).<br>
-        • Predio agrícola demostrable (título de propiedad, constancia de posesión comunal o carnet de regante).<br>
+        • DNI o RUC vigente.<br>
+        • Predio agrícola demostrable (título, constancia de posesión comunal o carnet de regante).<br>
         • Mínimo <strong>0.5 hectáreas</strong> disponibles para cultivo.<br>
-        • Experiencia demostrada en la línea agrícola a cultivar.<br><br>
+        • Experiencia demostrada en el cultivo.<br><br>
         ✅ <strong>Inversionistas:</strong><br>
         • Ser mayor de 18 años con DNI o RUC.<br>
-        • Participación accesible desde <strong>S/. 500</strong> en campañas activas.`
+        • Participación accesible desde <strong>S/. 500</strong> en campañas activas.<br><br>
+        ✅ <strong>Cooperativas:</strong><br>
+        • RUC 20 institucional, mínimo 5 socios y vigencia de poder Sunarp.`
     },
     {
       keywords: ['cultivo', 'cultivos', 'que cultivos', 'qué cultivos', 'productos', 'cafe', 'café', 'cacao', 'palta', 'maiz', 'maíz', 'quinua', 'mango', 'esparrago', 'espárrago'],
@@ -64,17 +109,17 @@
       keywords: ['seguro', 'garantia', 'garantía', 'garantias', 'garantías', 'seguridad', 'riesgo', 'helada', 'plaga', 'sbs'],
       title: '¿Tienen seguro agrario y garantías?',
       response: `🛡️ <strong>¡Totalmente respaldado!</strong><br><br>
-        1. <strong>Seguro Agrícola Catastrófico:</strong> Todas nuestras campañas cuentan obligatoriamente con una póliza contratada con aseguradoras reguladas por la <em>SBS</em>, que protege la inversión ante sequías, plagas o heladas.<br>
-        2. <strong>Contratos Notariados:</strong> Los convenios de financiamiento y compra futura se firman formalmente con validez jurídica.<br>
+        1. <strong>Seguro Agrícola Catastrófico:</strong> Todas nuestras campañas cuentan obligatoriamente con una póliza contratada con aseguradoras reguladas por la <em>SBS</em>, protegiendo ante sequías, plagas o heladas.<br>
+        2. <strong>Contratos Notariados:</strong> Convenios formales de compra futura con validez legal.<br>
         3. <strong>Supervisión en Campo:</strong> Ingenieros agrónomos de AgroConecta auditan periódicamente el predio durante todo el ciclo vegetativo.`
     },
     {
       keywords: ['compra futura', 'como funciona', 'cómo funciona', 'modelo', 'ecosistema', 'explicame', 'explícame'],
       title: '¿Cómo funciona el modelo de Compra Futura?',
       response: `Es un modelo colaborativo ganar-ganar en 3 etapas:<br><br>
-        🌱 <strong>1. Financiamiento Anticipado:</strong> Inversionistas y compradores adquieren por adelantado un porcentaje de la cosecha proyectada, entregando al productor el capital necesario para semillas, abonos y jornales.<br>
+        🌱 <strong>1. Financiamiento Anticipado:</strong> Inversionistas adquieren por adelantado un porcentaje de la cosecha proyectada, entregando al productor el capital necesario para insumos y jornales.<br>
         🚜 <strong>2. Acompañamiento Agronómico:</strong> AgroConecta supervisa la floración, riego y sanidad vegetal en el valle.<br>
-        📦 <strong>3. Cosecha y Liquidación:</strong> Al recolectar el producto, se vende a precio de mercado internacional o se entrega al comprador pactado, liquidando las utilidades con total transparencia.`
+        📦 <strong>3. Cosecha y Liquidación:</strong> Al cosechar, se vende a precio internacional o se entrega al comprador pactado, liquidando las utilidades con total transparencia.`
     },
     {
       keywords: ['contacto', 'telefono', 'teléfono', 'whatsapp', 'correo', 'email', 'oficina', 'direccion', 'dirección', 'asesor', 'humano', 'hablar con alguien'],
@@ -98,8 +143,91 @@
     { label: '📞 Contactar a un asesor', query: 'contacto' }
   ];
 
-  // Motor de Búsqueda de Respuestas Inteligente
-  function buscarRespuesta(mensaje) {
+  /**
+   * Consulta al modelo Meta Muse Spark 1.3 mediante API REST compatible con OpenAI
+   * @param {string} mensajeUsuario Texto enviado por el usuario
+   * @returns {Promise<string>} Respuesta en HTML
+   */
+  async function consultarMetaMuseSpark(mensajeUsuario) {
+    const llmCfg = obtenerConfiguracionLLM();
+
+    // Guardar en el historial multi-turno
+    historialConversacion.push({ role: 'user', content: mensajeUsuario });
+
+    // Si hay una API Key configurada para Meta Muse Spark, intentamos la llamada al LLM
+    if (llmCfg.apiKey && !llmCfg.apiKey.includes('TU_API_KEY')) {
+      try {
+        console.info(`[AgroBot LLM] Consultando Meta Muse Spark 1.3 (${llmCfg.model})...`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000); // 12s timeout
+
+        const response = await fetch(llmCfg.endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${llmCfg.apiKey}`
+          },
+          body: JSON.stringify({
+            model: llmCfg.model,
+            messages: historialConversacion,
+            temperature: 0.6,
+            max_tokens: 650
+          }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const data = await response.json();
+          const contenidoRespuesta = data?.choices?.[0]?.message?.content;
+          if (contenidoRespuesta) {
+            historialConversacion.push({ role: 'assistant', content: contenidoRespuesta });
+            return formatearMarkdownAHTML(contenidoRespuesta);
+          }
+        } else {
+          console.warn('[AgroBot LLM] Error en API LLM (' + response.status + '). Utilizando motor semántico local.');
+        }
+      } catch (llmErr) {
+        console.warn('[AgroBot LLM] Excepción en llamada LLM, pasando a motor local:', llmErr.message);
+      }
+    }
+
+    // Motor Semántico Local de Respaldo
+    const respuestaLocal = buscarRespuestaLocal(mensajeUsuario);
+    historialConversacion.push({ role: 'assistant', content: respuestaLocal });
+    return respuestaLocal;
+  }
+
+  /**
+   * Convierte texto en formato Markdown a HTML limpio y estilizado
+   * @param {string} markdown Texto plano con formato Markdown
+   * @returns {string} HTML renderizable
+   */
+  function formatearMarkdownAHTML(markdown) {
+    let html = markdown
+      // Negrita
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Cursiva
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      // Enlaces Markdown [texto](url)
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-success fw-bold text-decoration-underline" target="_blank">$1</a>')
+      // Viñetas con guión o asterisco
+      .replace(/(?:^|\n)[-*]\s+(.*)/g, '<li class="mb-1">$1</li>')
+      // Saltos de línea
+      .replace(/\n\n+/g, '<br><br>')
+      .replace(/\n/g, '<br>');
+
+    // Envolver listas <li> si existen
+    if (html.includes('<li')) {
+      html = html.replace(/(<li.*<\/li>)/s, '<ul class="ps-3 mb-2">$1</ul>');
+    }
+
+    return html;
+  }
+
+  // Motor de Búsqueda de Respuestas Inteligente Local
+  function buscarRespuestaLocal(mensaje) {
     const texto = mensaje.toLowerCase().trim();
 
     // Saludo inicial
@@ -122,7 +250,7 @@
       let puntaje = 0;
       for (const kw of item.keywords) {
         if (texto.includes(kw)) {
-          puntaje += kw.length; // Ponderar coincidencia de palabras más específicas
+          puntaje += kw.length;
         }
       }
       if (puntaje > maxPuntaje) {
@@ -180,16 +308,21 @@
 
       <!-- Ventana de Chat Flotante -->
       <div id="agrobot-window" class="agrobot-chat-window shadow-lg" role="dialog" aria-labelledby="agrobot-title" aria-hidden="true">
-        <!-- Encabezado del Chatbot -->
+        <!-- Encabezado del Chatbot con Contraste Blanco Puro Blindado -->
         <div class="agrobot-header d-flex align-items-center justify-content-between p-3 text-white">
           <div class="d-flex align-items-center gap-2">
             <div class="position-relative">
-              <img src="${BASE_IMG_URL}logo.png" width="36" height="36" alt="AgroBot" class="rounded-circle bg-white p-1">
+              <img src="${BASE_IMG_URL}logo.png" width="38" height="38" alt="AgroBot" class="rounded-circle bg-white p-1">
               <span class="agrobot-online-dot"></span>
             </div>
             <div>
-              <h6 class="mb-0 fw-bold fs-6" id="agrobot-title">AgroBot &bull; AgroConecta</h6>
-              <small class="text-white-50" style="font-size: 0.72rem;">Asistente en línea 🟢</small>
+              <h6 class="mb-0 fw-bold fs-6 text-white" id="agrobot-title" style="color: #FFFFFF !important;">
+                AgroBot &bull; AgroConecta
+              </h6>
+              <div class="d-flex align-items-center gap-1 mt-1">
+                <span class="agrobot-ai-badge">⚡ Meta Muse Spark 1.3</span>
+                <small style="color: rgba(255, 255, 255, 0.9) !important; font-size: 0.72rem;">En línea 🟢</small>
+              </div>
             </div>
           </div>
           <button id="agrobot-close-btn" class="btn btn-sm btn-link text-white text-decoration-none p-1" type="button" aria-label="Cerrar chat">
@@ -206,7 +339,7 @@
           <div class="agrobot-msg agrobot-msg-bot mb-3">
             <div class="agrobot-bubble p-3 rounded-4 shadow-sm">
               <p class="mb-2">¡Hola! 🌱 Te doy la bienvenida a <strong>AgroConecta</strong>.</p>
-              <p class="mb-2">Soy <strong>AgroBot</strong>, tu asistente virtual agronómico. Puedo responder tus dudas sobre cómo postular, requisitos, rentabilidad o líneas de cultivo.</p>
+              <p class="mb-2">Soy <strong>AgroBot</strong>, impulsado por <em>Meta Muse Spark 1.3</em>. Estoy capacitado para responder todas tus dudas sobre cómo postular, requisitos, rentabilidad, compra futura o líneas de cultivo.</p>
               <span class="agrobot-time text-muted small d-block text-end">Justo ahora</span>
             </div>
           </div>
@@ -227,14 +360,14 @@
         <!-- Indicador de Escritura "Escribiendo..." -->
         <div id="agrobot-typing" class="agrobot-typing-indicator px-3 py-1" style="display: none;">
           <small class="text-muted d-flex align-items-center gap-1">
-            <span>AgroBot está escribiendo</span>
+            <span>AgroBot está pensando con Meta Muse Spark</span>
             <span class="agrobot-dots"><span>.</span><span>.</span><span>.</span></span>
           </small>
         </div>
 
         <!-- Pie de Entrada de Texto -->
         <form id="agrobot-form" class="agrobot-footer p-2 border-top bg-white d-flex align-items-center gap-2">
-          <input type="text" id="agrobot-input" class="form-control form-control-sm rounded-pill px-3 py-2 border-success-subtle" placeholder="Escribe tu duda aquí..." autocomplete="off" aria-label="Escribe tu mensaje">
+          <input type="text" id="agrobot-input" class="form-control form-control-sm rounded-pill px-3 py-2 border-success-subtle" placeholder="Pregúntale a AgroBot..." autocomplete="off" aria-label="Escribe tu mensaje">
           <button type="submit" class="btn btn-success rounded-circle agrobot-send-btn d-flex align-items-center justify-content-center p-2" aria-label="Enviar mensaje">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -295,26 +428,26 @@
       else abrirChat();
     });
 
-    closeBtn.addEventListener('click', cerrarChat);
+    if (closeBtn) closeBtn.addEventListener('click', cerrarChat);
 
     // Enviar mensaje del usuario
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const texto = input.value.trim();
       if (!texto) return;
 
       agregarMensajeUsuario(texto);
       input.value = '';
-      procesarRespuestaBot(texto);
+      await procesarRespuestaBot(texto);
     });
 
     // Delegación de clics en píldoras de preguntas rápidas
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', async (e) => {
       const chipBtn = e.target.closest('.agrobot-chip-btn');
       if (chipBtn) {
         const query = chipBtn.getAttribute('data-query');
         agregarMensajeUsuario(chipBtn.textContent.trim());
-        procesarRespuestaBot(query);
+        await procesarRespuestaBot(query);
       }
     });
 
@@ -323,8 +456,8 @@
       msgDiv.className = 'agrobot-msg agrobot-msg-user mb-3 text-end';
       const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       msgDiv.innerHTML = `
-        <div class="agrobot-bubble p-3 rounded-4 shadow-sm bg-success text-white d-inline-block text-start" style="max-width: 82%;">
-          <p class="mb-1">${escaparHTML(texto)}</p>
+        <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-white d-inline-block text-start" style="max-width: 82%;">
+          <p class="mb-1" style="color: #FFFFFF !important;">${escaparHTML(texto)}</p>
           <span class="agrobot-time text-white-50 small d-block text-end" style="font-size: 0.68rem;">${hora}</span>
         </div>
       `;
@@ -332,19 +465,19 @@
       scrollAlFondo();
     }
 
-    function procesarRespuestaBot(consulta) {
-      typingIndicator.style.display = 'block';
+    async function procesarRespuestaBot(consulta) {
+      if (typingIndicator) typingIndicator.style.display = 'block';
       scrollAlFondo();
 
-      // Simulación de escritura interactiva (400 a 700 ms)
-      setTimeout(() => {
-        typingIndicator.style.display = 'none';
-        const respuestaHTML = buscarRespuesta(consulta);
+      try {
+        const respuestaHTML = await consultarMetaMuseSpark(consulta);
+
+        if (typingIndicator) typingIndicator.style.display = 'none';
         const msgDiv = document.createElement('div');
         msgDiv.className = 'agrobot-msg agrobot-msg-bot mb-3';
         const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         msgDiv.innerHTML = `
-          <div class="agrobot-bubble p-3 rounded-4 shadow-sm bg-light border border-success-subtle text-dark" style="max-width: 88%;">
+          <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-dark" style="max-width: 88%;">
             <div class="agrobot-bot-content mb-1" style="font-size: 0.88rem; line-height: 1.45;">
               ${respuestaHTML}
             </div>
@@ -353,7 +486,10 @@
         `;
         messagesContainer.appendChild(msgDiv);
         scrollAlFondo();
-      }, 500);
+      } catch (err) {
+        if (typingIndicator) typingIndicator.style.display = 'none';
+        console.error('[AgroBot Error]:', err);
+      }
     }
 
     function scrollAlFondo() {
@@ -373,6 +509,7 @@
   // Exponer API global opcional
   window.AgroBot = {
     init: inicializarWidgetChatbot,
-    preguntar: buscarRespuesta
+    preguntar: consultarMetaMuseSpark,
+    preguntarLocal: buscarRespuestaLocal
   };
 })();

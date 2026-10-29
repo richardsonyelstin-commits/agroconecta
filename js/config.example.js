@@ -25,5 +25,13 @@ window.AGROCONECTA_CONFIG = {
   SUPABASE_ANON_KEY: 'TU_SUPABASE_ANON_PUBLIC_KEY_AQUI',
 
   // (Opcional) Si decides utilizar una función Serverless o API backend intermedia para máxima seguridad:
-  BACKEND_API_URL: '' // Ejemplo: 'https://tu-api.agroconecta.pe/api/postulacion'
+  BACKEND_API_URL: '', // Ejemplo: 'https://tu-api.agroconecta.pe/api/postulacion'
+
+  // ==============================================================================
+  // CONFIGURACIÓN DE INTELIGENCIA ARTIFICIAL (LLM) PARA AGROBOT
+  // ==============================================================================
+  // Modelo: Meta Muse Spark 1.3 Contributor
+  LLM_API_KEY: 'TU_API_KEY_DE_META_MUSE_SPARK_AQUI', // Pega aquí tu API key de Meta Muse Spark
+  LLM_ENDPOINT: 'https://openrouter.ai/api/v1/chat/completions', // Endpoint compatible con OpenAI / FastMetal / OpenRouter
+  LLM_MODEL: 'muse-spark-1.3-contributor' // Modelo Meta Muse Spark 1.3 Contributor
 };
