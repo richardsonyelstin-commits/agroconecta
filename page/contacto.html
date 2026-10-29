@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulario oficial de contacto y postulación de proyectos agrícolas para pequeños productores e inversionistas en AgroConecta.">
+    <meta name="author" content="Richardson Yelstin Tantajulca Perez">
+    <meta name="keywords" content="contacto, postulacion agricola, financiamiento, campesinos, inversiones, agroconecta, compra futura">
+    
+    <title>Contacto y Postulación de Campañas - AGROCONECTA</title>
+    <link rel="icon" href="../logo.ico" type="image/x-icon">
+
+    <!-- Bootstrap 5.3 CSS (CDN Oficial - Manual Bootstrap Pág. 4) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Hoja de Estilos Personalizada en Cascada (Manual CSS Pág. 4 y 49) -->
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <!-- ENCABEZADO Y NAVEGACIÓN RESPONSIVE (Bootstrap Pág. 13) -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-agro sticky-top py-2">
+            <div class="container-fluid px-lg-5">
+                <!-- Marca e Identidad -->
+                <a class="navbar-brand d-flex align-items-center gap-3" href="../index.html">
+                    <img src="../dist/imagenes/logo.png" width="48" height="48" alt="Logo de AgroConecta" class="rounded">
+                    <div>
+                        <span class="d-block fw-bold fs-4 lh-1 tracking-wide">AGROCONECTA</span>
+                        <small class="text-success-emphasis text-uppercase fw-semibold" style="color: #82DDB0 !important; font-size: 0.72rem; letter-spacing: 1px;">
+                            Financiamiento &bull; Compra Futura Agrícola
+                        </small>
+                    </div>
+                </a>
+
+                <!-- Botón Toggler para Móviles -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuContacto" aria-controls="menuContacto" aria-expanded="false" aria-label="Abrir navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Enlaces de Navegación -->
+                <div class="collapse navbar-collapse" id="menuContacto">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 py-3 py-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="nosotros.html">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html#dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html#campanas">Campañas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html#faq">Preguntas</a>
+                        </li>
+                        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                            <a class="btn-cosecha" href="contacto.html">&bull; Postular Campaña &bull;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sub-barra de Acceso Rápido a Cultivos -->
+        <nav class="subnav-cultivos py-2" aria-label="Catálogo de cultivos">
+            <div class="container-fluid px-lg-5 d-flex align-items-center gap-3 overflow-auto">
+                <span class="text-white-50 small fw-bold text-nowrap d-none d-md-inline">CATÁLOGO DE CULTIVOS:</span>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="cafe.html">☕ Café Orgánico</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="cacao.html">🍫 Cacao Criollo</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="palta.html">🥑 Palta Hass</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="maiz.html">🌽 Maíz Morado</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="quinua.html">🌾 Quinua Real</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="mango.html">🥭 Mango Kent</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- SECCIÓN BANNER INTRODUCTORIO -->
+        <section class="container py-5">
+            <div class="row align-items-center g-4">
+                <div class="col-12 col-lg-8">
+                    <span class="badge-pill-agro badge-financiamiento mb-2">Canal Oficial de Registro</span>
+                    <h1 class="display-hero mb-3">Postula tu Campaña Agrícola o Invierte con Impacto</h1>
+                    <p class="subtitulo-hero mb-0">
+                        Si eres un <strong>pequeño productor</strong> que necesita financiar su próxima siembra o cosecha, 
+                        o representas a un <strong>fondo o comprador comercial</strong> interesado en asegurar lotes agrícolas de calidad, 
+                        completa el siguiente formulario oficial. Nuestro equipo técnico agrónomo responderá en un plazo máximo de <strong>48 horas hábiles</strong>.
+                    </p>
+                </div>
+                <div class="col-12 col-lg-4 text-center">
+                    <div class="p-4 bg-white rounded-4 border shadow-sm d-inline-block">
+                        <img src="../dist/imagenes/logo.png" width="90" height="90" alt="Logo AgroConecta" class="mb-2">
+                        <h6 class="fw-bold text-success mb-1">Mesa de Entrada Digital</h6>
+                        <small class="text-muted d-block">Evaluación Agronómica y Legal</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN FORMULARIO PROFESIONAL CON VALIDACIÓN VISUAL (Manual Bootstrap Pág. 12-13) -->
+        <section class="container pb-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+                    <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 bg-white">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold">Formulario Oficial de Postulación y Registro</h2>
+                            <p class="text-muted small">Todos los campos marcados con borde de color ámbar (*) son obligatorios para la auditoría técnica preliminar.</p>
+                        </div>
+
+                        <!-- Formulario con validación interactiva y atributos requeridos (Manual CSS Pág. 10 y Bootstrap Pág. 12) -->
+                        <form id="formPostulacion" class="needs-validation" novalidate enctype="multipart/form-data">
+                            
+                            <!-- BLOQUE 1: IDENTIFICACIÓN -->
+                            <fieldset class="border rounded-4 p-3 p-md-4 mb-4 bg-light bg-opacity-50">
+                                <legend class="float-none w-auto px-3 fs-6 fw-bold text-success">
+                                    1. Datos de Identificación del Solicitante
+                                </legend>
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" placeholder="Nombres" required autofocus>
+                                            <label for="nombreCompleto">Nombres y Apellidos Completos (*)</label>
+                                            <div class="invalid-feedback">Por favor ingresa tus nombres y apellidos.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="dniRuc" name="dniRuc" placeholder="DNI o RUC" maxlength="11" pattern="[0-9]{8,11}" required>
+                                            <label for="dniRuc">DNI o RUC (8 a 11 dígitos) (*)</label>
+                                            <div class="invalid-feedback">Ingresa un DNI o RUC numérico válido (8 o 11 dígitos).</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" id="correo" name="correo" placeholder="correo@dominio.com" required>
+                                            <label for="correo">Correo Electrónico (*)</label>
+                                            <div class="invalid-feedback">Ingresa un correo electrónico corporativo o personal válido.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="+51 987 654 321" required>
+                                            <label for="telefono">Teléfono Móvil o WhatsApp (*)</label>
+                                            <div class="invalid-feedback">Ingresa un teléfono celular para contacto directo.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+                                            <label for="fechaNacimiento">Fecha de Nacimiento del Titular</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <!-- BLOQUE 2: ROL Y LOCALIZACIÓN -->
+                            <fieldset class="border rounded-4 p-3 p-md-4 mb-4 bg-light bg-opacity-50">
+                                <legend class="float-none w-auto px-3 fs-6 fw-bold text-success">
+                                    2. Rol de Participación y Localización
+                                </legend>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2">Tipo de Usuario en AgroConecta (*):</label>
+                                        <div class="d-flex flex-wrap gap-4 pt-1">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" id="rolProductor" name="rolUsuario" value="productor" checked>
+                                                <label class="form-check-label fw-semibold" for="rolProductor">Pequeño Productor Agrario</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" id="rolInversionista" name="rolUsuario" value="inversionista">
+                                                <label class="form-check-label fw-semibold" for="rolInversionista">Inversionista / Comprador Futuro</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" id="rolCooperativa" name="rolUsuario" value="cooperativa">
+                                                <label class="form-check-label fw-semibold" for="rolCooperativa">Cooperativa o Asociación Agraria</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mt-3">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="regionValle" name="regionValle" required>
+                                                <option value="" selected disabled>Seleccione una región geográfica</option>
+                                                <optgroup label="Costa">
+                                                    <option value="lima">Lima / Valle Huaral</option>
+                                                    <option value="piura">Piura / Valle del Chira</option>
+                                                    <option value="ica">Ica / Valle de Pisco</option>
+                                                    <option value="la_libertad">La Libertad / Virú</option>
+                                                </optgroup>
+                                                <optgroup label="Sierra">
+                                                    <option value="cusco">Cusco / Valle Sagrado - Quillabamba</option>
+                                                    <option value="puno">Puno / Meseta del Collao</option>
+                                                    <option value="junin">Junín / Valle del Mantaro</option>
+                                                    <option value="ayacucho">Ayacucho / Valles Interandinos</option>
+                                                </optgroup>
+                                                <optgroup label="Selva">
+                                                    <option value="chanchamayo">Junín / Selva Central - Chanchamayo</option>
+                                                    <option value="san_martin">San Martín / Tarapoto</option>
+                                                    <option value="ucayali">Ucayali / Pucallpa</option>
+                                                </optgroup>
+                                            </select>
+                                            <label for="regionValle">Región o Valle del Predio (*)</label>
+                                            <div class="invalid-feedback">Por favor selecciona la región de procedencia.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <!-- BLOQUE 3: DETALLES DE LA PROPUESTA (Input Groups + Datalist) -->
+                            <fieldset class="border rounded-4 p-3 p-md-4 mb-4 bg-light bg-opacity-50">
+                                <legend class="float-none w-auto px-3 fs-6 fw-bold text-success">
+                                    3. Especificaciones Agronómicas y Financieras
+                                </legend>
+                                <div class="row g-3">
+                                    <!-- Datalist Selector de Cultivo (Manual CSS Pág. 10) -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input list="listaCultivos" class="form-control" id="cultivoInteres" name="cultivoInteres" placeholder="Cultivo" required>
+                                            <label for="cultivoInteres">Línea de Cultivo (*)</label>
+                                            <datalist id="listaCultivos">
+                                                <option value="Café Orgánico de Altura (Chanchamayo)"></option>
+                                                <option value="Cacao Criollo de Aroma (Quillabamba)"></option>
+                                                <option value="Palta Hass de Exportación (Huaral)"></option>
+                                                <option value="Maíz Morado Canteño (Canta)"></option>
+                                                <option value="Quinua Real del Altiplano (Puno)"></option>
+                                                <option value="Mango Kent Orgánico (Piura)"></option>
+                                                <option value="Espárrago Verde (Ica)"></option>
+                                            </datalist>
+                                            <div class="invalid-feedback">Especifica o selecciona el cultivo de interés.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="number" class="form-control" id="hectareas" name="hectareas" min="0.5" max="500" step="0.5" placeholder="Hectáreas" required>
+                                            <label for="hectareas">Hectáreas de Cultivo Disponibles (Ha) (*)</label>
+                                            <div class="invalid-feedback">Indica un número válido de hectáreas (mínimo 0.5 Ha).</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Input Group con Símbolo Monetario S/. (Manual Bootstrap Pág. 12) -->
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label small fw-bold text-muted">Monto de Financiamiento Solicitado (*):</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white fw-bold text-success border-end-0">S/.</span>
+                                            <input type="number" class="form-control border-start-0" id="montoEstimado" name="montoEstimado" min="2000" max="250000" step="500" placeholder="Ej. 25000" required>
+                                            <span class="input-group-text bg-white text-muted">.00</span>
+                                            <div class="invalid-feedback">Indica un monto válido (entre S/. 2,000 y S/. 250,000).</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label small fw-bold text-muted">Duración Estimada del Ciclo Productivo:</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="duracionCampana" name="duracionCampana" min="3" max="24" step="1" value="6">
+                                            <span class="input-group-text bg-white">meses de ciclo</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Input File estilizado con ::file-selector-button (Manual CSS Pág. 32) -->
+                                    <div class="col-12">
+                                        <label for="adjuntoDoc" class="form-label fw-bold small text-muted">Adjuntar Ficha Técnica o Documento de Posesión (PDF, PNG o JPG):</label>
+                                        <input class="form-control" type="file" id="adjuntoDoc" name="adjuntoDoc" accept=".pdf,.png,.jpg,.jpeg">
+                                        <small class="text-muted d-block mt-1">Archivos permitidos: certificados orgánicos, constancia de regante o títulos (máximo 10 MB).</small>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" id="mensajeDetallado" name="mensajeDetallado" style="height: 120px;" placeholder="Detalles"></textarea>
+                                            <label for="mensajeDetallado">Descripción detallada de la propuesta, fuente hídrica y objetivos...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <!-- BLOQUE 4: CONFORMIDAD Y FORM-SWITCHES (Manual Bootstrap Pág. 12) -->
+                            <fieldset class="border rounded-4 p-3 p-md-4 mb-4 bg-light bg-opacity-50">
+                                <legend class="float-none w-auto px-3 fs-6 fw-bold text-success">
+                                    4. Términos y Autorizaciones
+                                </legend>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="aceptoTerminos" name="aceptoTerminos" required>
+                                    <label class="form-check-label fw-semibold" for="aceptoTerminos">
+                                        Declaro bajo juramento que los datos son auténticos y acepto los términos de compra futura y auditoría agronómica en campo (*).
+                                    </label>
+                                    <div class="invalid-feedback">Debes aceptar los términos para poder enviar tu solicitud.</div>
+                                </div>
+
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="boletinNoticias" name="boletinNoticias" checked>
+                                    <label class="form-check-label" for="boletinNoticias">
+                                        Deseo recibir el reporte mensual de precios referenciales de cosechas y alertas agronómicas.
+                                    </label>
+                                </div>
+                            </fieldset>
+
+                            <!-- BOTONES DE ACCIÓN -->
+                            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 pt-2">
+                                <button type="submit" class="btn-cosecha">
+                                    🚀 Enviar Solicitud de Postulación
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary px-4 py-2 fw-semibold">
+                                    Limpiar Formulario
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN SEDE, CANALES DIRECTOS Y GOOGLE MAPS CON IFRAME RATIO (Bootstrap Pág. 9) -->
+        <section class="py-5 bg-white border-top border-bottom">
+            <div class="container">
+                <div class="row g-4 align-items-center">
+                    <div class="col-12 col-lg-5">
+                        <span class="badge-pill-agro badge-cosecha-futura mb-2">Atención Personalizada</span>
+                        <h3 class="fw-bold mb-3">Canales de Asistencia al Productor</h3>
+                        <p class="text-muted mb-4">Si requieres coordinar una reunión presencial en nuestra sede central o asistencia técnica telefónica:</p>
+                        
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="fs-4">📧</span>
+                                <div>
+                                    <strong class="d-block text-dark">Correo de Consultas Generales:</strong>
+                                    <a href="mailto:contacto@agroconecta.pe" class="text-success fw-semibold">contacto@agroconecta.pe</a>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="fs-4">💼</span>
+                                <div>
+                                    <strong class="d-block text-dark">Mesa de Financiamiento Agrario:</strong>
+                                    <a href="mailto:financiamiento@agroconecta.pe" class="text-success fw-semibold">financiamiento@agroconecta.pe</a>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="fs-4">📞</span>
+                                <div>
+                                    <strong class="d-block text-dark">Central de Asistencia al Productor:</strong>
+                                    <a href="tel:+51930736214" class="text-success fw-semibold">+51 930 736 214 / +51 987 654 321</a>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="fs-4">🕒</span>
+                                <div>
+                                    <strong class="d-block text-dark">Horario de Oficina:</strong>
+                                    <span class="text-muted">Lunes a Viernes: 8:30 a.m. a 6:00 p.m.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-7">
+                        <h4 class="fw-bold mb-3 text-center text-lg-start">Sede Central - Lima, Perú</h4>
+                        <!-- Utilidad ratio ratio-16x9 para Google Maps (Manual Bootstrap Pág. 9) -->
+                        <div class="ratio ratio-16x9 rounded-4 shadow-sm overflow-hidden border">
+                            <iframe src="https://maps.google.com/maps?q=Lima,Peru&t=&z=13&ie=UTF8&iwloc=&output=embed" title="Ubicación de sede central AgroConecta en Lima" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL BOOTSTRAP 5.3 DE CONFIRMACIÓN (Manual Bootstrap Pág. 14) -->
+    <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-success text-white border-0 rounded-top-4">
+                    <h5 class="modal-title fw-bold" id="modalLabel">✅ Solicitud Recibida con Éxito</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div class="display-4 text-success mb-3">🌱</div>
+                    <h4 class="fw-bold mb-2">¡Gracias por postular en AgroConecta!</h4>
+                    <p class="text-muted">
+                        Hemos registrado tu postulación satisfactoriamente. Nuestro comité agronómico revisará los datos geográficos y se pondrá en contacto contigo dentro de las próximas <strong>48 horas hábiles</strong>.
+                    </p>
+                    <div class="alert alert-light border small text-muted mb-0">
+                        Se ha enviado una constancia de registro a tu correo electrónico.
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center pb-4">
+                    <button type="button" class="btn-cosecha px-4" data-bs-dismiss="modal">Entendido y Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA CORPORATIVO RESPONSIVE -->
+    <footer class="bg-dark text-white pt-5 pb-4 border-top" style="background-color: var(--color-primario) !important;">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="../dist/imagenes/logo.png" width="44" height="44" alt="Logo de AgroConecta">
+                        <div>
+                            <span class="fs-5 fw-bold d-block text-white">AGROCONECTA</span>
+                            <small style="color: #82DDB0;">COMPRA FUTURA AGRÍCOLA</small>
+                        </div>
+                    </div>
+                    <p class="text-white-50 small mb-2">
+                        Plataforma peruana de financiamiento colaborativo que conecta a pequeños productores agrarios con inversionistas mediante contratos formales de compra futura.
+                    </p>
+                    <p class="small text-white-50">
+                        <strong>RUC:</strong> 20609876541 &bull; <strong>Sede:</strong> Lima, Perú
+                    </p>
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-3 text-white">PLATAFORMA</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+                        <li><a href="../index.html" class="text-white-50 text-decoration-none">&rarr; Inicio</a></li>
+                        <li><a href="nosotros.html" class="text-white-50 text-decoration-none">&rarr; Quiénes Somos</a></li>
+                        <li><a href="../index.html#dashboard" class="text-white-50 text-decoration-none">&rarr; Dashboard Agrícola</a></li>
+                        <li><a href="../index.html#campanas" class="text-white-50 text-decoration-none">&rarr; Campañas Activas</a></li>
+                        <li><a href="../index.html#faq" class="text-white-50 text-decoration-none">&rarr; Preguntas Frecuentes</a></li>
+                        <li><a href="contacto.html" class="text-white-50 text-decoration-none">&rarr; Postular Campaña</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-3 text-white">CULTIVOS DISPONIBLES</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+                        <li><a href="cafe.html" class="text-white-50 text-decoration-none">&bull; Café Orgánico (Junín)</a></li>
+                        <li><a href="cacao.html" class="text-white-50 text-decoration-none">&bull; Cacao Criollo (Cusco)</a></li>
+                        <li><a href="palta.html" class="text-white-50 text-decoration-none">&bull; Palta Hass (Lima)</a></li>
+                        <li><a href="maiz.html" class="text-white-50 text-decoration-none">&bull; Maíz Morado (Canta)</a></li>
+                        <li><a href="quinua.html" class="text-white-50 text-decoration-none">&bull; Quinua Real (Puno)</a></li>
+                        <li><a href="mango.html" class="text-white-50 text-decoration-none">&bull; Mango Kent (Piura)</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-3 text-white">CENTRAL DE ATENCIÓN</h5>
+                    <p class="small text-white-50 mb-2"><strong>Dirección:</strong> Av. Javier Prado Este 2465, San Borja, Lima</p>
+                    <p class="small text-white-50 mb-2"><strong>Correo:</strong> <a href="mailto:contacto@agroconecta.pe" style="color: #82DDB0;">contacto@agroconecta.pe</a></p>
+                    <p class="small text-white-50 mb-2"><strong>Teléfono:</strong> <a href="tel:+51930736214" style="color: #82DDB0;">+51 930 736 214</a></p>
+                    <p class="small text-white-50"><strong>Horario:</strong> Lunes a Viernes de 8:30 am a 6:00 pm</p>
+                </div>
+            </div>
+
+            <hr class="border-secondary opacity-25">
+
+            <div class="row align-items-center small text-white-50 pt-2">
+                <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    &copy; <time datetime="2026">2026</time> <strong>AGROCONECTA S.A.C.</strong> Todos los derechos reservados.
+                </div>
+                <div class="col-12 col-md-6 text-center text-md-end">
+                    Desarrollado por <strong class="text-white">Richardson Yelstin Tantajulca Perez</strong> | IDAT
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 Bundle con Popper (CDN Oficial - Manual Bootstrap Pág. 4) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Script de Validación Visual Propia (Manual Bootstrap Pág. 12-14) -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

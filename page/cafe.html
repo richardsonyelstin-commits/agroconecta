@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Campaña productiva de Café Orgánico de Altura en Chanchamayo financiada a través de AgroConecta.">
+    <meta name="author" content="Richardson Yelstin Tantajulca Perez">
+    <meta name="keywords" content="cafe organico, chanchamayo, financiamiento, cosecha, agricultura sostenible, compra futura">
+    
+    <title>Café Orgánico de Altura - AGROCONECTA</title>
+    <link rel="icon" href="../logo.ico" type="image/x-icon">
+
+    <!-- Bootstrap 5.3 CSS (CDN Oficial - Manual Bootstrap Pág. 4) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Hoja de Estilos Personalizada en Cascada (Manual CSS Pág. 4 y 49) -->
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <!-- ENCABEZADO Y NAVEGACIÓN RESPONSIVE -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-agro sticky-top py-2">
+            <div class="container-fluid px-lg-5">
+                <a class="navbar-brand d-flex align-items-center gap-3" href="../index.html">
+                    <img src="../dist/imagenes/logo.png" width="48" height="48" alt="Logo de AgroConecta" class="rounded">
+                    <div>
+                        <span class="d-block fw-bold fs-4 lh-1 tracking-wide">AGROCONECTA</span>
+                        <small class="text-success-emphasis text-uppercase fw-semibold" style="color: #82DDB0 !important; font-size: 0.72rem; letter-spacing: 1px;">
+                            Financiamiento &bull; Compra Futura Agrícola
+                        </small>
+                    </div>
+                </a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuCafe" aria-controls="menuCafe" aria-expanded="false" aria-label="Abrir navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menuCafe">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 py-3 py-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="nosotros.html">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html#dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="../index.html#campanas">Campañas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html#faq">Preguntas</a>
+                        </li>
+                        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                            <a class="btn-cosecha" href="contacto.html">Postular Campaña</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sub-barra de Acceso Rápido a Cultivos -->
+        <nav class="subnav-cultivos py-2" aria-label="Catálogo de cultivos">
+            <div class="container-fluid px-lg-5 d-flex align-items-center gap-3 overflow-auto">
+                <span class="text-white-50 small fw-bold text-nowrap d-none d-md-inline">CATÁLOGO DE CULTIVOS:</span>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="cafe.html" class="text-white fw-bold">&bull; Café Orgánico &bull;</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="cacao.html">🍫 Cacao Criollo</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="palta.html">🥑 Palta Hass</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="maiz.html">🌽 Maíz Morado</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="quinua.html">🌾 Quinua Real</a>
+                    <span class="text-white-50">&bull;</span>
+                    <a href="mango.html">🥭 Mango Kent</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- BREADCRUMB DE NAVEGACIÓN (Manual Bootstrap Pág. 13) -->
+        <div class="container pt-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb py-2 px-3 bg-white rounded-3 border shadow-sm">
+                    <li class="breadcrumb-item"><a href="../index.html" class="text-success text-decoration-none">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="../index.html#campanas" class="text-success text-decoration-none">Campañas</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Café Orgánico de Altura</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- HERO DE CAMPAÑA CON CAROUSEL BOOTSTRAP 5.3 (Manual Bootstrap Pág. 15) -->
+        <section class="container py-4">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-12 col-lg-7">
+                    <span class="badge-pill-agro badge-financiamiento mb-2">Selva Central &bull; Valle San Alberto</span>
+                    <h1 class="display-hero mb-3">Café Orgánico de Altura</h1>
+                    <p class="fs-5 text-success fw-bold mb-3">Chanchamayo, Región Junín &bull; Campaña Cosecha 2026</p>
+                    <p class="text-muted leading-relaxed mb-3">
+                        El café arábica cultivado bajo sombra en altitudes superiores a los <strong>1,450 a 1,700 m.s.n.m.</strong> 
+                        es uno de los productos bandera con mayor demanda en el mercado internacional de especialidad.
+                    </p>
+                    <p class="text-muted leading-relaxed mb-4">
+                        Esta campaña financia a la asociación de <strong>25 familias caficultoras</strong> para cubrir labores de fertilización ecológica, cosecha manual selectiva y secado en camas solares.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="contacto.html" class="btn-cosecha">
+                            ☕ Participar en este Financiamiento
+                        </a>
+                        <a href="#fichaTecnica" class="btn-bosque-outline">
+                            Ver Especificaciones Técnicas
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CAROUSEL DE BOOTSTRAP 5.3 (Sustituto moderno del marquee - Manual Bootstrap Pág. 15) -->
+                <div class="col-12 col-lg-5">
+                    <div id="carouselCafe" class="carousel slide shadow-lg rounded-4 overflow-hidden border border-2" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselCafe" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Foto 1"></button>
+                            <button type="button" data-bs-target="#carouselCafe" data-bs-slide-to="1" aria-label="Foto 2"></button>
+                            <button type="button" data-bs-target="#carouselCafe" data-bs-slide-to="2" aria-label="Foto 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="../dist/imagenes/cafe.portada.png" class="d-block w-100" style="height: 320px; object-fit: cover;" alt="Cafeto en floración Chanchamayo">
+                                <div class="carousel-caption d-none d-sm-block bg-dark bg-opacity-50 rounded-3 p-1">
+                                    <small class="fw-semibold">Cerezas de Café en Maduración</small>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../dist/imagenes/cafe.portada2.png" class="d-block w-100" style="height: 320px; object-fit: cover;" alt="Cosecha selectiva de café">
+                                <div class="carousel-caption d-none d-sm-block bg-dark bg-opacity-50 rounded-3 p-1">
+                                    <small class="fw-semibold">Recolección Manual de Grano Rojo</small>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../dist/imagenes/cafe.portada3.png" class="d-block w-100" style="height: 320px; object-fit: cover;" alt="Secado de café en camas solares">
+                                <div class="carousel-caption d-none d-sm-block bg-dark bg-opacity-50 rounded-3 p-1">
+                                    <small class="fw-semibold">Secado en Camas Solares</small>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselCafe" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselCafe" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FICHA TÉCNICA EN TABLA RESPONSIVE (Bootstrap Pág. 11 & CSS Pág. 47) -->
+        <section id="fichaTecnica" class="py-5 bg-white border-top border-bottom">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <span class="badge-pill-agro badge-cosecha-futura mb-2">Transparencia Operativa</span>
+                    <h2 class="fw-bold">Ficha Técnica y Términos de Compra Futura</h2>
+                    <p class="text-muted">Detalle financiero y agronómico para inversionistas y compradores comerciales.</p>
+                </div>
+
+                <div class="table-responsive shadow-sm rounded-4 border mx-auto" style="max-width: 960px;">
+                    <table class="table table-striped table-hover align-middle mb-0 tabla-agro">
+                        <caption class="p-3 bg-light text-muted small">Especificaciones Certificadas del Lote de Café Especial 2026</caption>
+                        <thead>
+                            <tr class="table-dark" style="background-color: var(--color-secundario) !important;">
+                                <th colspan="2" class="p-3 text-uppercase">Parámetro Agronómico</th>
+                                <th colspan="2" class="p-3 text-uppercase">Condiciones Comerciales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Variedades Botánicas:</strong></td>
+                                <td>Típica, Caturra y Bourbon</td>
+                                <td><strong>Meta de Financiamiento:</strong></td>
+                                <td class="text-end fw-bold text-success">S/. 25,000.00</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Altitud de Cultivo:</strong></td>
+                                <td>1,450 - 1,700 m.s.n.m.</td>
+                                <td><strong>Retorno Estimado:</strong></td>
+                                <td class="text-end"><span class="badge text-bg-success px-2 py-1">14.5% anual proyectado</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Puntaje en Taza (SCA):</strong></td>
+                                <td><span class="badge bg-warning-subtle text-warning-emphasis border">85.5 pts (Café Especial)</span></td>
+                                <td><strong>Precio Acordado Futuro:</strong></td>
+                                <td class="text-end fw-semibold">S/. 14.50 por kg pergamino</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Periodo de Cosecha:</strong></td>
+                                <td><time datetime="2026-05">Mayo</time> a <time datetime="2026-08">Agosto 2026</time></td>
+                                <td><strong>Garantía Integral:</strong></td>
+                                <td>Póliza Agrícola + Almacén General</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted small py-3">
+                                    <em>Contrato de compra futura respaldado legalmente con auditoría agronómica y trazabilidad por lote.</em>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CICLO DE CULTIVO Y GLOSARIO -->
+        <section class="container py-5">
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="p-4 p-md-5 rounded-4 bg-white border shadow-sm h-100">
+                        <h4 class="fw-bold text-success mb-3">🌿 Ciclo del Cultivo y Cosecha</h4>
+                        <p class="text-muted small mb-3">Fases supervisadas por el equipo de ingenieros agrónomos de AgroConecta:</p>
+                        <ol class="d-flex flex-column gap-2 text-muted ps-3 mb-0">
+                            <li><strong>Poda y Deshierbe Manual:</strong> Mantenimiento fitosanitario sin herbicidas sintéticos.</li>
+                            <li><strong>Nutrición Orgánica:</strong> Aplicación de abonos orgánicos compostados ricos en potasio.</li>
+                            <li><strong>Recolección Selectiva:</strong> Cosecha manual exclusiva de cerezas rojas en madurez óptima.</li>
+                            <li><strong>Despulpado y Fermentación:</strong> Proceso de fermentación controlada por 18 horas en tanque.</li>
+                            <li><strong>Secado Solar y Envasado:</strong> Deshidratación en camas solares hasta 11.5% de humedad.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="p-4 p-md-5 rounded-4 bg-white border shadow-sm h-100">
+                        <h4 class="fw-bold text-success mb-3">✨ Ventajas y Glosario Cafetalero</h4>
+                        <ul class="text-muted d-flex flex-column gap-2 ps-3 mb-4">
+                            <li>Acceso prioritario a <strong>lotes de café exportable</strong> con certificación de origen.</li>
+                            <li>Precios fijos protegidos de la volatilidad internacional de commodities.</li>
+                            <li>Impacto social directo en <strong>25 familias de Chanchamayo</strong>.</li>
+                        </ul>
+
+                        <h6 class="fw-bold text-dark text-uppercase small mb-2">Términos Clave:</h6>
+                        <div class="bg-light p-3 rounded-3 border">
+                            <strong class="text-success d-block small">Café Pergamino:</strong>
+                            <small class="text-muted d-block mb-2">Grano de café secado protegido por su cáscara interna o endocarpio.</small>
+                            
+                            <strong class="text-success d-block small">Puntaje SCA:</strong>
+                            <small class="text-muted d-block">Estándar de la <em>Specialty Coffee Association</em> que califica fragancia, sabor, cuerpo y balance (sobre 100 puntos).</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="py-5 bg-white border-top">
+            <div class="container text-center">
+                <h3 class="fw-bold mb-2">¿Deseas financiar esta campaña de café?</h3>
+                <p class="text-muted mb-4">Contáctanos hoy mismo para recibir el dossier agronómico completo y el modelo de contrato de compra futura.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="contacto.html" class="btn-cosecha">Participar en Café Orgánico</a>
+                    <a href="../index.html#campanas" class="btn-bosque-outline">Explorar Más Cultivos</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA CORPORATIVO RESPONSIVE -->
+    <footer class="bg-dark text-white pt-5 pb-4 border-top" style="background-color: var(--color-primario) !important;">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="../dist/imagenes/logo.png" width="44" height="44" alt="Logo de AgroConecta">
+                        <div>
+                            <span class="fs-5 fw-bold d-block text-white">AGROCONECTA</span>
+                            <small style="color: #82DDB0;">COMPRA FUTURA AGRÍCOLA</small>
+                        </div>
+                    </div>
+                    <p class="text-white-50 small mb-2">
+                        Plataforma peruana de financiamiento colaborativo que conecta a pequeños productores agrarios con inversionistas mediante contratos formales de compra futura.
+                    </p>
+                    <p class="small text-white-50">
+                        <strong>RUC:</strong> 20609876541 &bull; <strong>Sede:</strong> Lima, Perú
+                    </p>
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-3 text-white">PLATAFORMA</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+                        <li><a href="../index.html" class="text-white-50 text-decoration-none">&rarr; Inicio</a></li>
+                        <li><a href="nosotros.html" class="text-white-50 text-decoration-none">&rarr; Quiénes Somos</a></li>
+                        <li><a href="../index.html#dashboard" class="text-white-50 text-decoration-none">&rarr; Dashboard Agrícola</a></li>
+                        <li><a href="../index.html#campanas" class="text-white-50 text-decoration-none">&rarr; Campañas Activas</a></li>
+                        <li><a href="../index.html#faq" class="text-white-50 text-decoration-none">&rarr; Preguntas Frecuentes</a></li>
+                        <li><a href="contacto.html" class="text-white-50 text-decoration-none">&rarr; Postular Campaña</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-3 text-white">CULTIVOS DISPONIBLES</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+                        <li><a href="cafe.html" class="text-white-50 text-decoration-none">&bull; Café Orgánico (Junín)</a></li>
+                        <li><a href="cacao.html" class="text-white-50 text-decoration-none">&bull; Cacao Criollo (Cusco)</a></li>
+                        <li><a href="palta.html" class="text-white-50 text-decoration-none">&bull; Palta Hass (Lima)</a></li>
+                        <li><a href="maiz.html" class="text-white-50 text-decoration-none">&bull; Maíz Morado (Canta)</a></li>
+                        <li><a href="quinua.html" class="text-white-50 text-decoration-none">&bull; Quinua Real (Puno)</a></li>
+                        <li><a href="mango.html" class="text-white-50 text-decoration-none">&bull; Mango Kent (Piura)</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-3 text-white">CENTRAL DE ATENCIÓN</h5>
+                    <p class="small text-white-50 mb-2"><strong>Dirección:</strong> Av. Javier Prado Este 2465, San Borja, Lima</p>
+                    <p class="small text-white-50 mb-2"><strong>Correo:</strong> <a href="mailto:contacto@agroconecta.pe" style="color: #82DDB0;">contacto@agroconecta.pe</a></p>
+                    <p class="small text-white-50 mb-2"><strong>Teléfono:</strong> <a href="tel:+51930736214" style="color: #82DDB0;">+51 930 736 214</a></p>
+                    <p class="small text-white-50"><strong>Horario:</strong> Lunes a Viernes de 8:30 am a 6:00 pm</p>
+                </div>
+            </div>
+
+            <hr class="border-secondary opacity-25">
+
+            <div class="row align-items-center small text-white-50 pt-2">
+                <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    &copy; <time datetime="2026">2026</time> <strong>AGROCONECTA S.A.C.</strong> Todos los derechos reservados.
+                </div>
+                <div class="col-12 col-md-6 text-center text-md-end">
+                    Desarrollado por <strong class="text-white">Richardson Yelstin Tantajulca Perez</strong> | IDAT
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 Bundle con Popper (CDN Oficial - Manual Bootstrap Pág. 4) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Script de Interactividad (Manual Bootstrap Pág. 12-14) -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+/* ==========================================================================
+   AGROCONECTA - HOJA DE ESTILOS PRINCIPAL
+   Estructura estándar de 5 bloques según el Manual Completo de CSS (Pág. 49)
+   e integración de personalización para Bootstrap 5.3 (Pág. 16-17)
+   ========================================================================== */
+
+/* ==========================================================================
+   BLOQUE 1: VARIABLES CSS (:root) Y CONFIGURACIÓN DE TEMA
+   Manual de CSS Pág. 49-50 | Bootstrap Pág. 16-17
+   ========================================================================== */
+:root {
+  /* Paleta Institucional AGROCONECTA (Regla 60-30-10) */
+  --color-canvas: #F6F8F6;              /* 60% Superficie anti-fatiga */
+  --color-superficie: #FFFFFF;          /* Fondo blanco puro para tarjetas */
+  --color-superficie-alt: #F0F5F2;      /* Fondo suave secundario */
+  --color-primario: #0F3027;            /* 30% Verde institucional muy profundo */
+  --color-secundario: #143D32;          /* Verde bosque bancario */
+  --color-esmeralda: #1E6B52;           /* Verde de éxito y botones */
+  --color-acento: #B86E18;              /* 10% Ámbar cosecha para llamados a la acción (CTA) */
+  --color-acento-hover: #965711;        /* Ámbar profundo en interacción */
+  --color-texto: #1C2D27;               /* Carbón botánico para tipografía de alto contraste */
+  --color-texto-muted: #556B62;         /* Gris verdoso para textos secundarios */
+  --color-borde: #D6E2DA;               /* Separadores y bordes suaves */
+
+  /* Sombras cromáticas y radios */
+  --radio-sm: 8px;
+  --radio-md: 12px;
+  --radio-lg: 16px;
+  --radio-pill: 999px;
+  --sombra-suave: 0 4px 14px rgba(15, 48, 39, 0.07);
+  --sombra-media: 0 8px 24px rgba(15, 48, 39, 0.12);
+  --sombra-hover: 0 14px 28px rgba(15, 48, 39, 0.18);
+  --transicion-rapida: 0.2s ease;
+  --transicion-base: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Sobrescritura de Variables Globales de Bootstrap 5.3 (Pág. 17) */
+  --bs-primary: #143D32;
+  --bs-primary-rgb: 20, 61, 50;
+  --bs-success: #1E6B52;
+  --bs-success-rgb: 30, 107, 82;
+  --bs-warning: #B86E18;
+  --bs-warning-rgb: 184, 110, 24;
+  --bs-body-bg: var(--color-canvas);
+  --bs-body-color: var(--color-texto);
+  --bs-border-color: var(--color-borde);
+  --bs-border-radius: var(--radio-md);
+  --bs-border-radius-lg: var(--radio-lg);
+}
+
+/* ==========================================================================
+   BLOQUE 2: BASE, REINICIO, TIPOGRAFÍA Y ACCESIBILIDAD
+   Manual de CSS Pág. 5, 34, 36 | Bootstrap Pág. 8
+   ========================================================================== */
+/* Selector Universal * (Pág. 5) */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.65;
+  background-color: var(--color-canvas);
+  color: var(--color-texto);
+  overflow-x: hidden;
+}
+
+/* Pseudo-elemento ::selection (Pág. 31) */
+::selection {
+  background-color: var(--color-secundario);
+  color: #FFFFFF;
+}
+
+/* Selectores Agrupados de Título (Pág. 7 y 26) con :is() y :where() */
+:is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-primario);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+:where(h1, h2, h3) {
+  letter-spacing: -0.5px;
+}
+
+/* Tipografía Adaptable con clamp() (Pág. 36 y 38) */
+.display-hero {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  color: var(--color-primario);
+  line-height: 1.15;
+}
+
+.subtitulo-hero {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--color-texto-muted);
+}
+
+/* Selector Hermano Adyacente h2 + p (Pág. 9) */
+h2 + p {
+  color: var(--color-texto-muted);
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Pseudo-elemento ::first-letter para estilo editorial (Pág. 30) */
+.editorial-intro::first-letter {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-secundario);
+  float: left;
+  line-height: 1;
+  padding-right: 8px;
+  padding-top: 4px;
+}
+
+/* Enlaces base con pseudo-clases :link y :visited (Pág. 16) */
+a:link {
+  color: var(--color-esmeralda);
+  text-decoration: none;
+}
+a:visited {
+  color: var(--color-secundario);
+}
+a:hover {
+  color: var(--color-acento);
+  text-decoration: underline;
+}
+
+/* Accesibilidad y mitigación de movimiento (Pág. 48) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   BLOQUE 3: LAYOUT, GRIDS Y CONTENEDORES FLUIDOS
+   Manual de CSS Pág. 38, 40, 41 | Bootstrap Pág. 6-7
+   ========================================================================== */
+.contenedor-fluido {
+  width: min(100% - 2rem, 1240px);
+  margin-inline: auto;
+}
+
+/* Barra de Navegación Personalizada (Bootstrap Pág. 13 + CSS propio) */
+.navbar-agro {
+  background-color: var(--color-primario) !important;
+  box-shadow: var(--sombra-media);
+  transition: var(--transicion-base);
+}
+
+.navbar-agro .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 600;
+  padding: 0.6rem 1rem !important;
+  border-radius: var(--radio-sm);
+  transition: var(--transicion-rapida);
+}
+
+.navbar-agro .nav-link:hover,
+.navbar-agro .nav-link.active {
+  background-color: var(--color-secundario);
+  color: #82DDB0 !important;
+}
+
+/* Sub-barra de navegación rápida de cultivos */
+.subnav-cultivos {
+  background-color: var(--color-secundario);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.subnav-cultivos a {
+  color: #82DDB0 !important;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radio-sm);
+  white-space: nowrap;
+  display: inline-block;
+  transition: var(--transicion-rapida);
+}
+
+.subnav-cultivos a:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF !important;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   BLOQUE 4: COMPONENTES REUTILIZABLES, TARJETAS, BOTONES Y FORMULARIOS
+   Manual de CSS Pág. 45-47 | Bootstrap Pág. 9-12
+   ========================================================================== */
+/* Tarjetas de Cultivos e Inversión con CSS Grid y Flexbox (Pág. 40, 41, 46) */
+.agro-card {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem;
+  box-shadow: var(--sombra-suave);
+  display: flex;
+  flex-direction: column;
+  transition: var(--transicion-base);
+  height: 100%;
+  position: relative;
+}
+
+/* Pseudo-clase :hover combinada con transformación 3D suave (Pág. 14 y 48) */
+.agro-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-hover);
+  border-color: #82DDB0;
+}
+
+/* Selector de atributo img[src$=".png"] (Pág. 11) */
+.agro-card img[src$=".png"],
+.agro-card img {
+  border-radius: var(--radio-md);
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+  transition: transform 0.4s ease;
+}
+
+.agro-card:hover img {
+  transform: scale(1.02);
+}
+
+/* Botón Primario de Conversión Ámbar Cosecha (Pág. 45) */
+.btn-cosecha {
+  background-color: var(--color-acento);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  border-radius: var(--radio-sm);
+  padding: 0.75rem 1.6rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transicion-base);
+  box-shadow: 0 4px 10px rgba(184, 110, 24, 0.25);
+  text-decoration: none !important;
+}
+
+.btn-cosecha:hover {
+  background-color: var(--color-acento-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(184, 110, 24, 0.35);
+}
+
+/* Pseudo-clase :active para efecto táctil (Pág. 14) */
+.btn-cosecha:active {
+  transform: scale(0.97);
+}
+
+/* Botón Secundario Outline Verde Bosque */
+.btn-bosque-outline {
+  background-color: transparent;
+  color: var(--color-secundario) !important;
+  border: 2px solid var(--color-secundario);
+  font-weight: 600;
+  border-radius: var(--radio-sm);
+  padding: 0.7rem 1.5rem;
+  transition: var(--transicion-base);
+}
+
+.btn-bosque-outline:hover {
+  background-color: var(--color-secundario);
+  color: #FFFFFF !important;
+}
+
+/* Badges de Estado Pill (Pág. 39 y Bootstrap Pág. 9) */
+.badge-pill-agro {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radio-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-financiamiento {
+  background-color: #E2F5EC;
+  color: #14593E;
+  border: 1px solid #B6E5CE;
+}
+
+.badge-cosecha-futura {
+  background-color: #FDF1E3;
+  color: #8C4E0A;
+  border: 1px solid #F5D3A9;
+}
+
+/* Formulario con Pseudo-clases Modernas (Manual CSS Pág. 21-25) */
+/* Selector por atributo input[required] (Pág. 10 y 23) */
+input[required], select[required], textarea[required] {
+  border-left: 4px solid var(--color-acento);
+}
+
+/* Pseudo-clases :focus, :focus-visible y :focus-within (Pág. 15) */
+.form-control:focus, .form-select:focus {
+  border-color: var(--color-esmeralda);
+  box-shadow: 0 0 0 0.25rem rgba(30, 107, 82, 0.2);
+  outline: none;
+}
+
+.grupo-campo:focus-within {
+  border-color: var(--color-esmeralda);
+}
+
+/* Pseudo-elemento ::placeholder (Pág. 31) */
+input::placeholder, textarea::placeholder {
+  color: var(--color-texto-muted);
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* Pseudo-elemento ::file-selector-button (Pág. 32) */
+input[type="file"]::file-selector-button {
+  background-color: var(--color-secundario);
+  color: #FFFFFF;
+  border: 0;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radio-sm);
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition: var(--transicion-rapida);
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: var(--color-primario);
+}
+
+/* Selector :checked para controles (Pág. 21) */
+.form-check-input:checked {
+  background-color: var(--color-esmeralda);
+  border-color: var(--color-esmeralda);
+}
+
+/* Tablas con Bootstrap y Pseudo-clases (Manual CSS Pág. 18, 47 | Bootstrap Pág. 11) */
+.tabla-agro {
+  border-radius: var(--radio-md);
+  overflow: hidden;
+  box-shadow: var(--sombra-suave);
+  background-color: white;
+}
+
+.tabla-agro thead {
+  background-color: var(--color-secundario);
+  color: white;
+}
+
+.tabla-agro th {
+  padding: 1rem;
+  font-weight: 700;
+  border: none;
+}
+
+.tabla-agro td {
+  padding: 0.9rem 1rem;
+  vertical-align: middle;
+}
+
+/* Filas alternadas con :nth-child(even) (Pág. 18 y 47) */
+.tabla-agro tbody tr:nth-child(even) {
+  background-color: #F8FAF8;
+}
+
+.tabla-agro tbody tr:hover {
+  background-color: #EEF7F2;
+}
+
+/* ==========================================================================
+   BLOQUE 5: GRÁFICOS VISUALES Y WIDGETS CON CSS PURO
+   Capítulo 23 del Manual de CSS (Páginas 50-53)
+   ========================================================================== */
+
+/* 1. Tarjeta de Indicador Numérico KPI (Pág. 51-52) */
+.indicador-kpi {
+  background-color: var(--color-superficie);
+  border-radius: var(--radio-lg);
+  padding: 1.5rem;
+  box-shadow: var(--sombra-suave);
+  border-left: 5px solid var(--color-esmeralda);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: var(--transicion-base);
+}
+
+.indicador-kpi:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-media);
+}
+
+.indicador-kpi span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.indicador-kpi strong {
+  display: block;
+  font-size: 2.2rem;
+  color: var(--color-primario);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0.3rem 0;
+}
+
+.indicador-kpi small {
+  color: var(--color-esmeralda);
+  font-weight: 600;
+}
+
+/* 2. Barra de Progreso Porcentual en CSS (Pág. 50) */
+.barra-progreso-css {
+  width: 100%;
+  background-color: #E2ECE5;
+  border-radius: var(--radio-pill);
+  overflow: hidden;
+  height: 26px;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.barra-progreso-css .progreso-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-secundario) 0%, var(--color-esmeralda) 50%, var(--color-acento) 100%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radio-pill);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3. Gráfico de Barras Horizontales con CSS (Pág. 50-51) */
+.grafico-barras-agro {
+  background-color: var(--color-superficie);
+  padding: 1.5rem;
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-suave);
+}
+
+.grafico-barras-agro .barra-fila {
+  margin-bottom: 1.1rem;
+}
+
+.grafico-barras-agro .barra-etiqueta {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.3rem;
+  color: var(--color-texto);
+}
+
+.grafico-barras-agro .barra-pista {
+  background-color: #E8EFEA;
+  border-radius: var(--radio-pill);
+  overflow: hidden;
+  height: 18px;
+}
+
+.grafico-barras-agro .barra-item {
+  height: 100%;
+  border-radius: var(--radio-pill);
+  transition: width 1s ease-in-out;
+}
+
+.barra-cafe  { width: 88%; background-color: #6F4E37; }
+.barra-cacao { width: 72%; background-color: #4A3528; }
+.barra-palta { width: 94%; background-color: #2D5A27; }
+.barra-quinua { width: 65%; background-color: #C28B38; }
+
+/* 4. Indicador Circular con conic-gradient (Pág. 51) */
+.indicador-circular-conic {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--color-esmeralda) 94%, #DFE8E3 0);
+  box-shadow: var(--sombra-suave);
+  margin: 0 auto;
+}
+
+.indicador-circular-centro {
+  width: 106px;
+  height: 106px;
+  background-color: var(--color-superficie);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.45rem;
+  color: var(--color-primario);
+}
+
+.indicador-circular-centro small {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-texto-muted);
+}
+
+/* 5. Línea de Tiempo Vertical con Pseudo-elementos (Pág. 52) */
+.timeline-agro {
+  border-left: 3px solid var(--color-secundario);
+  padding-left: 1.75rem;
+  margin-left: 1.25rem;
+  position: relative;
+}
+
+.timeline-evento {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.timeline-evento::before {
+  content: "";
+  position: absolute;
+  left: -2.35rem;
+  top: 0.25rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-acento);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 0 2px var(--color-secundario);
+}
+
+/* 6. Tooltips Nativos en CSS Puro (Pág. 52-53) */
+.tooltip-css {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.tooltip-css::after {
+  content: attr(data-texto);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-primario);
+  color: #FFFFFF;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: var(--sombra-media);
+  z-index: 100;
+}
+
+.tooltip-css:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* 7. Skeleton Loader para Animación de Carga (Pág. 53) */
+.skeleton-box {
+  border-radius: var(--radio-sm);
+  background: linear-gradient(90deg, #E8EFEA 0%, #F6F8F6 50%, #E8EFEA 100%);
+  background-size: 200% 100%;
+  animation: shimmerLoader 1.6s infinite;
+}
+
+@keyframes shimmerLoader {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Pseudo-clase :target para resaltar anclas (Pág. 27-28) */
+:target {
+  scroll-margin-top: 100px;
+  animation: resaltarSeccion 1.5s ease;
+}
+
+@keyframes resaltarSeccion {
+  0% { background-color: rgba(184, 110, 24, 0.15); }
+  100% { background-color: transparent; }
+}
