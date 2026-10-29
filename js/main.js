@@ -1,15 +1,14 @@
 /**
  * AGROCONECTA - Script Principal
- * Integración de interactividad para Bootstrap 5.3 y mejoras de UX
- * Manual de Bootstrap Págs. 12-16
+ * Interactividad y mejoras de experiencia de usuario
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-  // 1. Inicialización de Tooltips de Bootstrap (Pág. 16)
+  // Inicialización de Tooltips de Bootstrap
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
-  // 2. Validación visual interactiva para formularios (Bootstrap Pág. 12-13)
+  // Validación visual interactiva para formularios
   const formPostulacion = document.getElementById('formPostulacion');
   if (formPostulacion) {
     formPostulacion.addEventListener('submit', function (event) {
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.stopPropagation();
       } else {
         event.preventDefault();
-        // Mostrar modal de confirmación si está disponible (Pág. 14)
+        // Mostrar modal de confirmación si está disponible
         const modalElement = document.getElementById('modalConfirmacion');
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement);
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, false);
   }
 
-  // 3. Animación de barras de progreso al entrar en viewport
+  // Animación de barras de progreso al entrar en viewport
   const barras = document.querySelectorAll('.progreso-fill');
   barras.forEach(barra => {
     const anchoOriginal = barra.style.width;
