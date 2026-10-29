@@ -17,11 +17,22 @@
   // ==============================================================================
   function obtenerConfiguracionLLM() {
     const cfg = (typeof window !== 'undefined' && window.AGROCONECTA_CONFIG) || {};
+    const isLocalOrFile = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.protocol === 'file:'
+    );
+    // En producción (Vercel) usamos la ruta relativa '/api/chat'.
+    // En local (Live Server o file://) nos conectamos al proxy serverless activo en Vercel con CORS habilitado.
+    const defaultProxy = isLocalOrFile
+      ? 'https://agroconecta-two-drab.vercel.app/api/chat'
+      : '/api/chat';
+
     return {
       apiKey: (window.AGROCONECTA_LLM_KEY || cfg.LLM_API_KEY || '').trim(),
       endpoint: (window.AGROCONECTA_LLM_ENDPOINT || cfg.LLM_ENDPOINT || 'https://api.meta.ai/v1/responses').trim(),
       model: (window.AGROCONECTA_LLM_MODEL || cfg.LLM_MODEL || 'muse-spark-1.3-contributor').trim(),
-      proxyUrl: (window.AGROCONECTA_LLM_PROXY || cfg.AGROBOT_PROXY_URL || (typeof window !== 'undefined' && window.location.protocol.startsWith('http') ? '/api/chat' : '')).trim()
+      proxyUrl: (window.AGROCONECTA_LLM_PROXY || cfg.AGROBOT_PROXY_URL || defaultProxy).trim()
     };
   }
 
@@ -80,15 +91,16 @@ Directrices de respuesta:
         ⏱️ Un asesor de nuestra mesa de financiamiento te contactará en menos de 24 horas.`
     },
     {
-      keywords: ['cuanto se gana', 'cuánto se gana', 'ganancia', 'rentabilidad', 'ganar', 'ganancias', 'retorno', 'precio', 'utilidad', 'margen', 'precio justo'],
+      keywords: ['cuanto se gana', 'cuánto se gana', 'ganancia', 'rentabilidad', 'ganar', 'ganancias', 'retorno', 'precio', 'utilidad', 'margen', 'precio justo', 'rendimiento', 'rendimientos', 'rendimiento promedio', 'promedio anual', 'rendimiento anual', 'anual', 'tasa', 'interés', 'interes', 'porcentaje'],
       title: '¿Cuánto se gana y cuál es la rentabilidad?',
-      response: `Los beneficios económicos dependen de tu rol en AgroConecta:<br><br>
+      response: `Los beneficios económicos y rendimientos dependen de tu rol en AgroConecta:<br><br>
         🌾 <strong>Para Pequeños Productores:</strong><br>
         • Aseguras la compra de tu cosecha a <em>Precio Justo</em> pactado antes de la siembra.<br>
         • Eliminas intermediarios, obteniendo entre un <strong>25% y 40% más de margen neto</strong> frente a la venta tradicional en chacra.<br>
         • Recibes financiamiento oportuno para semillas, abonos y jornales.<br><br>
         💼 <strong>Para Inversionistas / Compradores Futuros:</strong><br>
-        • Rentabilidades anuales estimadas entre el <strong>12% y 18%</strong>, respaldadas por cosechas físicas reales de alta demanda exportable.`
+        • El <strong>rendimiento promedio anual proyectado se ubica entre el 12% y 18%</strong>, respaldado por contratos de compra futura notariados y cosechas reales exportables.<br>
+        • Cobertura adicional mediante Seguro Agrícola Catastrófico regulado por la SBS.`
     },
     {
       keywords: ['requisito', 'requisitos', 'que necesito', 'qué necesito', 'documento', 'documentos', 'papeles', 'condiciones', 'hectareas', 'hectáreas'],
@@ -106,9 +118,10 @@ Directrices de respuesta:
         • RUC 20 institucional, mínimo 5 socios y vigencia de poder Sunarp.`
     },
     {
-      keywords: ['cultivo', 'cultivos', 'que cultivos', 'qué cultivos', 'productos', 'cafe', 'café', 'cacao', 'palta', 'maiz', 'maíz', 'quinua', 'mango', 'esparrago', 'espárrago'],
-      title: '¿Qué cultivos financia actualmente AgroConecta?',
-      response: `Financiamos 7 cadenas productivas estratégicas de alto valor exportable y consumo nacional:<br><br>
+      keywords: ['cultivo', 'cultivos', 'que cultivos', 'qué cultivos', 'productos', 'cafe', 'café', 'cacao', 'palta', 'maiz', 'maíz', 'quinua', 'mango', 'esparrago', 'espárrago', 'campañas activas', 'campanas activas', 'campaña activa', 'campañas', 'campanas'],
+      title: '¿Qué campañas y cultivos financia actualmente AgroConecta?',
+      response: `¡En <strong>AGROCONECTA</strong> tenemos <strong>7 campañas activas</strong> 🌱!<br><br>
+        Financiamos cadenas productivas estratégicas de alto valor exportable y consumo nacional:<br><br>
         • ☕ <a href="${BASE_PAGE_URL}cafe.html" class="text-success fw-semibold">Café Orgánico de Altura</a> (Chanchamayo, Junín)<br>
         • 🍫 <a href="${BASE_PAGE_URL}cacao.html" class="text-success fw-semibold">Cacao Criollo de Aroma</a> (Quillabamba, Cusco)<br>
         • 🥑 <a href="${BASE_PAGE_URL}palta.html" class="text-success fw-semibold">Palta Hass de Exportación</a> (Huaral, Lima)<br>
