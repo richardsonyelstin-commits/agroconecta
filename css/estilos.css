@@ -1019,6 +1019,60 @@ input[type="file"]::file-selector-button:hover {
   text-decoration: underline;
 }
 
+/* Microbotón para redirección al Formulario Oficial de Postulación */
+.agrobot-micro-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  background: linear-gradient(135deg, #0F3027 0%, #165B4C 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  padding: 4px 11px !important;
+  border-radius: 20px !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 6px rgba(15, 48, 39, 0.25) !important;
+  transition: all 0.2s ease-in-out !important;
+  vertical-align: middle !important;
+  margin: 3px 2px !important;
+  line-height: 1.3 !important;
+}
+
+.agrobot-micro-btn:hover {
+  background: linear-gradient(135deg, #10B981 0%, #065F46 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4) !important;
+  text-decoration: none !important;
+}
+
+/* Enlace / Botón directo a conversación de WhatsApp */
+.agrobot-wa-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background-color: #25D366 !important;
+  color: #FFFFFF !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  padding: 3px 10px !important;
+  border-radius: 20px !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.28) !important;
+  transition: all 0.2s ease-in-out !important;
+  vertical-align: middle !important;
+  margin: 3px 2px !important;
+  line-height: 1.3 !important;
+}
+
+.agrobot-wa-link:hover {
+  background-color: #1EBE5D !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.45) !important;
+  text-decoration: none !important;
+}
+
 .agrobot-msg-user .agrobot-bubble {
   background: linear-gradient(135deg, #10B981, #065F46) !important;
   color: #FFFFFF !important;

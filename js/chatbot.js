@@ -53,13 +53,15 @@ Portafolio de 7 cultivos en Perú:
 • Espárrago Verde (Ica)
 
 Canales oficiales:
-• WhatsApp / Teléfono: +51 930 736 214
+• WhatsApp: +51 930 736 214
 • Correo: contacto@agroconecta.pe / financiamiento@agroconecta.pe
-• Formulario de Postulación: ${BASE_PAGE_URL}contacto.html
+• Formulario Oficial de Postulación y Registro
 
 Directrices de respuesta:
 • Responde siempre en español, con tono cercano, profesional y positivo.
 • Utiliza formato legible con viñetas, negritas y emojis agrícolas.
+• Para WhatsApp, indica siempre el número '+51 930 736 214'.
+• Para postular o registrarse, invita siempre al usuario a ingresar al Formulario Oficial de Postulación. NUNCA escribas la ruta técnica 'page/contacto.html' en texto plano; di 'Formulario Oficial de Postulación' o [Ir al Formulario](contacto.html).
 • Mantén las respuestas concisas (máximo 2 a 3 párrafos breves) para que se lean cómodamente en el widget móvil.`;
 
   // Historial multi-turno de conversación
@@ -321,22 +323,50 @@ Directrices de respuesta:
 
   /**
    * Convierte texto en formato Markdown a HTML limpio y estilizado
+   * Transforma números de WhatsApp en enlaces directos y rutas de formulario en microbotones interactivos
    * @param {string} markdown Texto plano con formato Markdown
    * @returns {string} HTML renderizable
    */
   function formatearMarkdownAHTML(markdown) {
-    let html = markdown
-      // Negrita
+    if (!markdown) return '';
+    let html = markdown;
+
+    // 1. Negrita y Cursiva
+    html = html
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      // Cursiva
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      // Enlaces Markdown [texto](url)
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-success fw-bold text-decoration-underline" target="_blank">$1</a>')
-      // Viñetas con guión o asterisco
-      .replace(/(?:^|\n)[-*]\s+(.*)/g, '<li class="mb-1">$1</li>')
-      // Saltos de línea
-      .replace(/\n\n+/g, '<br><br>')
-      .replace(/\n/g, '<br>');
+      .replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+    // 2. Enlaces Markdown [texto](url)
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, function(match, text, url) {
+      if (url.includes('contacto.html')) {
+        return `<a href="${BASE_PAGE_URL}contacto.html" class="agrobot-micro-btn" title="${text}"><span class="me-1">📝</span>${text}</a>`;
+      }
+      if (url.includes('wa.me') || url.includes('whatsapp')) {
+        return `<a href="${url}" class="agrobot-wa-link" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
+      return `<a href="${url}" class="text-success fw-bold text-decoration-underline" target="_blank">${text}</a>`;
+    });
+
+    // 3. Reemplazar menciones de WhatsApp o número telefónico con enlace directo a WhatsApp
+    const waSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -1px; margin-right: 4px;"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.017-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.707 1.916.807 2.05c.099.133 1.39 2.123 3.37 2.975.471.203.839.324 1.126.415.473.151.903.13 1.243.079.379-.058 1.17-.479 1.336-.942.166-.464.166-.861.116-.943-.049-.082-.182-.133-.38-.232"/></svg>`;
+
+    html = html.replace(/(?:WhatsApp:?\s*)?(\+?51\s*930\s*736\s*214|930\s*736\s*214)/gi, function() {
+      return `<a href="https://wa.me/51930736214?text=Hola%20AgroConecta,%20deseo%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" class="agrobot-wa-link" title="Abrir chat en WhatsApp">${waSvg}WhatsApp: +51 930 736 214</a>`;
+    });
+
+    // 4. Reemplazar menciones sueltas de "page/contacto.html" o "contacto.html" por microbotón interactivo
+    html = html.replace(/(?:page\/)?contacto\.html/gi, function(match, offset, fullStr) {
+      const prevText = fullStr.slice(0, offset);
+      if (/href\s*=\s*["'][^"']*$/.test(prevText)) {
+        return match;
+      }
+      return `<a href="${BASE_PAGE_URL}contacto.html" class="agrobot-micro-btn" title="Ir al Formulario Oficial de Postulación"><span class="me-1">📝</span>Ir al Formulario</a>`;
+    });
+
+    // 5. Viñetas con guión o asterisco
+    html = html.replace(/(?:^|\n)[-*]\s+(.*)/g, '<li class="mb-1">$1</li>');
+    // Saltos de línea
+    html = html.replace(/\n\n+/g, '<br><br>').replace(/\n/g, '<br>');
 
     // Envolver listas <li> si existen
     if (html.includes('<li')) {

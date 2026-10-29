@@ -63,7 +63,8 @@ Portafolio de 7 cultivos en Perú:
 Directrices de respuesta:
 - Responde siempre en español con tono cálido, confiable y profesional.
 - Utiliza viñetas y formato Markdown para facilitar la lectura.
-- Invita a los usuarios a postular a través del enlace de contacto (contacto.html) o comunicarse al +51 930 736 214.`;
+- Para WhatsApp, indica siempre el número oficial '+51 930 736 214'.
+- Para postular o registrarse, invita siempre al usuario al Formulario Oficial de Postulación. NUNCA escribas la ruta técnica 'page/contacto.html' en texto plano; di 'Formulario Oficial de Postulación' o usa el enlace [Ir al Formulario](contacto.html).`;
 
 module.exports = async function handler(req, res) {
   // Configuración de encabezados CORS y métodos permitidos
