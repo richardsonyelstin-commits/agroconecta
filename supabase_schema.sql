@@ -55,10 +55,10 @@ FOR SELECT
 TO authenticated
 USING (true);
 
--- 5. Crear bucket para almacenamiento de documentos adjuntos
+-- 5. Crear bucket para almacenamiento seguro de documentos adjuntos (privado para proteger DNI y datos sensibles)
 INSERT INTO storage.buckets (id, name, public)
-VALUES ('documentos_postulacion', 'documentos_postulacion', true)
-ON CONFLICT (id) DO NOTHING;
+VALUES ('documentos_postulacion', 'documentos_postulacion', false)
+ON CONFLICT (id) DO UPDATE SET public = false;
 
 -- 6. Permitir subir archivos al bucket por usuarios anónimos (solo INSERT)
 DROP POLICY IF EXISTS "Permitir subida de documentos anonimos" ON storage.objects;
@@ -67,3 +67,11 @@ ON storage.objects
 FOR INSERT
 TO anon
 WITH CHECK (bucket_id = 'documentos_postulacion');
+
+-- 7. Permitir lectura de documentos adjuntos únicamente a usuarios administradores autenticados
+DROP POLICY IF EXISTS "Lectura de documentos para administradores" ON storage.objects;
+CREATE POLICY "Lectura de documentos para administradores"
+ON storage.objects
+FOR SELECT
+TO authenticated
+USING (bucket_id = 'documentos_postulacion');

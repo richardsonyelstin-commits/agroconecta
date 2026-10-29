@@ -8,15 +8,39 @@ document.addEventListener('DOMContentLoaded', function () {
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
   [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
 
-  // Animación de barras de progreso al entrar en viewport
+  // Animación de barras de progreso al entrar en viewport mediante IntersectionObserver
   const barras = document.querySelectorAll('.progreso-fill');
-  barras.forEach(barra => {
-    const anchoOriginal = barra.style.width;
-    barra.style.width = '0%';
-    setTimeout(() => {
-      barra.style.width = anchoOriginal;
-    }, 300);
-  });
+  if ('IntersectionObserver' in window) {
+    const observadorBarras = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const barra = entry.target;
+          const anchoObjetivo = barra.getAttribute('data-ancho') || barra.style.width;
+          barra.style.width = '0%';
+          requestAnimationFrame(() => {
+            barra.style.transition = 'width 1s cubic-bezier(0.16, 1, 0.3, 1)';
+            barra.style.width = anchoObjetivo;
+          });
+          observer.unobserve(barra);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    barras.forEach(barra => {
+      barra.setAttribute('data-ancho', barra.style.width);
+      barra.style.width = '0%';
+      observadorBarras.observe(barra);
+    });
+  } else {
+    // Respaldo para navegadores sin soporte de IntersectionObserver
+    barras.forEach(barra => {
+      const anchoOriginal = barra.style.width;
+      barra.style.width = '0%';
+      setTimeout(() => {
+        barra.style.width = anchoOriginal;
+      }, 300);
+    });
+  }
 
   // ==============================================================================
   // FORMULARIO ADAPTABLE DE POSTULACIÓN Y REGISTRO (AgroConecta)
@@ -30,6 +54,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const radiosRol = formPostulacion.querySelectorAll('input[name="rolUsuario"]');
 
     /**
+     * Alterna atributos required de los controles dentro de una sección según el rol activo
+     * @param {HTMLElement|null} seccion Contenedor de campos
+     * @param {string} rolActual Rol seleccionado
+     * @param {string} rolObjetivo Rol al que aplica la sección
+     * @param {string[]|null} idsRequeridos Lista de IDs requeridos o null para usar data-required="true"
+     */
+    function toggleRequiredPorRol(seccion, rolActual, rolObjetivo, idsRequeridos = null) {
+      if (!seccion) return;
+      const inputs = seccion.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        const esActivo = rolActual === rolObjetivo;
+        const debeSerRequerido = esActivo && (
+          idsRequeridos ? idsRequeridos.includes(input.id) : input.dataset.required === 'true'
+        );
+        input.required = debeSerRequerido;
+      });
+    }
+
+    /**
      * Alterna la visibilidad y reglas de validación según el rol activo
      * @param {string} rol 'productor' | 'inversionista' | 'cooperativa'
      */
@@ -39,45 +82,28 @@ document.addEventListener('DOMContentLoaded', function () {
       if (secInversionista) secInversionista.classList.toggle('d-none', rol !== 'inversionista');
       if (secCooperativa) secCooperativa.classList.toggle('d-none', rol !== 'cooperativa');
 
-      // 2. Gestionar atributo 'required' en la sección de Productor
-      if (secProductor) {
-        const inputs = secProductor.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-          if (rol === 'productor' && input.dataset.required === 'true') {
-            input.required = true;
-          } else {
-            input.required = false;
-          }
-        });
-      }
+      // 2. Gestionar atributo 'required' reutilizando función unificada
+      toggleRequiredPorRol(secProductor, rol, 'productor', null);
+      toggleRequiredPorRol(secInversionista, rol, 'inversionista', [
+        'nombreCompletoInversionista',
+        'dniRucInversionista',
+        'telefonoInversionista',
+        'montoEstimadoInversionista'
+      ]);
+      toggleRequiredPorRol(secCooperativa, rol, 'cooperativa', [
+        'razonSocialCooperativa',
+        'rucCooperativa',
+        'representanteCooperativa',
+        'dniRepresentanteCooperativa',
+        'telefonoCooperativa',
+        'regionValleCooperativa',
+        'sociosCooperativa',
+        'hectareasCooperativa',
+        'cultivoInteresCooperativa',
+        'montoEstimadoCooperativa'
+      ]);
 
-      // 3. Gestionar atributo 'required' en la sección de Inversionista
-      if (secInversionista) {
-        const inputs = secInversionista.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-          const reqIds = ['nombreCompletoInversionista', 'dniRucInversionista', 'telefonoInversionista', 'montoEstimadoInversionista'];
-          if (rol === 'inversionista' && reqIds.includes(input.id)) {
-            input.required = true;
-          } else {
-            input.required = false;
-          }
-        });
-      }
-
-      // 4. Gestionar atributo 'required' en la sección de Cooperativa
-      if (secCooperativa) {
-        const inputs = secCooperativa.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-          const reqIds = ['razonSocialCooperativa', 'rucCooperativa', 'representanteCooperativa', 'dniRepresentanteCooperativa', 'telefonoCooperativa', 'regionValleCooperativa', 'sociosCooperativa', 'hectareasCooperativa', 'cultivoInteresCooperativa', 'montoEstimadoCooperativa'];
-          if (rol === 'cooperativa' && reqIds.includes(input.id)) {
-            input.required = true;
-          } else {
-            input.required = false;
-          }
-        });
-      }
-
-      // 5. Ajustar texto del botón de envío según el perfil
+      // 3. Ajustar texto del botón de envío según el perfil
       if (submitBtn) {
         if (rol === 'inversionista') {
           submitBtn.innerHTML = '💼 Registrar Intención de Inversión y Compra Futura';
@@ -110,11 +136,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const paramRol = urlParams.get('rol');
       const paramMonto = urlParams.get('monto');
 
-      if (paramRol) {
-        const targetRadio = formPostulacion.querySelector(`input[name="rolUsuario"][value="${paramRol}"]`);
+      // Validación estricta con lista blanca para prevenir inyección en selectores
+      if (paramRol && ['productor', 'inversionista', 'cooperativa'].includes(paramRol.toLowerCase())) {
+        const rolSeguro = paramRol.toLowerCase();
+        const targetRadio = formPostulacion.querySelector(`input[name="rolUsuario"][value="${rolSeguro}"]`);
         if (targetRadio) {
           targetRadio.checked = true;
-          actualizarCamposPorRol(paramRol);
+          actualizarCamposPorRol(rolSeguro);
         }
       }
 

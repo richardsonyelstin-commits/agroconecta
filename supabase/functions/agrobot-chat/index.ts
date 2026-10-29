@@ -12,6 +12,7 @@ const corsHeaders = {
 };
 
 // Extractor robusto de texto compatible con Meta Responses API y OpenAI
+// Sincronizado con api/chat.js y js/chatbot.js
 function extraerTextoRespuestaMeta(data: any): string {
   if (!data) return "";
 
@@ -66,6 +67,14 @@ serve(async (req: Request) => {
       });
     }
 
+    const mensajeLimpio = mensaje.slice(0, 1000).trim();
+    if (!mensajeLimpio) {
+      return new Response(JSON.stringify({ error: "El mensaje no puede estar vacío" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const modelApiKey = Deno.env.get("MODEL_API_KEY") || Deno.env.get("META_MODEL_API_KEY");
     if (!modelApiKey) {
       return new Response(
@@ -81,21 +90,24 @@ serve(async (req: Request) => {
     const systemItem = historial.find((i: any) => i.role === "system");
     const systemInstructions = systemItem ? systemItem.content : "";
 
-    const conversationMessages = historial.filter((i: any) => i.role === "user" || i.role === "assistant");
+    const conversationMessages = historial
+      .filter((i: any) => (i.role === "user" || i.role === "assistant") && typeof i.content === "string")
+      .slice(-20);
+
     const metaInput = conversationMessages.map((item: any) => ({
       role: item.role === "assistant" ? "assistant" : "user",
       content: [
         {
           type: "input_text",
-          text: item.content,
+          text: item.content.slice(0, 1000),
         },
       ],
     }));
 
-    if (!metaInput.some((i: any) => i.role === "user" && i.content[0]?.text === mensaje)) {
+    if (!metaInput.some((i: any) => i.role === "user" && i.content[0]?.text === mensajeLimpio)) {
       metaInput.push({
         role: "user",
-        content: [{ type: "input_text", text: mensaje }],
+        content: [{ type: "input_text", text: mensajeLimpio }],
       });
     }
 

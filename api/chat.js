@@ -44,11 +44,11 @@ function extraerTextoRespuestaMeta(data) {
   return '';
 }
 
-const DEFAULT_SYSTEM_PROMPT = `Eres AgroBot, el Asistente de Inteligencia Artificial oficial de AGROCONECTA (agroconecta.pe), plataforma peruana de financiamiento colaborativo y contratos de compra futura agrícola.
+const DEFAULT_SYSTEM_PROMPT = `Eres AgroBot, el Asistente de IA oficial de AGROCONECTA (agroconecta.pe), plataforma peruana de financiamiento colaborativo y contratos de compra futura agrícola.
 
 Tu misión es asesorar con empatía, profesionalismo y precisión técnica a tres tipos de usuarios:
 1. Pequeños Productores Agrarios: Explica cómo postular sus cosechas, requisitos (DNI/RUC, predio demostrable, mín 0.5 Ha), financiamiento oportuno sin usura bancaria, venta asegurada a Precio Justo pactado antes de la siembra (25%-40% más margen neto frente a intermediarios), y cobertura de seguro agrícola catastrófico (SBS).
-2. Inversionistas / Compradores Futuros: Explica cómo invertir desde S/. 500, retornos y rendimientos anuales proyectados entre el 12% y 18% respaldados por cosechas físicas, y opciones de compra de lotes exportables.
+2. Inversionistas / Compradores Futuros: Explica cómo invertir desde S/. 500, retornos anuales proyectados entre el 12% y 18% respaldados por cosechas físicas, y opciones de compra de lotes exportables.
 3. Cooperativas / Asociaciones: Explica financiamiento consolidado para acopio, infraestructura y certificaciones (Orgánico, Fairtrade).
 
 Portafolio de 7 cultivos en Perú:
@@ -60,16 +60,33 @@ Portafolio de 7 cultivos en Perú:
 • Mango Kent Orgánico (Valle del Chira, Piura)
 • Espárrago Verde (Ica)
 
+Canales oficiales:
+• WhatsApp: +51 930 736 214
+• Correo: contacto@agroconecta.pe / financiamiento@agroconecta.pe
+• Formulario Oficial de Postulación y Registro
+
 Directrices de respuesta:
-- Responde siempre en español con tono cálido, confiable y profesional.
-- Utiliza viñetas y formato Markdown para facilitar la lectura.
-- Para WhatsApp, indica siempre el número oficial '+51 930 736 214'.
-- Para postular o registrarse, invita siempre al usuario al Formulario Oficial de Postulación. NUNCA escribas la ruta técnica 'page/contacto.html' en texto plano; di 'Formulario Oficial de Postulación' o usa el enlace [Ir al Formulario](contacto.html).`;
+• Responde siempre en español, con tono cercano, profesional y positivo.
+• Utiliza formato legible con viñetas, negritas y emojis agrícolas.
+• Para WhatsApp, indica siempre el número '+51 930 736 214'.
+• Para postular o registrarse, invita siempre al usuario a ingresar al Formulario Oficial de Postulación. NUNCA escribas la ruta técnica 'page/contacto.html' en texto plano; di 'Formulario Oficial de Postulación' o [Ir al Formulario](contacto.html).
+• Mantén las respuestas concisas (máximo 2 a 3 párrafos breves) para que se lean cómodamente en el widget móvil.`;
 
 module.exports = async function handler(req, res) {
-  // Configuración de encabezados CORS y métodos permitidos
+  // Configuración de encabezados CORS con verificación de origen
+  const origin = req.headers.origin;
+  const origenesPermitidos = [
+    'https://agroconecta-two-drab.vercel.app',
+    'https://agroconecta.pe',
+    'http://localhost:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'http://127.0.0.1:3000'
+  ];
+
+  const esOrigenValido = !origin || origenesPermitidos.includes(origin) || origin.endsWith('.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', esOrigenValido && origin ? origin : '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
@@ -89,6 +106,11 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'El mensaje del usuario es requerido.' });
     }
 
+    const mensajeLimpio = mensaje.slice(0, 1000).trim();
+    if (!mensajeLimpio) {
+      return res.status(400).json({ error: 'El mensaje del usuario no puede estar vacío.' });
+    }
+
     // Obtener la clave secreta desde las Variables de Entorno de Vercel
     const apiKey = process.env.MODEL_API_KEY || process.env.META_MODEL_API_KEY;
 
@@ -104,24 +126,26 @@ module.exports = async function handler(req, res) {
     const systemItem = historial.find(item => item.role === 'system');
     const systemInstructions = (systemItem && systemItem.content) ? systemItem.content : DEFAULT_SYSTEM_PROMPT;
 
-    // Filtrar para que 'input' contenga solo 'user' y 'assistant'
-    const conversationMessages = historial.filter(item => item.role === 'user' || item.role === 'assistant');
+    // Filtrar para que 'input' contenga solo 'user' y 'assistant' y limitar ventana de historial
+    const conversationMessages = historial
+      .filter(item => (item.role === 'user' || item.role === 'assistant') && typeof item.content === 'string')
+      .slice(-20);
 
     const metaInput = conversationMessages.map(item => ({
       role: item.role === 'assistant' ? 'assistant' : 'user',
       content: [
         {
           type: 'input_text',
-          text: item.content
+          text: item.content.slice(0, 1000)
         }
       ]
     }));
 
     // Asegurar que el mensaje actual del usuario esté al final
-    if (!metaInput.some(i => i.role === 'user' && i.content[0]?.text === mensaje)) {
+    if (!metaInput.some(i => i.role === 'user' && i.content[0]?.text === mensajeLimpio)) {
       metaInput.push({
         role: 'user',
-        content: [{ type: 'input_text', text: mensaje }]
+        content: [{ type: 'input_text', text: mensajeLimpio }]
       });
     }
 

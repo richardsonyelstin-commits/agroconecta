@@ -64,10 +64,23 @@ Directrices de respuesta:
 • Para postular o registrarse, invita siempre al usuario a ingresar al Formulario Oficial de Postulación. NUNCA escribas la ruta técnica 'page/contacto.html' en texto plano; di 'Formulario Oficial de Postulación' o [Ir al Formulario](contacto.html).
 • Mantén las respuestas concisas (máximo 2 a 3 párrafos breves) para que se lean cómodamente en el widget móvil.`;
 
-  // Historial multi-turno de conversación
+  // Historial multi-turno de conversación con ventana deslizante
+  const MAX_HISTORIAL = 20;
   const historialConversacion = [
     { role: 'system', content: SYSTEM_PROMPT }
   ];
+
+  /**
+   * Agrega un mensaje al historial conservando el prompt de sistema y limitando a MAX_HISTORIAL
+   * @param {'user'|'assistant'} rol Rol del remitente
+   * @param {string} contenido Mensaje
+   */
+  function agregarAlHistorial(rol, contenido) {
+    historialConversacion.push({ role: rol, content: contenido });
+    if (historialConversacion.length > MAX_HISTORIAL + 1) {
+      historialConversacion.splice(1, historialConversacion.length - MAX_HISTORIAL - 1);
+    }
+  }
 
   // Base de Conocimiento Local de Respaldo (Funciona 100% offline o sin API key)
   const KNOWLEDGE_BASE = [
@@ -184,7 +197,7 @@ Directrices de respuesta:
     if (!mensajeSanitizado) return '';
 
     // Guardar en el historial multi-turno
-    historialConversacion.push({ role: 'user', content: mensajeSanitizado });
+    agregarAlHistorial('user', mensajeSanitizado);
 
     // OPCIÓN A: Conexión mediante Proxy Seguro (Recomendado bajo Protocolo Estricto)
     // El navegador NUNCA posee la clave MODEL_API_KEY, evitando su exposición en DevTools
@@ -211,7 +224,7 @@ Directrices de respuesta:
         if (proxyRes.ok && proxyData && (proxyData.reply || proxyData.text)) {
           const respuestaTexto = (proxyData.reply || proxyData.text).trim();
           console.info('[AgroBot Proxy] Respuesta recibida con éxito de Meta Muse Spark 1.3.');
-          historialConversacion.push({ role: 'assistant', content: respuestaTexto });
+          agregarAlHistorial('assistant', respuestaTexto);
           return formatearMarkdownAHTML(respuestaTexto);
         } else {
           console.warn('[AgroBot Proxy] No se pudo obtener respuesta del modelo:', proxyData?.error || `HTTP ${proxyRes.status}. Usando motor local.`);
@@ -268,7 +281,7 @@ Directrices de respuesta:
           const contenidoRespuesta = extraerTextoRespuestaMeta(data);
 
           if (contenidoRespuesta) {
-            historialConversacion.push({ role: 'assistant', content: contenidoRespuesta });
+            agregarAlHistorial('assistant', contenidoRespuesta);
             return formatearMarkdownAHTML(contenidoRespuesta);
           }
         } else {
@@ -282,7 +295,7 @@ Directrices de respuesta:
 
     // OPCIÓN C: Motor Semántico Local de Respaldo (100% resiliente y privado)
     const respuestaLocal = buscarRespuestaLocal(mensajeSanitizado);
-    historialConversacion.push({ role: 'assistant', content: respuestaLocal });
+    agregarAlHistorial('assistant', respuestaLocal);
     return respuestaLocal;
   }
 
@@ -374,6 +387,23 @@ Directrices de respuesta:
     }
 
     return html;
+  }
+
+  /**
+   * Sanitiza código HTML para mitigar vectores XSS en respuestas generadas por LLM
+   * Conserva enlaces y formato visual seguro de Bootstrap
+   * @param {string} html
+   * @returns {string} HTML sanitizado
+   */
+  function sanitizarHTML(html) {
+    if (!html) return '';
+    return html
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, '')
+      .replace(/<object\b[^>]*>[\s\S]*?<\/object>/gi, '')
+      .replace(/<embed\b[^>]*>[\s\S]*?<\/embed>/gi, '')
+      .replace(/\bon\w+\s*=\s*(?:'[^']*'|"[^"]*"|[^\s>]+)/gi, '')
+      .replace(/href\s*=\s*["']?\s*javascript\s*:[^"'>]*/gi, 'href="#"');
   }
 
   // Motor de Búsqueda de Respuestas Inteligente Local
@@ -625,6 +655,7 @@ Directrices de respuesta:
 
       try {
         const respuestaHTML = await consultarMetaMuseSpark(consulta);
+        const respuestaSegura = sanitizarHTML(respuestaHTML);
 
         if (typingIndicator) typingIndicator.style.display = 'none';
         const msgDiv = document.createElement('div');
@@ -633,7 +664,7 @@ Directrices de respuesta:
         msgDiv.innerHTML = `
           <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-dark" style="max-width: 88%;">
             <div class="agrobot-bot-content mb-1" style="font-size: 0.88rem; line-height: 1.45;">
-              ${respuestaHTML}
+              ${respuestaSegura}
             </div>
             <span class="agrobot-time text-muted small d-block text-end" style="font-size: 0.68rem;">${hora}</span>
           </div>

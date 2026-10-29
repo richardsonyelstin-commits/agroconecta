@@ -964,7 +964,12 @@ input[type="file"]::file-selector-button:hover {
     font-size: 0.8rem;
   }
 
-/* Tarjetas Interactivas de Selección de Rol en el Formulario */
+  footer .col-6 {
+    width: 100%;
+  }
+}
+
+/* Tarjetas Interactivas de Selección de Rol en el Formulario (Global) */
 .role-selector-card {
   border: 2px solid #E2E8F0 !important;
   background-color: #FFFFFF;
@@ -1001,11 +1006,6 @@ input[type="file"]::file-selector-button:hover {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-  footer .col-6 {
-    width: 100%;
   }
 }
 
@@ -1149,57 +1149,61 @@ input[type="file"]::file-selector-button:hover {
 }
 
 /* Microbotón para redirección al Formulario Oficial de Postulación */
+.agrobot-bot-content .agrobot-micro-btn,
 .agrobot-micro-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 3px !important;
-  background: linear-gradient(135deg, #0F3027 0%, #165B4C 100%) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, #0F3027 0%, #165B4C 100%);
   color: #FFFFFF !important;
-  font-size: 0.78rem !important;
-  font-weight: 600 !important;
-  padding: 4px 11px !important;
-  border-radius: 20px !important;
-  text-decoration: none !important;
-  box-shadow: 0 2px 6px rgba(15, 48, 39, 0.25) !important;
-  transition: all 0.2s ease-in-out !important;
-  vertical-align: middle !important;
-  margin: 3px 2px !important;
-  line-height: 1.3 !important;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(15, 48, 39, 0.25);
+  transition: all 0.2s ease-in-out;
+  vertical-align: middle;
+  margin: 3px 2px;
+  line-height: 1.3;
 }
 
+.agrobot-bot-content .agrobot-micro-btn:hover,
 .agrobot-micro-btn:hover {
-  background: linear-gradient(135deg, #10B981 0%, #065F46 100%) !important;
+  background: linear-gradient(135deg, #10B981 0%, #065F46 100%);
   color: #FFFFFF !important;
-  transform: translateY(-1px) scale(1.02) !important;
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4) !important;
-  text-decoration: none !important;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+  text-decoration: none;
 }
 
 /* Enlace / Botón directo a conversación de WhatsApp */
+.agrobot-bot-content .agrobot-wa-link,
 .agrobot-wa-link {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  background-color: #25D366 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #25D366;
   color: #FFFFFF !important;
-  font-size: 0.78rem !important;
-  font-weight: 600 !important;
-  padding: 3px 10px !important;
-  border-radius: 20px !important;
-  text-decoration: none !important;
-  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.28) !important;
-  transition: all 0.2s ease-in-out !important;
-  vertical-align: middle !important;
-  margin: 3px 2px !important;
-  line-height: 1.3 !important;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.28);
+  transition: all 0.2s ease-in-out;
+  vertical-align: middle;
+  margin: 3px 2px;
+  line-height: 1.3;
 }
 
+.agrobot-bot-content .agrobot-wa-link:hover,
 .agrobot-wa-link:hover {
-  background-color: #1EBE5D !important;
+  background-color: #1EBE5D;
   color: #FFFFFF !important;
-  transform: translateY(-1px) scale(1.02) !important;
-  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.45) !important;
-  text-decoration: none !important;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.45);
+  text-decoration: none;
 }
 
 .agrobot-msg-user .agrobot-bubble {

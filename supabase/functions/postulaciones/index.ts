@@ -28,13 +28,24 @@ serve(async (req: Request) => {
 
     const payload = await req.json();
 
+    // Sanitización y límites preventivos de longitud
+    const nombreCompleto = String(payload.nombre_completo || "").slice(0, 150).trim();
+    const dniRuc = String(payload.dni_ruc || "").replace(/[^0-9]/g, "").slice(0, 11);
+    const correo = String(payload.correo || "").slice(0, 120).trim();
+    const telefono = String(payload.telefono || "").slice(0, 25).trim();
+
     // Validación básica de campos obligatorios
-    if (!payload.nombre_completo || !payload.dni_ruc || !payload.correo || !payload.telefono) {
+    if (!nombreCompleto || !dniRuc || !correo || !telefono) {
       return new Response(
-        JSON.stringify({ error: "Faltan campos obligatorios en el formulario" }),
+        JSON.stringify({ error: "Faltan campos obligatorios en el formulario o superan el formato permitido" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    const regionValle = String(payload.region_valle || "").slice(0, 100).trim();
+    const cultivoInteres = String(payload.cultivo_interes || "").slice(0, 100).trim();
+    const mensajeDetallado = payload.mensaje_detallado ? String(payload.mensaje_detallado).slice(0, 2000).trim() : null;
+    const archivoUrl = payload.archivo_url ? String(payload.archivo_url).slice(0, 500).trim() : null;
 
     // Inicializar cliente con variables de entorno del servidor (cero exposición al cliente)
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
@@ -45,19 +56,19 @@ serve(async (req: Request) => {
     const { data, error } = await supabase
       .from("postulaciones")
       .insert([{
-        nombre_completo: payload.nombre_completo,
-        dni_ruc: payload.dni_ruc,
-        correo: payload.correo,
-        telefono: payload.telefono,
+        nombre_completo: nombreCompleto,
+        dni_ruc: dniRuc,
+        correo: correo,
+        telefono: telefono,
         fecha_nacimiento: payload.fecha_nacimiento || null,
         rol_usuario: payload.rol_usuario || "productor",
-        region_valle: payload.region_valle || "",
-        cultivo_interes: payload.cultivo_interes || "",
+        region_valle: regionValle,
+        cultivo_interes: cultivoInteres,
         hectareas: Number(payload.hectareas) || 0,
         monto_estimado: Number(payload.monto_estimado) || 0,
         duracion_campana: Number(payload.duracion_campana) || 6,
-        archivo_url: payload.archivo_url || null,
-        mensaje_detallado: payload.mensaje_detallado || null,
+        archivo_url: archivoUrl,
+        mensaje_detallado: mensajeDetallado,
         acepto_terminos: Boolean(payload.acepto_terminos),
         boletin_noticias: Boolean(payload.boletin_noticias),
         estado: "pendiente"
