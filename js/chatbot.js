@@ -474,7 +474,7 @@ Directrices de respuesta:
                 AgroBot &bull; AgroConecta
               </h6>
               <div class="d-flex align-items-center gap-1 mt-1">
-                <span class="agrobot-ai-badge">⚡ Meta Muse Spark 1.3</span>
+                <span class="agrobot-ai-badge">Asistente IA</span>
                 <small style="color: rgba(255, 255, 255, 0.9) !important; font-size: 0.72rem;">En línea 🟢</small>
               </div>
             </div>
@@ -493,7 +493,7 @@ Directrices de respuesta:
           <div class="agrobot-msg agrobot-msg-bot mb-3">
             <div class="agrobot-bubble p-3 rounded-4 shadow-sm">
               <p class="mb-2">¡Hola! 🌱 Te doy la bienvenida a <strong>AgroConecta</strong>.</p>
-              <p class="mb-2">Soy <strong>AgroBot</strong>, impulsado por <em>Meta Muse Spark 1.3</em>. Estoy capacitado para responder todas tus dudas sobre cómo postular, requisitos, rentabilidad, compra futura o líneas de cultivo.</p>
+              <p class="mb-2">Soy <strong>AgroBot</strong>, el asesor virtual de <strong>AgroConecta</strong>. Estoy capacitado para responder todas tus dudas sobre cómo postular, requisitos, rentabilidad, compra futura o líneas de cultivo.</p>
               <span class="agrobot-time text-muted small d-block text-end">Justo ahora</span>
             </div>
           </div>
@@ -514,7 +514,7 @@ Directrices de respuesta:
         <!-- Indicador de Escritura "Escribiendo..." -->
         <div id="agrobot-typing" class="agrobot-typing-indicator px-3 py-1" style="display: none;">
           <small class="text-muted d-flex align-items-center gap-1">
-            <span>AgroBot está pensando con Meta Muse Spark</span>
+            <span>AgroBot está escribiendo</span>
             <span class="agrobot-dots"><span>.</span><span>.</span><span>.</span></span>
           </small>
         </div>
