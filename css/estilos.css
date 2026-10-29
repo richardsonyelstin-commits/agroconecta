@@ -55,6 +55,9 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -62,7 +65,15 @@ body {
   line-height: 1.65;
   background-color: var(--color-canvas);
   color: var(--color-texto);
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
+  position: relative;
+}
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Pseudo-elemento de selección personalizada */
@@ -84,15 +95,17 @@ body {
 
 /* Tipografía Adaptable con función clamp() */
 .display-hero {
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-size: clamp(1.75rem, 4.5vw, 3.2rem);
   font-weight: 800;
   color: var(--color-primario);
-  line-height: 1.15;
+  line-height: 1.18;
+  word-break: break-word;
 }
 
 .subtitulo-hero {
-  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
   color: var(--color-texto-muted);
+  line-height: 1.6;
 }
 
 /* Selector Hermano Adyacente h2 + p */
@@ -149,14 +162,24 @@ a:hover {
   background-color: var(--color-primario) !important;
   box-shadow: var(--sombra-media);
   transition: var(--transicion-base);
+  width: 100%;
+}
+
+.navbar-brand {
+  max-width: 100%;
+}
+
+.navbar-brand img {
+  flex-shrink: 0;
 }
 
 .navbar-agro .nav-link {
   color: rgba(255, 255, 255, 0.9) !important;
   font-weight: 600;
-  padding: 0.6rem 1rem !important;
+  padding: 0.6rem 0.9rem !important;
   border-radius: var(--radio-sm);
   transition: var(--transicion-rapida);
+  white-space: nowrap;
 }
 
 .navbar-agro .nav-link:hover,
@@ -165,10 +188,87 @@ a:hover {
   color: #82DDB0 !important;
 }
 
+/* En pantallas móviles (max-width: 991.98px) */
+@media (max-width: 991.98px) {
+  .navbar-agro .navbar-collapse {
+    background-color: #0B251E;
+    margin-top: 0.75rem;
+    padding: 1.25rem;
+    border-radius: var(--radio-md);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: var(--sombra-media);
+  }
+
+  .navbar-agro .navbar-nav {
+    gap: 0.35rem;
+  }
+
+  .navbar-agro .btn-cosecha {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+/* En pantallas entre 992px y 1199.98px (Tablets landscape / laptops compactas) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar-agro .nav-link {
+    padding: 0.45rem 0.5rem !important;
+    font-size: 0.88rem;
+  }
+
+  .navbar-agro .navbar-nav {
+    gap: 0.2rem !important;
+  }
+
+  .navbar-agro .btn-cosecha {
+    padding: 0.45rem 0.75rem !important;
+    font-size: 0.82rem !important;
+  }
+
+  .navbar-brand small {
+    display: none !important;
+  }
+}
+
+/* En pantallas muy estrechas (max-width: 575.98px) */
+@media (max-width: 575.98px) {
+  .navbar-brand {
+    gap: 0.5rem !important;
+  }
+
+  .navbar-brand img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .navbar-brand span {
+    font-size: 1.25rem !important;
+  }
+
+  .navbar-brand small {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.5px !important;
+  }
+}
+
 /* Sub-barra de navegación rápida de cultivos */
 .subnav-cultivos {
   background-color: var(--color-secundario);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.subnav-cultivos .container-fluid {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.subnav-cultivos .container-fluid::-webkit-scrollbar {
+  display: none;
 }
 
 .subnav-cultivos a {
@@ -242,6 +342,10 @@ a:hover {
   transition: var(--transicion-base);
   box-shadow: 0 4px 10px rgba(184, 110, 24, 0.25);
   text-decoration: none !important;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .btn-cosecha:hover {
@@ -264,6 +368,13 @@ a:hover {
   border-radius: var(--radio-sm);
   padding: 0.7rem 1.5rem;
   transition: var(--transicion-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .btn-bosque-outline:hover {
@@ -448,6 +559,7 @@ input[type="file"]::file-selector-button:hover {
   padding: 1.5rem;
   border-radius: var(--radio-lg);
   box-shadow: var(--sombra-suave);
+  width: 100%;
 }
 
 .grafico-barras-agro .barra-fila {
@@ -457,6 +569,9 @@ input[type="file"]::file-selector-button:hover {
 .grafico-barras-agro .barra-etiqueta {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
   font-weight: 600;
   font-size: 0.92rem;
   margin-bottom: 0.3rem;
@@ -483,8 +598,8 @@ input[type="file"]::file-selector-button:hover {
 
 /* 4. Indicador Circular con conic-gradient */
 .indicador-circular-conic {
-  width: 140px;
-  height: 140px;
+  width: clamp(120px, 30vw, 140px);
+  height: clamp(120px, 30vw, 140px);
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -494,8 +609,8 @@ input[type="file"]::file-selector-button:hover {
 }
 
 .indicador-circular-centro {
-  width: 106px;
-  height: 106px;
+  width: clamp(90px, 22vw, 106px);
+  height: clamp(90px, 22vw, 106px);
   background-color: var(--color-superficie);
   border-radius: 50%;
   display: flex;
@@ -503,7 +618,7 @@ input[type="file"]::file-selector-button:hover {
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 1.45rem;
+  font-size: clamp(1.2rem, 3.5vw, 1.45rem);
   color: var(--color-primario);
 }
 
@@ -516,23 +631,23 @@ input[type="file"]::file-selector-button:hover {
 /* 5. Línea de Tiempo Vertical con Pseudo-elementos */
 .timeline-agro {
   border-left: 3px solid var(--color-secundario);
-  padding-left: 1.75rem;
-  margin-left: 1.25rem;
+  padding-left: 1.5rem;
+  margin-left: 0.75rem;
   position: relative;
 }
 
 .timeline-evento {
   position: relative;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .timeline-evento::before {
   content: "";
   position: absolute;
-  left: -2.35rem;
+  left: -2.1rem;
   top: 0.25rem;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background-color: var(--color-acento);
   border: 3px solid #FFFFFF;
@@ -593,4 +708,113 @@ input[type="file"]::file-selector-button:hover {
 @keyframes resaltarSeccion {
   0% { background-color: rgba(184, 110, 24, 0.15); }
   100% { background-color: transparent; }
+}
+
+/* ==========================================================================
+   BLOQUE 6: REGLAS RESPONSIVAS Y MEDIA QUERIES (@media)
+   ========================================================================== */
+
+/* Tablets y Dispositivos Móviles (<= 991.98px) */
+@media (max-width: 991.98px) {
+  .contenedor-fluido {
+    width: min(100% - 1.5rem, 1240px);
+  }
+
+  .indicador-kpi strong {
+    font-size: 1.9rem;
+  }
+
+  .tabla-agro th,
+  .tabla-agro td {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Teléfonos y Dispositivos Compactos (<= 767.98px) */
+@media (max-width: 767.98px) {
+  .contenedor-fluido {
+    width: min(100% - 1rem, 1240px);
+  }
+
+  .grafico-barras-agro {
+    padding: 1.15rem;
+  }
+
+  .indicador-kpi {
+    padding: 1.15rem;
+  }
+
+  .indicador-kpi strong {
+    font-size: 1.7rem;
+  }
+
+  .progreso-fill {
+    font-size: 0.72rem;
+    padding: 0 0.5rem;
+  }
+
+  .tabla-agro th,
+  .tabla-agro td {
+    padding: 0.6rem 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  .tabla-agro thead th {
+    white-space: nowrap;
+  }
+
+  .carousel-inner img {
+    height: clamp(220px, 45vw, 340px) !important;
+  }
+
+  .editorial-intro::first-letter {
+    font-size: 2.1rem;
+    padding-right: 6px;
+  }
+}
+
+/* Teléfonos Pequeños (<= 575.98px) */
+@media (max-width: 575.98px) {
+  .display-hero {
+    font-size: clamp(1.55rem, 7vw, 2.1rem);
+  }
+
+  .subtitulo-hero {
+    font-size: 0.95rem;
+  }
+
+  .btn-cosecha,
+  .btn-bosque-outline {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .grafico-barras-agro .barra-etiqueta {
+    font-size: 0.82rem;
+  }
+
+  .timeline-agro {
+    padding-left: 1.25rem;
+    margin-left: 0.5rem;
+  }
+
+  .timeline-evento::before {
+    left: -1.75rem;
+    width: 12px;
+    height: 12px;
+  }
+
+  .form-floating > .form-control,
+  .form-floating > .form-select {
+    font-size: 0.9rem;
+  }
+
+  .form-floating > label {
+    font-size: 0.8rem;
+  }
+
+  footer .col-6 {
+    width: 100%;
+  }
 }
