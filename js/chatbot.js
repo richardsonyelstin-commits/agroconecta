@@ -19,8 +19,9 @@
     const cfg = (typeof window !== 'undefined' && window.AGROCONECTA_CONFIG) || {};
     return {
       apiKey: (window.AGROCONECTA_LLM_KEY || cfg.LLM_API_KEY || '').trim(),
-      endpoint: (window.AGROCONECTA_LLM_ENDPOINT || cfg.LLM_ENDPOINT || 'https://openrouter.ai/api/v1/chat/completions').trim(),
-      model: (window.AGROCONECTA_LLM_MODEL || cfg.LLM_MODEL || 'muse-spark-1.3-contributor').trim()
+      endpoint: (window.AGROCONECTA_LLM_ENDPOINT || cfg.LLM_ENDPOINT || 'https://api.meta.ai/v1/responses').trim(),
+      model: (window.AGROCONECTA_LLM_MODEL || cfg.LLM_MODEL || 'muse-spark-1.3-contributor').trim(),
+      proxyUrl: (window.AGROCONECTA_LLM_PROXY || cfg.AGROBOT_PROXY_URL || '').trim()
     };
   }
 
@@ -144,35 +145,96 @@ Directrices de respuesta:
   ];
 
   /**
-   * Consulta al modelo Meta Muse Spark 1.3 mediante API REST compatible con OpenAI
+   * Consulta al modelo Meta Muse Spark 1.3 mediante protocolo seguro
+   * Soporta tanto Proxy Serverless (Protocolo Estricto de Seguridad) como llamada directa oficial a https://api.meta.ai/v1/responses
    * @param {string} mensajeUsuario Texto enviado por el usuario
    * @returns {Promise<string>} Respuesta en HTML
    */
   async function consultarMetaMuseSpark(mensajeUsuario) {
     const llmCfg = obtenerConfiguracionLLM();
 
-    // Guardar en el historial multi-turno
-    historialConversacion.push({ role: 'user', content: mensajeUsuario });
+    // Sanitización básica y límite de tamaño para seguridad
+    const mensajeSanitizado = (mensajeUsuario || '').toString().slice(0, 1000).trim();
+    if (!mensajeSanitizado) return '';
 
-    // Si hay una API Key configurada para Meta Muse Spark, intentamos la llamada al LLM
-    if (llmCfg.apiKey && !llmCfg.apiKey.includes('TU_API_KEY')) {
+    // Guardar en el historial multi-turno
+    historialConversacion.push({ role: 'user', content: mensajeSanitizado });
+
+    // OPCIÓN A: Conexión mediante Proxy Seguro (Recomendado bajo Protocolo Estricto)
+    // El navegador NUNCA posee la clave MODEL_API_KEY, evitando su exposición en DevTools
+    if (llmCfg.proxyUrl) {
       try {
-        console.info(`[AgroBot LLM] Consultando Meta Muse Spark 1.3 (${llmCfg.model})...`);
+        console.info(`[AgroBot Security Protocol] Conectando a través de Proxy Seguro...`);
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000); // 12s timeout
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+        const proxyRes = await fetch(llmCfg.proxyUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mensaje: mensajeSanitizado,
+            historial: historialConversacion
+          }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (proxyRes.ok) {
+          const proxyData = await proxyRes.json();
+          const respuestaTexto = proxyData.reply || proxyData.text;
+          if (respuestaTexto) {
+            historialConversacion.push({ role: 'assistant', content: respuestaTexto });
+            return formatearMarkdownAHTML(respuestaTexto);
+          }
+        } else {
+          console.warn('[AgroBot Proxy] Error en Proxy (' + proxyRes.status + '). Utilizando motor semántico local.');
+        }
+      } catch (proxyErr) {
+        console.warn('[AgroBot Proxy] Excepción en Proxy:', proxyErr.message);
+      }
+    }
+
+    // OPCIÓN B: Conexión Directa a la API de Meta AI (para pruebas locales protegidas por .gitignore)
+    if (llmCfg.apiKey && !llmCfg.apiKey.includes('TU_MODEL_API_KEY') && !llmCfg.apiKey.includes('TU_API_KEY')) {
+      try {
+        console.info(`[AgroBot LLM] Consultando Meta AI Responses API (${llmCfg.model})...`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+        // Estructura oficial de Meta AI Responses API (/v1/responses)
+        const isMetaResponsesApi = llmCfg.endpoint.includes('/responses') || llmCfg.endpoint.includes('meta.ai');
+        
+        const metaInput = historialConversacion.map(msg => ({
+          role: msg.role === 'assistant' ? 'assistant' : (msg.role === 'system' ? 'system' : 'user'),
+          content: [
+            {
+              type: 'input_text',
+              text: msg.content
+            }
+          ]
+        }));
+
+        const requestBody = isMetaResponsesApi
+          ? {
+              model: llmCfg.model || 'muse-spark-1.3-contributor',
+              input: metaInput,
+              stream: false
+            }
+          : {
+              model: llmCfg.model,
+              messages: historialConversacion,
+              temperature: 0.6,
+              max_tokens: 650
+            };
 
         const response = await fetch(llmCfg.endpoint, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${llmCfg.apiKey}`
+            'Authorization': `Bearer ${llmCfg.apiKey}`,
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            model: llmCfg.model,
-            messages: historialConversacion,
-            temperature: 0.6,
-            max_tokens: 650
-          }),
+          body: JSON.stringify(requestBody),
           signal: controller.signal
         });
 
@@ -180,21 +242,27 @@ Directrices de respuesta:
 
         if (response.ok) {
           const data = await response.json();
-          const contenidoRespuesta = data?.choices?.[0]?.message?.content;
+          // Extracción compatible con Meta Responses API (output_text) y OpenAI (choices)
+          const outputBlock = data?.output?.find(b => b.type === 'output_text');
+          const contenidoRespuesta = outputBlock?.text 
+            || data?.output?.[0]?.text 
+            || data?.reply 
+            || data?.choices?.[0]?.message?.content;
+
           if (contenidoRespuesta) {
             historialConversacion.push({ role: 'assistant', content: contenidoRespuesta });
             return formatearMarkdownAHTML(contenidoRespuesta);
           }
         } else {
-          console.warn('[AgroBot LLM] Error en API LLM (' + response.status + '). Utilizando motor semántico local.');
+          console.warn('[AgroBot LLM] Error en API Meta AI (' + response.status + '). Utilizando motor semántico local.');
         }
       } catch (llmErr) {
-        console.warn('[AgroBot LLM] Excepción en llamada LLM, pasando a motor local:', llmErr.message);
+        console.warn('[AgroBot LLM] Excepción en llamada Meta AI (posible restricción CORS o red):', llmErr.message);
       }
     }
 
-    // Motor Semántico Local de Respaldo
-    const respuestaLocal = buscarRespuestaLocal(mensajeUsuario);
+    // OPCIÓN C: Motor Semántico Local de Respaldo (100% resiliente y privado)
+    const respuestaLocal = buscarRespuestaLocal(mensajeSanitizado);
     historialConversacion.push({ role: 'assistant', content: respuestaLocal });
     return respuestaLocal;
   }
