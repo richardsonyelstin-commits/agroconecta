@@ -1,15 +1,6 @@
 // ==============================================================================
 // AGROCONECTA - Supabase Edge Function: agrobot-chat
 // Protocolo Estricto de Seguridad para Meta Muse Spark 1.3 Contributor
-//
-// Esta función actúa como proxy seguro del lado del servidor:
-// 1. La clave privada MODEL_API_KEY se almacena como variable de entorno secreta en el servidor.
-// 2. Ningún usuario o atacante puede ver ni interceptar la clave desde el navegador (F12).
-// 3. Resuelve problemas de CORS que ocurrirían si el navegador llama directamente a Meta AI.
-//
-// Despliegue con CLI de Supabase:
-// supabase secrets set MODEL_API_KEY=tu_clave_secreta
-// supabase functions deploy agrobot-chat --no-verify-jwt
 // ==============================================================================
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -20,8 +11,40 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
+// Extractor robusto de texto compatible con Meta Responses API y OpenAI
+function extraerTextoRespuestaMeta(data: any): string {
+  if (!data) return "";
+
+  if (Array.isArray(data.output)) {
+    for (const item of data.output) {
+      if (item.type === "output_text" && typeof item.text === "string" && item.text.trim()) {
+        return item.text.trim();
+      }
+      if (Array.isArray(item.content)) {
+        for (const block of item.content) {
+          if ((block.type === "output_text" || !block.type) && typeof block.text === "string" && block.text.trim()) {
+            return block.text.trim();
+          }
+        }
+      }
+      if (typeof item.text === "string" && item.text.trim()) {
+        return item.text.trim();
+      }
+    }
+  }
+
+  if (data.choices?.[0]?.message?.content) {
+    return data.choices[0].message.content.trim();
+  }
+
+  if (typeof data.reply === "string" && data.reply.trim()) return data.reply.trim();
+  if (typeof data.response === "string" && data.response.trim()) return data.response.trim();
+  if (typeof data.text === "string" && data.text.trim()) return data.text.trim();
+
+  return "";
+}
+
 serve(async (req: Request) => {
-  // Manejo de preflight CORS
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
@@ -43,7 +66,6 @@ serve(async (req: Request) => {
       });
     }
 
-    // Obtener la clave secreta desde las variables de entorno del servidor
     const modelApiKey = Deno.env.get("MODEL_API_KEY") || Deno.env.get("META_MODEL_API_KEY");
     if (!modelApiKey) {
       return new Response(
@@ -55,9 +77,13 @@ serve(async (req: Request) => {
       );
     }
 
-    // Transformar el historial al formato oficial de Meta Responses API (input con input_text)
-    const metaInput = historial.map((item: { role: string; content: string }) => ({
-      role: item.role === "assistant" ? "assistant" : item.role === "system" ? "system" : "user",
+    // Extraer system instructions si existe
+    const systemItem = historial.find((i: any) => i.role === "system");
+    const systemInstructions = systemItem ? systemItem.content : "";
+
+    const conversationMessages = historial.filter((i: any) => i.role === "user" || i.role === "assistant");
+    const metaInput = conversationMessages.map((item: any) => ({
+      role: item.role === "assistant" ? "assistant" : "user",
       content: [
         {
           type: "input_text",
@@ -66,27 +92,43 @@ serve(async (req: Request) => {
       ],
     }));
 
-    // Agregar el mensaje actual del usuario si no está en el historial
-    if (!metaInput.some((i: { role: string; content: Array<{ text: string }> }) => i.role === "user" && i.content[0]?.text === mensaje)) {
+    if (!metaInput.some((i: any) => i.role === "user" && i.content[0]?.text === mensaje)) {
       metaInput.push({
         role: "user",
         content: [{ type: "input_text", text: mensaje }],
       });
     }
 
-    // Petición oficial a Meta Responses API
-    const metaResponse = await fetch("https://api.meta.ai/v1/responses", {
+    const requestPayload: any = {
+      model: "muse-spark-1.3-contributor",
+      input: metaInput,
+      stream: false,
+    };
+
+    if (systemInstructions) {
+      requestPayload.instructions = systemInstructions;
+    }
+
+    let metaResponse = await fetch("https://api.meta.ai/v1/responses", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${modelApiKey}`,
+        "Authorization": `Bearer ${modelApiKey.trim()}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "muse-spark-1.3-contributor",
-        input: metaInput,
-        stream: false,
-      }),
+      body: JSON.stringify(requestPayload),
     });
+
+    if (metaResponse.status === 400 && requestPayload.instructions) {
+      delete requestPayload.instructions;
+      metaResponse = await fetch("https://api.meta.ai/v1/responses", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${modelApiKey.trim()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestPayload),
+      });
+    }
 
     if (!metaResponse.ok) {
       const errText = await metaResponse.text();
@@ -96,17 +138,12 @@ serve(async (req: Request) => {
           error: `Error de Meta AI API (${metaResponse.status}): ${errText}`,
           fallback_required: true,
         }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: metaResponse.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     const data = await metaResponse.json();
-
-    // Extraer texto generado del bloque 'output_text'
-    const outputBlock = data.output?.find(
-      (b: { type: string; text?: string }) => b.type === "output_text"
-    );
-    const replyText = outputBlock?.text || data.output?.[0]?.text || "";
+    const replyText = extraerTextoRespuestaMeta(data);
 
     return new Response(
       JSON.stringify({

@@ -69,6 +69,17 @@ Directrices de respuesta:
         ⏱️ Nuestro equipo técnico evaluará tu solicitud en un plazo máximo de <strong>48 horas hábiles</strong>.`
     },
     {
+      keywords: ['invertir', 'inversión', 'inversion', 'inversionista', 'inversor', '2000 soles', '2000', '1000', '500', 'soles para invertir', 'fondos'],
+      title: '¿Cómo postular e invertir capital (ej. S/. 2,000) en AgroConecta?',
+      response: `¡Excelente iniciativa! En <strong>AgroConecta</strong> puedes participar como <strong>Inversionista</strong> desde <strong>S/. 500</strong> hasta montos como <strong>S/. 2,000</strong> o más, con una rentabilidad anual proyectada entre el <strong>12% y 18%</strong> respaldada en cosechas reales.<br><br>
+        🌱 <strong>¿Cómo funciona tu postulación e inversión?</strong><br>
+        1️⃣ Ingresa a nuestro <a href="${BASE_PAGE_URL}contacto.html" class="fw-bold text-success text-decoration-underline">Formulario Oficial de Postulación</a> y selecciona el perfil <strong>"Inversionista"</strong>.<br>
+        2️⃣ Indica tu monto a invertir (ej. S/. 2,000) y tu preferencia de cultivo (Café, Cacao, Palta Hass, Mango o Quinua).<br>
+        3️⃣ Tu inversión cuenta con respaldo de <strong>Póliza de Seguro Agrícola Catastrófico (SBS)</strong> y contrato formal notariado de compra futura.<br>
+        4️⃣ Tras la cosecha y exportación, recibes tu capital más las utilidades pactadas.<br><br>
+        ⏱️ Un asesor de nuestra mesa de financiamiento te contactará en menos de 24 horas.`
+    },
+    {
       keywords: ['cuanto se gana', 'cuánto se gana', 'ganancia', 'rentabilidad', 'ganar', 'ganancias', 'retorno', 'precio', 'utilidad', 'margen', 'precio justo'],
       title: '¿Cuánto se gana y cuál es la rentabilidad?',
       response: `Los beneficios económicos dependen de tu rol en AgroConecta:<br><br>
@@ -164,9 +175,9 @@ Directrices de respuesta:
     // El navegador NUNCA posee la clave MODEL_API_KEY, evitando su exposición en DevTools
     if (llmCfg.proxyUrl) {
       try {
-        console.info(`[AgroBot Security Protocol] Conectando a través de Proxy Seguro...`);
+        console.info(`[AgroBot Security Protocol] Conectando a través de Proxy (${llmCfg.proxyUrl})...`);
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const timeoutId = setTimeout(() => controller.abort(), 18000);
 
         const proxyRes = await fetch(llmCfg.proxyUrl, {
           method: 'POST',
@@ -180,18 +191,18 @@ Directrices de respuesta:
 
         clearTimeout(timeoutId);
 
-        if (proxyRes.ok) {
-          const proxyData = await proxyRes.json();
-          const respuestaTexto = proxyData.reply || proxyData.text;
-          if (respuestaTexto) {
-            historialConversacion.push({ role: 'assistant', content: respuestaTexto });
-            return formatearMarkdownAHTML(respuestaTexto);
-          }
+        const proxyData = await proxyRes.json().catch(() => null);
+
+        if (proxyRes.ok && proxyData && (proxyData.reply || proxyData.text)) {
+          const respuestaTexto = (proxyData.reply || proxyData.text).trim();
+          console.info('[AgroBot Proxy] Respuesta recibida con éxito de Meta Muse Spark 1.3.');
+          historialConversacion.push({ role: 'assistant', content: respuestaTexto });
+          return formatearMarkdownAHTML(respuestaTexto);
         } else {
-          console.warn('[AgroBot Proxy] Error en Proxy (' + proxyRes.status + '). Utilizando motor semántico local.');
+          console.warn('[AgroBot Proxy] No se pudo obtener respuesta del modelo:', proxyData?.error || `HTTP ${proxyRes.status}. Usando motor local.`);
         }
       } catch (proxyErr) {
-        console.warn('[AgroBot Proxy] Excepción en Proxy:', proxyErr.message);
+        console.warn('[AgroBot Proxy] Excepción en llamada a Proxy:', proxyErr.message);
       }
     }
 
@@ -200,20 +211,17 @@ Directrices de respuesta:
       try {
         console.info(`[AgroBot LLM] Consultando Meta AI Responses API (${llmCfg.model})...`);
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const timeoutId = setTimeout(() => controller.abort(), 18000);
 
-        // Estructura oficial de Meta AI Responses API (/v1/responses)
         const isMetaResponsesApi = llmCfg.endpoint.includes('/responses') || llmCfg.endpoint.includes('meta.ai');
         
-        const metaInput = historialConversacion.map(msg => ({
-          role: msg.role === 'assistant' ? 'assistant' : (msg.role === 'system' ? 'system' : 'user'),
-          content: [
-            {
-              type: 'input_text',
-              text: msg.content
-            }
-          ]
-        }));
+        // Filtrar mensajes para que 'input' contenga solo user y assistant
+        const metaInput = historialConversacion
+          .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+          .map(msg => ({
+            role: msg.role === 'assistant' ? 'assistant' : 'user',
+            content: [{ type: 'input_text', text: msg.content }]
+          }));
 
         const requestBody = isMetaResponsesApi
           ? {
@@ -231,7 +239,7 @@ Directrices de respuesta:
         const response = await fetch(llmCfg.endpoint, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${llmCfg.apiKey}`,
+            'Authorization': `Bearer ${llmCfg.apiKey.trim()}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(requestBody),
@@ -242,19 +250,15 @@ Directrices de respuesta:
 
         if (response.ok) {
           const data = await response.json();
-          // Extracción compatible con Meta Responses API (output_text) y OpenAI (choices)
-          const outputBlock = data?.output?.find(b => b.type === 'output_text');
-          const contenidoRespuesta = outputBlock?.text 
-            || data?.output?.[0]?.text 
-            || data?.reply 
-            || data?.choices?.[0]?.message?.content;
+          const contenidoRespuesta = extraerTextoRespuestaMeta(data);
 
           if (contenidoRespuesta) {
             historialConversacion.push({ role: 'assistant', content: contenidoRespuesta });
             return formatearMarkdownAHTML(contenidoRespuesta);
           }
         } else {
-          console.warn('[AgroBot LLM] Error en API Meta AI (' + response.status + '). Utilizando motor semántico local.');
+          const errBody = await response.text().catch(() => '');
+          console.warn('[AgroBot LLM] Error en API Meta AI (' + response.status + '):', errBody);
         }
       } catch (llmErr) {
         console.warn('[AgroBot LLM] Excepción en llamada Meta AI (posible restricción CORS o red):', llmErr.message);
@@ -265,6 +269,41 @@ Directrices de respuesta:
     const respuestaLocal = buscarRespuestaLocal(mensajeSanitizado);
     historialConversacion.push({ role: 'assistant', content: respuestaLocal });
     return respuestaLocal;
+  }
+
+  /**
+   * Extractor robusto de texto compatible con Meta Responses API y OpenAI
+   */
+  function extraerTextoRespuestaMeta(data) {
+    if (!data) return '';
+
+    if (Array.isArray(data.output)) {
+      for (const item of data.output) {
+        if (item.type === 'output_text' && typeof item.text === 'string' && item.text.trim()) {
+          return item.text.trim();
+        }
+        if (Array.isArray(item.content)) {
+          for (const block of item.content) {
+            if ((block.type === 'output_text' || !block.type) && typeof block.text === 'string' && block.text.trim()) {
+              return block.text.trim();
+            }
+          }
+        }
+        if (typeof item.text === 'string' && item.text.trim()) {
+          return item.text.trim();
+        }
+      }
+    }
+
+    if (data.choices?.[0]?.message?.content) {
+      return data.choices[0].message.content.trim();
+    }
+
+    if (typeof data.reply === 'string' && data.reply.trim()) return data.reply.trim();
+    if (typeof data.response === 'string' && data.response.trim()) return data.response.trim();
+    if (typeof data.text === 'string' && data.text.trim()) return data.text.trim();
+
+    return '';
   }
 
   /**
@@ -297,9 +336,13 @@ Directrices de respuesta:
   // Motor de Búsqueda de Respuestas Inteligente Local
   function buscarRespuestaLocal(mensaje) {
     const texto = mensaje.toLowerCase().trim();
+    const palabras = texto.split(/\s+/).filter(Boolean);
 
-    // Saludo inicial
-    if (/^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos)/i.test(texto)) {
+    // Solo devolver saludo genérico si el mensaje es ÚNICAMENTE un saludo sin consulta sustantiva
+    const esPuroSaludo = (/^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos)[\s\.,!¡¿?]*$/i.test(texto) || palabras.length <= 2) &&
+      !/(postul|invert|invers|ganan|requisit|cultiv|segur|campa|soles|dinero|cuanto|como)/i.test(texto);
+
+    if (esPuroSaludo && /^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos)/i.test(texto)) {
       return `¡Hola! 👋 Soy <strong>AgroBot</strong>, el asistente virtual de <em>AgroConecta</em>.<br><br>
         Estoy aquí para ayudarte a postular tu predio, conocer las ganancias de compra futura, requisitos o cultivos disponibles.<br><br>
         ¿Sobre qué tema te gustaría consultar hoy? Puedes elegir una de las opciones de abajo o escribirme tu consulta.`;
