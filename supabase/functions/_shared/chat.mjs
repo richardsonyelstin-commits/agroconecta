@@ -32,13 +32,15 @@ export async function answerChat(body, env, ip) {
         input,
         stream: false
       }),
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(30000)
     });
-    if (!response.ok)
+    if (!response.ok) {
+      console.warn('[AgroBot] El proveedor rechazó la consulta.', { status: response.status });
       return {
         status: 502,
         data: { error: 'No se pudo obtener una respuesta del asistente.', fallback_required: true }
       };
+    }
     const data = await response.json();
     const texts = (data.output || [])
       .flatMap((x) => x.content || [x])
@@ -49,7 +51,8 @@ export async function answerChat(body, env, ip) {
       .trim();
     if (!reply) throw new Error('Empty reply');
     return { status: 200, data: { success: true, reply } };
-  } catch (_) {
+  } catch (error) {
+    console.warn('[AgroBot] No se pudo completar la consulta.', { type: error.name });
     return {
       status: 503,
       data: {

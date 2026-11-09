@@ -40,4 +40,4 @@ El chat admite hasta 15 consultas por IP y 300 en total por minuto en cada insta
 
 ## Estado de la entrega
 
-Las pruebas locales usan servicios simulados. Falta aplicar y comprobar el esquema y las funciones en el proyecto remoto antes de activar el registro persistente. El proveedor de chat tampoco se ha probado con credenciales reales.
+Las pruebas locales usan servicios simulados. Falta aplicar y comprobar el esquema y las funciones en el proyecto remoto antes de activar el registro persistente. El chat se comprobó en el sitio publicado de Vercel el 9 de noviembre de 2026: el endpoint respondió con IA a una pregunta no predefinida. La credencial permanece en las variables del servidor.

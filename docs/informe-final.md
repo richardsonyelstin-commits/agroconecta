@@ -47,4 +47,4 @@ La [guía de revisión](pruebas.md) describe cómo comprobar el sitio manualment
 
 El código de los servicios usa referencias UUID generadas por Postgres, almacenamiento privado y lectura restringida a administradores. Las comprobaciones locales realizadas antes de la entrega utilizaron servicios simulados y no demuestran el estado de un servicio remoto.
 
-El enlace de referencia es [AgroConecta en Vercel](https://agroconecta-two-drab.vercel.app/). Falta publicar esta revisión y comprobarla en ese enlace. Si se activa el registro persistente, también falta aplicar y verificar el esquema y las funciones en Supabase remoto. No se han enviado datos personales ni correos, ni se ha utilizado el proveedor de chat con credenciales reales.
+El enlace de referencia es [AgroConecta en Vercel](https://agroconecta-two-drab.vercel.app/). Esta revisión se publicó en GitHub y Vercel. Si se activa el registro persistente, también falta aplicar y verificar el esquema y las funciones en Supabase remoto. No se han enviado datos personales ni correos. El chat se verificó en Vercel con preguntas generales y respuestas generadas por el proveedor de IA.

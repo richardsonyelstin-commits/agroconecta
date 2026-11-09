@@ -76,7 +76,7 @@
             mensaje: mensajeSanitizado,
             historial: historialConversacion
           }),
-          signal: AbortSignal.timeout(18000)
+          signal: AbortSignal.timeout(35000)
         });
 
         const proxyData = await proxyRes.json().catch(() => null);

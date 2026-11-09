@@ -52,4 +52,4 @@ Para ordenar el formato del código, usar `npm run format`. La [guía de revisi�
 
 El [informe final](docs/informe-final.md) relaciona el proyecto con la rúbrica. La carpeta `docs/` contiene la documentación vigente para la revisión.
 
-Enlace de referencia: [AgroConecta en Vercel](https://agroconecta-two-drab.vercel.app/). Los cambios locales todavía deben publicarse y comprobarse allí.
+Enlace de referencia: [AgroConecta en Vercel](https://agroconecta-two-drab.vercel.app/). La conexión de AgroBot con el proveedor de IA se verificó en ese sitio el 9 de noviembre de 2026.
