@@ -1,0 +1,26 @@
+FICHA INFORMATIVA AGROCONECTA
+
+Modelo de compra futura
+Información sobre cultivos, planificación de campañas y acuerdos entre
+productores, cooperativas y compradores.
+
+Catálogo
+- Café orgánico: Chanchamayo, Junín.
+- Cacao criollo: Quillabamba, Cusco.
+- Palta Hass: Huaral, Lima.
+- Maíz morado: Canta, Lima.
+- Quinua: Puno.
+- Mango Kent: Piura.
+
+Simulador
+Capital entre S/. 500 y S/. 50,000, en pasos de S/. 500.
+Fórmula: interés = capital × tasa anual simple × meses / 12.
+Total proyectado = capital + interés calculado.
+Selecciona el cultivo y el plazo para consultar la proyección.
+
+Formulario
+Perfiles: productor, inversionista y cooperativa. Completa los campos
+del perfil elegido y revisa los datos antes de continuar.
+Adjuntos admitidos: PDF, PNG y JPEG hasta 10 MB.
+Consulta el resultado mostrado al finalizar para conocer el estado
+de tu solicitud.

@@ -1,0 +1,6 @@
+assets/
+output/
+node_modules/
+js/config.js
+package-lock.json
+deno.lock

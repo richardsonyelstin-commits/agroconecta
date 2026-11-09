@@ -1,26 +1,53 @@
-/* ==========================================================================
-   AGROCONECTA - HOJA DE ESTILOS PRINCIPAL
-   Arquitectura modular de estilos y personalización para Bootstrap 5.3
-   ========================================================================== */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fuentes/manrope-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fuentes/manrope-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fuentes/manrope-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fuentes/manrope-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../assets/fuentes/manrope-800.woff2') format('woff2');
+}
 
-/* ==========================================================================
-   BLOQUE 1: VARIABLES CSS (:root) Y CONFIGURACIÓN DE TEMA
-   ========================================================================== */
+/* Colores y medidas */
 :root {
-  /* Paleta Institucional AGROCONECTA (Regla 60-30-10) */
-  --color-canvas: #F6F8F6;              /* 60% Superficie anti-fatiga */
-  --color-superficie: #FFFFFF;          /* Fondo blanco puro para tarjetas */
-  --color-superficie-alt: #F0F5F2;      /* Fondo suave secundario */
-  --color-primario: #0F3027;            /* 30% Verde institucional muy profundo */
-  --color-secundario: #143D32;          /* Verde bosque bancario */
-  --color-esmeralda: #1E6B52;           /* Verde de éxito y botones */
-  --color-acento: #B86E18;              /* 10% Ámbar cosecha para llamados a la acción (CTA) */
-  --color-acento-hover: #965711;        /* Ámbar profundo en interacción */
-  --color-texto: #1C2D27;               /* Carbón botánico para tipografía de alto contraste */
-  --color-texto-muted: #556B62;         /* Gris verdoso para textos secundarios */
-  --color-borde: #D6E2DA;               /* Separadores y bordes suaves */
+  --color-canvas: #f6f8f6;
+  --color-superficie: #ffffff;
+  --color-superficie-alt: #f0f5f2;
+  --color-primario: #0f3027;
+  --color-secundario: #143d32;
+  --color-esmeralda: #1e6b52;
+  --color-acento: #965711;
+  --color-acento-hover: #965711;
+  --color-texto: #1c2d27;
+  --color-texto-muted: #556b62;
+  --color-borde: #d6e2da;
 
-  /* Sombras cromáticas y radios */
   --radio-sm: 8px;
   --radio-md: 12px;
   --radio-lg: 16px;
@@ -31,13 +58,12 @@
   --transicion-rapida: 0.2s ease;
   --transicion-base: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Sobrescritura de Variables Globales de Bootstrap 5.3 */
-  --bs-primary: #143D32;
+  --bs-primary: #143d32;
   --bs-primary-rgb: 20, 61, 50;
-  --bs-success: #1E6B52;
+  --bs-success: #1e6b52;
   --bs-success-rgb: 30, 107, 82;
-  --bs-warning: #B86E18;
-  --bs-warning-rgb: 184, 110, 24;
+  --bs-warning: #965711;
+  --bs-warning-rgb: 150, 87, 17;
   --bs-body-bg: var(--color-canvas);
   --bs-body-color: var(--color-texto);
   --bs-border-color: var(--color-borde);
@@ -45,11 +71,11 @@
   --bs-border-radius-lg: var(--radio-lg);
 }
 
-/* ==========================================================================
-   BLOQUE 2: BASE, REINICIO, TIPOGRAFÍA Y ACCESIBILIDAD
-   ========================================================================== */
-/* Selector Universal */
-*, *::before, *::after {
+/* Base y tipografía */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -57,32 +83,47 @@ html {
   scroll-behavior: smooth;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
 }
 
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    'Manrope',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
   line-height: 1.65;
   background-color: var(--color-canvas);
   color: var(--color-texto);
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
   position: relative;
 }
 
-img, video, iframe {
+img,
+video,
+iframe {
   max-width: 100%;
   height: auto;
 }
 
-/* Pseudo-elemento de selección personalizada */
-::selection {
-  background-color: var(--color-secundario);
-  color: #FFFFFF;
+video.video-campana {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background-color: var(--color-primario);
 }
 
-/* Selectores Agrupados de Título con :is() y :where() */
+::selection {
+  background-color: var(--color-secundario);
+  color: #ffffff;
+}
+
 :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-primario);
   font-weight: 700;
@@ -93,7 +134,6 @@ img, video, iframe {
   letter-spacing: -0.5px;
 }
 
-/* Tipografía Adaptable con función clamp() */
 .display-hero {
   font-size: clamp(1.75rem, 4.5vw, 3.2rem);
   font-weight: 800;
@@ -108,14 +148,12 @@ img, video, iframe {
   line-height: 1.6;
 }
 
-/* Selector Hermano Adyacente h2 + p */
 h2 + p {
   color: var(--color-texto-muted);
   font-size: 1.05rem;
   margin-bottom: 1.5rem;
 }
 
-/* Pseudo-elemento ::first-letter para estilo editorial */
 .editorial-intro::first-letter {
   font-size: 2.5rem;
   font-weight: 800;
@@ -126,12 +164,11 @@ h2 + p {
   padding-top: 4px;
 }
 
-/* Enlaces base con pseudo-clases :link y :visited */
-a:link {
+a {
   color: var(--color-esmeralda);
   text-decoration: none;
 }
-a:visited {
+a:where(:visited) {
   color: var(--color-secundario);
 }
 a:hover {
@@ -139,9 +176,10 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Accesibilidad y mitigación de movimiento */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -149,15 +187,6 @@ a:hover {
   }
 }
 
-/* ==========================================================================
-   BLOQUE 3: LAYOUT, GRIDS Y CONTENEDORES FLUIDOS
-   ========================================================================== */
-.contenedor-fluido {
-  width: min(100% - 2rem, 1240px);
-  margin-inline: auto;
-}
-
-/* Barra de Navegación Personalizada */
 .navbar-agro {
   background-color: var(--color-primario) !important;
   box-shadow: var(--sombra-media);
@@ -177,7 +206,7 @@ a:hover {
 .navbar-agro .navbar-brand:hover,
 .navbar-agro .navbar-brand:focus,
 .navbar-agro .navbar-brand:active {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   text-decoration: none !important;
   max-width: 100%;
 }
@@ -186,7 +215,7 @@ a:hover {
 .navbar-brand:visited span,
 .navbar-agro .navbar-brand span,
 .navbar-agro .navbar-brand:visited span {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
@@ -206,13 +235,12 @@ a:hover {
 .navbar-agro .nav-link:hover,
 .navbar-agro .nav-link.active {
   background-color: var(--color-secundario);
-  color: #82DDB0 !important;
+  color: #82ddb0 !important;
 }
 
-/* En pantallas móviles (max-width: 991.98px) */
 @media (max-width: 991.98px) {
   .navbar-agro .navbar-collapse {
-    background-color: #0B251E;
+    background-color: #0b251e;
     margin-top: 0.75rem;
     padding: 1.25rem;
     border-radius: var(--radio-md);
@@ -230,7 +258,6 @@ a:hover {
   }
 }
 
-/* En pantallas entre 992px y 1199.98px (Tablets landscape / laptops compactas) */
 @media (min-width: 992px) and (max-width: 1199.98px) {
   .navbar-agro .nav-link {
     padding: 0.45rem 0.5rem !important;
@@ -251,7 +278,6 @@ a:hover {
   }
 }
 
-/* En pantallas muy estrechas (max-width: 575.98px) */
 @media (max-width: 575.98px) {
   .navbar-brand {
     gap: 0.5rem !important;
@@ -272,7 +298,6 @@ a:hover {
   }
 }
 
-/* Sub-barra de navegación rápida de cultivos */
 .subnav-cultivos {
   background-color: var(--color-secundario);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -293,7 +318,7 @@ a:hover {
 }
 
 .subnav-cultivos a {
-  color: #82DDB0 !important;
+  color: #82ddb0 !important;
   font-size: 0.88rem;
   font-weight: 600;
   padding: 0.4rem 0.8rem;
@@ -305,14 +330,12 @@ a:hover {
 
 .subnav-cultivos a:hover {
   background-color: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   text-decoration: none;
 }
 
-/* ==========================================================================
-   BLOQUE 4: COMPONENTES REUTILIZABLES, TARJETAS, BOTONES Y FORMULARIOS
-   ========================================================================== */
-/* Tarjetas de Cultivos e Inversión con CSS Grid y Flexbox */
+/* Tarjetas y botones */
+
 .agro-card {
   background-color: var(--color-superficie);
   border: 1px solid var(--color-borde);
@@ -326,15 +349,13 @@ a:hover {
   position: relative;
 }
 
-/* Pseudo-clase :hover combinada con transformación 3D suave */
 .agro-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--sombra-hover);
-  border-color: #82DDB0;
+  border-color: #82ddb0;
 }
 
-/* Selector de atributo img[src$=".png"] */
-.agro-card img[src$=".png"],
+.agro-card img[src$='.png'],
 .agro-card img {
   border-radius: var(--radio-md);
   object-fit: cover;
@@ -347,10 +368,58 @@ a:hover {
   transform: scale(1.02);
 }
 
-/* Botón Primario de Conversión Ámbar Cosecha */
+.descarga-catalogo {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+a.btn-descarga-ficha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  max-width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1.15rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  background: var(--color-superficie);
+  color: var(--color-primario);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-descarga-ficha > svg,
+.btn-descarga-ficha .formato-descarga {
+  flex-shrink: 0;
+}
+
+.btn-descarga-ficha .formato-descarga {
+  padding: 0.2rem 0.4rem;
+  border-radius: 5px;
+  background: var(--color-superficie-alt);
+  color: var(--color-texto-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+a.btn-descarga-ficha:hover {
+  background: var(--color-superficie-alt);
+  border-color: var(--color-esmeralda);
+  color: var(--color-primario);
+  box-shadow: var(--sombra-suave);
+}
+
 .btn-cosecha {
   background-color: var(--color-acento);
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-weight: 700;
   border-radius: var(--radio-sm);
   padding: 0.75rem 1.6rem;
@@ -375,12 +444,10 @@ a:hover {
   box-shadow: 0 6px 16px rgba(184, 110, 24, 0.35);
 }
 
-/* Pseudo-clase :active para efecto táctil */
 .btn-cosecha:active {
   transform: scale(0.97);
 }
 
-/* Botón Secundario Outline Verde Bosque */
 .btn-bosque-outline {
   background-color: transparent;
   color: var(--color-secundario) !important;
@@ -400,10 +467,9 @@ a:hover {
 
 .btn-bosque-outline:hover {
   background-color: var(--color-secundario);
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
-/* Badges de Estado Pill */
 .badge-pill-agro {
   display: inline-block;
   padding: 0.35rem 0.85rem;
@@ -415,25 +481,25 @@ a:hover {
 }
 
 .badge-financiamiento {
-  background-color: #E2F5EC;
-  color: #14593E;
-  border: 1px solid #B6E5CE;
+  background-color: #e2f5ec;
+  color: #14593e;
+  border: 1px solid #b6e5ce;
 }
 
 .badge-cosecha-futura {
-  background-color: #FDF1E3;
-  color: #8C4E0A;
-  border: 1px solid #F5D3A9;
+  background-color: #fdf1e3;
+  color: #8c4e0a;
+  border: 1px solid #f5d3a9;
 }
 
-/* Formulario con Pseudo-clases Modernas */
-/* Selector por atributo input[required] */
-input[required], select[required], textarea[required] {
+input[required],
+select[required],
+textarea[required] {
   border-left: 4px solid var(--color-acento);
 }
 
-/* Pseudo-clases :focus, :focus-visible y :focus-within */
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   border-color: var(--color-esmeralda);
   box-shadow: 0 0 0 0.25rem rgba(30, 107, 82, 0.2);
   outline: none;
@@ -443,17 +509,16 @@ input[required], select[required], textarea[required] {
   border-color: var(--color-esmeralda);
 }
 
-/* Pseudo-elemento ::placeholder */
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--color-texto-muted);
   font-style: italic;
   opacity: 0.75;
 }
 
-/* Pseudo-elemento ::file-selector-button */
-input[type="file"]::file-selector-button {
+input[type='file']::file-selector-button {
   background-color: var(--color-secundario);
-  color: #FFFFFF;
+  color: #ffffff;
   border: 0;
   padding: 0.5rem 1rem;
   border-radius: var(--radio-sm);
@@ -463,17 +528,15 @@ input[type="file"]::file-selector-button {
   transition: var(--transicion-rapida);
 }
 
-input[type="file"]::file-selector-button:hover {
+input[type='file']::file-selector-button:hover {
   background-color: var(--color-primario);
 }
 
-/* Selector :checked para controles */
 .form-check-input:checked {
   background-color: var(--color-esmeralda);
   border-color: var(--color-esmeralda);
 }
 
-/* Tablas con Filas Alternadas y Pseudo-clases */
 .tabla-agro {
   border-radius: var(--radio-md);
   overflow: hidden;
@@ -497,20 +560,16 @@ input[type="file"]::file-selector-button:hover {
   vertical-align: middle;
 }
 
-/* Filas alternadas con :nth-child(even) */
 .tabla-agro tbody tr:nth-child(even) {
-  background-color: #F8FAF8;
+  background-color: #f8faf8;
 }
 
 .tabla-agro tbody tr:hover {
-  background-color: #EEF7F2;
+  background-color: #eef7f2;
 }
 
-/* ==========================================================================
-   BLOQUE 5: GRÁFICOS VISUALES Y WIDGETS CON CSS PURO
-   ========================================================================== */
+/* Indicadores y gráficos */
 
-/* 1. Tarjeta de Indicador Numérico KPI */
 .indicador-kpi {
   background-color: var(--color-superficie);
   border-radius: var(--radio-lg);
@@ -550,20 +609,24 @@ input[type="file"]::file-selector-button:hover {
   font-weight: 600;
 }
 
-/* 2. Barra de Progreso Porcentual en CSS */
 .barra-progreso-css {
   width: 100%;
-  background-color: #E2ECE5;
+  background-color: #e2ece5;
   border-radius: var(--radio-pill);
   overflow: hidden;
   height: 26px;
   position: relative;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .barra-progreso-css .progreso-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-secundario) 0%, var(--color-esmeralda) 50%, var(--color-acento) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-secundario) 0%,
+    var(--color-esmeralda) 50%,
+    var(--color-acento) 100%
+  );
   color: white;
   font-size: 0.8rem;
   font-weight: 700;
@@ -574,7 +637,6 @@ input[type="file"]::file-selector-button:hover {
   transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 3. Gráfico de Barras Horizontales con CSS */
 .grafico-barras-agro {
   background-color: var(--color-superficie);
   padding: 1.5rem;
@@ -583,24 +645,17 @@ input[type="file"]::file-selector-button:hover {
   width: 100%;
 }
 
-.grafico-barras-agro .barra-fila {
-  margin-bottom: 1.1rem;
+.panel-cumplimiento > div:first-child > .text-center {
+  margin-bottom: 0 !important;
 }
 
-.grafico-barras-agro .barra-etiqueta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  font-weight: 600;
-  font-size: 0.92rem;
-  margin-bottom: 0.3rem;
-  color: var(--color-texto);
+.panel-cumplimiento > .timeline-agro {
+  margin-top: 1.5rem !important;
+  padding-top: 0.25rem;
 }
 
 .grafico-barras-agro .barra-pista {
-  background-color: #E8EFEA;
+  background-color: #e8efea;
   border-radius: var(--radio-pill);
   overflow: hidden;
   height: 18px;
@@ -612,19 +667,30 @@ input[type="file"]::file-selector-button:hover {
   transition: width 1s ease-in-out;
 }
 
-.barra-cafe  { width: 88%; background-color: #6F4E37; }
-.barra-cacao { width: 72%; background-color: #4A3528; }
-.barra-palta { width: 94%; background-color: #2D5A27; }
-.barra-quinua { width: 65%; background-color: #C28B38; }
+.barra-cafe {
+  width: 88%;
+  background-color: #6f4e37;
+}
+.barra-cacao {
+  width: 72%;
+  background-color: #4a3528;
+}
+.barra-palta {
+  width: 94%;
+  background-color: #2d5a27;
+}
+.barra-quinua {
+  width: 65%;
+  background-color: #c28b38;
+}
 
-/* 4. Indicador Circular con conic-gradient */
 .indicador-circular-conic {
   width: clamp(120px, 30vw, 140px);
   height: clamp(120px, 30vw, 140px);
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: conic-gradient(var(--color-esmeralda) 94%, #DFE8E3 0);
+  background: conic-gradient(var(--color-esmeralda) 94%, #dfe8e3 0);
   box-shadow: var(--sombra-suave);
   margin: 0 auto;
 }
@@ -649,7 +715,6 @@ input[type="file"]::file-selector-button:hover {
   color: var(--color-texto-muted);
 }
 
-/* 5. Línea de Tiempo Vertical con Pseudo-elementos */
 .timeline-agro {
   border-left: 3px solid var(--color-secundario);
   padding-left: 1.5rem;
@@ -663,7 +728,7 @@ input[type="file"]::file-selector-button:hover {
 }
 
 .timeline-evento::before {
-  content: "";
+  content: '';
   position: absolute;
   left: -2.1rem;
   top: 0.25rem;
@@ -671,36 +736,43 @@ input[type="file"]::file-selector-button:hover {
   height: 14px;
   border-radius: 50%;
   background-color: var(--color-acento);
-  border: 3px solid #FFFFFF;
+  border: 3px solid #ffffff;
   box-shadow: 0 0 0 2px var(--color-secundario);
 }
 
-/* ==============================================================================
-   DASHBOARD AGRÍCOLA MODERNIZADO - CONTROLES Y WIDGETS INTERACTIVOS
-   ============================================================================== */
+/* Seguimiento de campañas */
 .dashboard-control-bar {
-  background: linear-gradient(135deg, #F8FAF9 0%, #E8EFEA 100%);
+  background: linear-gradient(135deg, #f8faf9 0%, #e8efea 100%);
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .dashboard-pulse-dot {
   width: 10px;
   height: 10px;
-  background-color: #10B981;
+  background-color: #10b981;
   border-radius: 50%;
   display: inline-block;
   box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  animation: pulse-dot-agro 1.8s infinite;
+  animation: pulse-dot-agro 1.8s 2;
 }
 
 @keyframes pulse-dot-agro {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
 
 .btn-filtro-agro {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: var(--color-primario);
   border: 1px solid rgba(15, 48, 39, 0.15);
   font-weight: 500;
@@ -713,7 +785,7 @@ input[type="file"]::file-selector-button:hover {
 .btn-filtro-agro:hover,
 .btn-filtro-agro.active {
   background-color: var(--color-esmeralda);
-  color: #FFFFFF;
+  color: #ffffff;
   border-color: var(--color-esmeralda);
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
@@ -721,7 +793,9 @@ input[type="file"]::file-selector-button:hover {
 .indicador-kpi-moderno {
   border-radius: var(--radio-lg);
   border: 1px solid rgba(15, 48, 39, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .indicador-kpi-moderno:hover {
@@ -731,7 +805,7 @@ input[type="file"]::file-selector-button:hover {
 
 .kpi-mini-barra {
   height: 6px;
-  background-color: #E2E8F0;
+  background-color: #e2e8f0;
   border-radius: 3px;
   overflow: hidden;
 }
@@ -743,26 +817,24 @@ input[type="file"]::file-selector-button:hover {
   transition: width 0.8s ease;
 }
 
-/* Nav Pills Dashboard */
 #dashboardTabs .nav-link {
-  background-color: #F1F5F3;
+  background-color: #f1f5f3;
   color: var(--color-primario);
   border: 1px solid rgba(15, 48, 39, 0.1);
   transition: all 0.25s ease;
 }
 
 #dashboardTabs .nav-link:hover {
-  background-color: #E2ECE5;
+  background-color: #e2ece5;
 }
 
 #dashboardTabs .nav-link.active {
   background-color: var(--color-primario);
-  color: #FFFFFF;
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(15, 48, 39, 0.25);
   border-color: var(--color-primario);
 }
 
-/* Stepper fenológico botánico */
 .fenologia-stepper {
   gap: 4px;
   flex-wrap: wrap;
@@ -772,7 +844,7 @@ input[type="file"]::file-selector-button:hover {
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 0.74rem;
-  background-color: #F8FAF9;
+  background-color: #f8faf9;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -784,18 +856,20 @@ input[type="file"]::file-selector-button:hover {
 
 .stepper-step.active {
   background-color: rgba(16, 185, 129, 0.18);
-  color: #065F46;
+  color: #065f46;
   font-weight: 700;
   border-color: rgba(16, 185, 129, 0.3);
 }
 
 .simulador-card {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .cultivo-item-card {
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  background-color: #FFFFFF;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+  background-color: #ffffff;
 }
 
 .cultivo-item-card:hover {
@@ -804,72 +878,23 @@ input[type="file"]::file-selector-button:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* 6. Tooltips Nativos en CSS Puro */
-.tooltip-css {
-  position: relative;
-  display: inline-block;
-  cursor: help;
-}
-
-.tooltip-css::after {
-  content: attr(data-texto);
-  position: absolute;
-  bottom: 130%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--color-primario);
-  color: #FFFFFF;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  box-shadow: var(--sombra-media);
-  z-index: 100;
-}
-
-.tooltip-css:hover::after {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-4px);
-}
-
-/* 7. Skeleton Loader para Animación de Carga */
-.skeleton-box {
-  border-radius: var(--radio-sm);
-  background: linear-gradient(90deg, #E8EFEA 0%, #F6F8F6 50%, #E8EFEA 100%);
-  background-size: 200% 100%;
-  animation: shimmerLoader 1.6s infinite;
-}
-
-@keyframes shimmerLoader {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Pseudo-clase :target para resaltar anclas */
 :target {
   scroll-margin-top: 100px;
   animation: resaltarSeccion 1.5s ease;
 }
 
 @keyframes resaltarSeccion {
-  0% { background-color: rgba(184, 110, 24, 0.15); }
-  100% { background-color: transparent; }
+  0% {
+    background-color: rgba(184, 110, 24, 0.15);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 
-/* ==========================================================================
-   BLOQUE 6: REGLAS RESPONSIVAS Y MEDIA QUERIES (@media)
-   ========================================================================== */
+/* Pantallas pequeñas */
 
-/* Tablets y Dispositivos Móviles (<= 991.98px) */
 @media (max-width: 991.98px) {
-  .contenedor-fluido {
-    width: min(100% - 1.5rem, 1240px);
-  }
-
   .indicador-kpi strong {
     font-size: 1.9rem;
   }
@@ -881,12 +906,7 @@ input[type="file"]::file-selector-button:hover {
   }
 }
 
-/* Teléfonos y Dispositivos Compactos (<= 767.98px) */
 @media (max-width: 767.98px) {
-  .contenedor-fluido {
-    width: min(100% - 1rem, 1240px);
-  }
-
   .grafico-barras-agro {
     padding: 1.15rem;
   }
@@ -924,7 +944,6 @@ input[type="file"]::file-selector-button:hover {
   }
 }
 
-/* Teléfonos Pequeños (<= 575.98px) */
 @media (max-width: 575.98px) {
   .display-hero {
     font-size: clamp(1.55rem, 7vw, 2.1rem);
@@ -938,10 +957,6 @@ input[type="file"]::file-selector-button:hover {
   .btn-bosque-outline {
     width: 100%;
     padding: 0.75rem 1rem;
-  }
-
-  .grafico-barras-agro .barra-etiqueta {
-    font-size: 0.82rem;
   }
 
   .timeline-agro {
@@ -969,29 +984,28 @@ input[type="file"]::file-selector-button:hover {
   }
 }
 
-/* Tarjetas Interactivas de Selección de Rol en el Formulario (Global) */
 .role-selector-card {
-  border: 2px solid #E2E8F0 !important;
-  background-color: #FFFFFF;
+  border: 2px solid #e2e8f0 !important;
+  background-color: #ffffff;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   cursor: pointer;
 }
 
 .role-selector-card:hover {
-  border-color: #10B981 !important;
+  border-color: #10b981 !important;
   transform: translateY(-3px);
   box-shadow: var(--sombra-media) !important;
 }
 
 .btn-check:checked + .role-selector-card {
-  border-color: #10B981 !important;
-  background-color: #F0FDF4 !important;
+  border-color: #10b981 !important;
+  background-color: #f0fdf4 !important;
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.18) !important;
 }
 
 .btn-check:checked + .role-selector-card strong {
-  color: #065F46 !important;
+  color: #065f46 !important;
 }
 
 .seccion-rol {
@@ -1009,319 +1023,165 @@ input[type="file"]::file-selector-button:hover {
   }
 }
 
-/* ==============================================================================
-   CHATBOT ASISTENTE VIRTUAL FLOTANTE (AGROBOT)
-   ============================================================================== */
-.agrobot-floating-btn {
+/* Accesibilidad */
+.saltar-contenido {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #10B981, #0F3027);
-  color: #FFFFFF !important;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 8px;
+  left: 8px;
+  z-index: 2000;
+  background: #fff;
+  color: #0f3027;
+  padding: 12px;
+  transform: translateY(-200%);
+}
+.saltar-contenido:focus {
+  transform: translateY(0);
+}
+:focus-visible {
+  outline: 3px solid #965711;
+  outline-offset: 4px;
+}
+.btn-check:focus-visible + .role-selector-card {
+  outline: 3px solid #965711;
+  outline-offset: 3px;
+}
+.referencia-solicitud {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+}
+.modal-header .modal-title {
+  color: #fff;
+}
+
+details summary {
   cursor: pointer;
-  z-index: 1050;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
-  box-shadow: 0 8px 24px rgba(15, 48, 39, 0.35);
-}
-
-.agrobot-floating-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 12px 28px rgba(15, 48, 39, 0.45);
-}
-
-.agrobot-floating-btn:active {
-  transform: scale(0.95);
-}
-
-.agrobot-badge-pulse {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 14px;
-  height: 14px;
-  background-color: #EF4444;
-  border: 2px solid #FFFFFF;
-  border-radius: 50%;
-  animation: agrobot-pulse 2s infinite;
-}
-
-@keyframes agrobot-pulse {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-  70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
-
-.agrobot-tooltip-pill {
-  position: fixed;
-  bottom: 34px;
-  right: 92px;
-  background-color: #0F3027;
-  color: #FFFFFF;
-  font-size: 0.82rem;
   font-weight: 600;
-  padding: 0.45rem 0.9rem;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 1049;
-  pointer-events: none;
-  animation: agrobot-fadein 0.5s ease 1s backwards;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
-
-@keyframes agrobot-fadein {
-  from { opacity: 0; transform: translateX(10px); }
-  to { opacity: 1; transform: translateX(0); }
+.subnav-cultivos .text-white-50 {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
-
-.agrobot-chat-window {
-  position: fixed;
-  bottom: 92px;
-  right: 24px;
-  width: 375px;
-  max-width: calc(100vw - 32px);
-  height: 520px;
-  max-height: calc(100vh - 120px);
-  background-color: #FFFFFF;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  box-shadow: 0 16px 48px rgba(15, 48, 39, 0.25);
-  z-index: 1051;
-  display: flex;
-  flex-direction: column;
+.badge.text-bg-warning,
+.badge.bg-warning {
+  color: #fff !important;
+}
+.dashboard-control-bar > .d-flex {
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+}
+.form-floating > label {
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
-  transform: translateY(20px) scale(0.94);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  text-overflow: ellipsis;
+}
+.agrobot-chat-window[inert] {
+  visibility: hidden;
+}
+.agrobot-messages {
+  overflow-wrap: anywhere;
 }
 
-.agrobot-chat-window.agrobot-window-active {
-  transform: translateY(0) scale(1);
-  opacity: 1;
-  pointer-events: auto;
+/* Detalles de las páginas */
+.marca-nombre {
+  color: #ffffff !important;
 }
-
-.agrobot-header {
-  background: linear-gradient(135deg, #0F3027 0%, #143D32 60%, #10B981 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #FFFFFF !important;
+.marca-descripcion {
+  color: #82ddb0 !important;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
 }
-
-.agrobot-header h6,
-.agrobot-header #agrobot-title,
-.agrobot-header span,
-.agrobot-header strong {
-  color: #FFFFFF !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+.descripcion-dashboard {
+  max-width: 720px;
 }
-
-.agrobot-header small {
-  color: rgba(255, 255, 255, 0.9) !important;
+.avance-capital {
+  width: 74.2%;
 }
-
-.agrobot-msg-bot .agrobot-bubble {
-  background-color: #FFFFFF !important;
-  color: #1E293B !important;
-  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+.indicador-superficie {
+  border-left-color: #b86e18;
 }
-
-.agrobot-msg-bot .agrobot-bubble p,
-.agrobot-msg-bot .agrobot-bubble li,
-.agrobot-msg-bot .agrobot-bubble div {
-  color: #1E293B !important;
+.avance-superficie {
+  width: 88%;
+  background-color: #b86e18;
 }
-
-.agrobot-msg-bot .agrobot-bubble strong {
-  color: #065F46 !important;
+.texto-cosecha {
+  color: #b86e18;
 }
-
-.agrobot-msg-bot .agrobot-bubble a {
-  color: #059669 !important;
-  font-weight: 600;
-  text-decoration: underline;
+.indicador-productores {
+  border-left-color: #0f3027;
 }
-
-/* Microbotón para redirección al Formulario Oficial de Postulación */
-.agrobot-bot-content .agrobot-micro-btn,
-.agrobot-micro-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: linear-gradient(135deg, #0F3027 0%, #165B4C 100%);
-  color: #FFFFFF !important;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 4px 11px;
-  border-radius: 20px;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(15, 48, 39, 0.25);
-  transition: all 0.2s ease-in-out;
-  vertical-align: middle;
-  margin: 3px 2px;
-  line-height: 1.3;
+.avance-productores {
+  width: 80%;
+  background-color: #0f3027;
 }
-
-.agrobot-bot-content .agrobot-micro-btn:hover,
-.agrobot-micro-btn:hover {
-  background: linear-gradient(135deg, #10B981 0%, #065F46 100%);
-  color: #FFFFFF !important;
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
-  text-decoration: none;
+.texto-bosque {
+  color: #0f3027;
 }
-
-/* Enlace / Botón directo a conversación de WhatsApp */
-.agrobot-bot-content .agrobot-wa-link,
-.agrobot-wa-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background-color: #25D366;
-  color: #FFFFFF !important;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.28);
-  transition: all 0.2s ease-in-out;
-  vertical-align: middle;
-  margin: 3px 2px;
-  line-height: 1.3;
+.indicador-retorno {
+  border-left-color: #1e6b52;
 }
-
-.agrobot-bot-content .agrobot-wa-link:hover,
-.agrobot-wa-link:hover {
-  background-color: #1EBE5D;
-  color: #FFFFFF !important;
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.45);
-  text-decoration: none;
+.avance-retorno {
+  width: 76%;
+  background-color: #1e6b52;
 }
-
-.agrobot-msg-user .agrobot-bubble {
-  background: linear-gradient(135deg, #10B981, #065F46) !important;
-  color: #FFFFFF !important;
+.avance-general {
+  width: 74%;
 }
-
-.agrobot-msg-user .agrobot-bubble p {
-  color: #FFFFFF !important;
+.avance-cafe {
+  width: 88%;
 }
-
-.agrobot-ai-badge {
-  font-size: 0.65rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #FFFFFF !important;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
+.avance-palta {
+  width: 94%;
 }
-
-.agrobot-online-dot {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  background-color: #10B981;
-  border: 2px solid #FFFFFF;
-  border-radius: 50%;
+.avance-cacao {
+  width: 72%;
 }
-
-.agrobot-body {
-  background-color: #F8FAF9;
-  scroll-behavior: smooth;
+.avance-quinua {
+  width: 65%;
 }
-
-.agrobot-body::-webkit-scrollbar {
-  width: 5px;
+.enlace-postulacion {
+  color: #ffffff;
 }
-
-.agrobot-body::-webkit-scrollbar-thumb {
-  background-color: rgba(16, 185, 129, 0.3);
-  border-radius: 4px;
+.pie-agro {
+  background-color: var(--color-primario) !important;
 }
-
-.agrobot-bubble {
-  word-wrap: break-word;
-  font-size: 0.9rem;
+.pie-descripcion {
+  color: #82ddb0;
 }
-
-.agrobot-chip-btn {
-  font-size: 0.76rem !important;
-  font-weight: 500;
-  padding: 0.25rem 0.65rem !important;
-  border-color: #A7F3D0 !important;
-  color: #065F46 !important;
-  background-color: #ECFDF5;
-  transition: all 0.2s ease;
+.imagen-carrusel {
+  height: 320px;
+  object-fit: cover;
 }
-
-.agrobot-chip-btn:hover {
-  background-color: #10B981 !important;
-  color: #FFFFFF !important;
-  border-color: #10B981 !important;
-  transform: translateY(-1px);
+.tabla-campana {
+  max-width: 960px;
 }
-
-.agrobot-typing-indicator {
-  background-color: #F8FAF9;
+.cabecera-cacao {
+  background-color: #3e2723 !important;
 }
-
-.agrobot-dots span {
-  animation: agrobot-blink 1.4s infinite both;
-  font-size: 1.2rem;
-  line-height: 0;
-  margin: 0 1px;
+.cabecera-cafe {
+  background-color: var(--color-secundario) !important;
 }
-
-.agrobot-dots span:nth-child(2) { animation-delay: 0.2s; }
-.agrobot-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes agrobot-blink {
-  0% { opacity: 0.2; }
-  20% { opacity: 1; }
-  100% { opacity: 0.2; }
+.nota-formulario {
+  font-size: 0.82rem;
 }
-
-.agrobot-send-btn {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
+.mensaje-formulario {
+  height: 100px;
 }
-
-.agrobot-send-btn:hover {
-  transform: scale(1.08);
+.imagen-cultivo {
+  max-height: 340px;
+  width: 100%;
+  object-fit: cover;
 }
-
-@media (max-width: 575.98px) {
-  .agrobot-floating-btn {
-    bottom: 16px;
-    right: 16px;
-    width: 52px;
-    height: 52px;
-  }
-  .agrobot-chat-window {
-    bottom: 76px;
-    right: 12px;
-    left: 12px;
-    width: auto;
-    max-width: none;
-    height: 480px;
-  }
-  .agrobot-tooltip-pill {
-    display: none !important;
-  }
+.cabecera-maiz {
+  background-color: #3b1c38 !important;
+}
+.cabecera-mango {
+  background-color: #5c3214 !important;
+}
+.cabecera-palta {
+  background-color: #2d472c !important;
+}
+.cabecera-quinua {
+  background-color: #4d3814 !important;
 }

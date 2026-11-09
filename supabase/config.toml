@@ -1,0 +1,5 @@
+[functions.postulaciones]
+verify_jwt = false
+
+[functions.agrobot-chat]
+verify_jwt = false

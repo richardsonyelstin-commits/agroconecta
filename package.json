@@ -1,0 +1,19 @@
+{
+  "name": "agroconecta-prototipo",
+  "version": "2.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node tools/serve.cjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100,
+    "tabWidth": 2,
+    "trailingComma": "none"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

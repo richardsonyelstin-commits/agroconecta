@@ -1,906 +1,1487 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Plataforma que permite a pequeños productores agrícolas publicar campañas de financiamiento y a inversionistas aportar capital a cambio de acuerdos de compra futura de la cosecha.">
-    <meta name="author" content="Richardson Yelstin Tantajulca Perez">
-    <meta name="keywords" content="agricultura, financiamiento, cosechas, inversionistas, agroconecta, compra futura, comercio justo, fintech rural">
-    
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta
+      content="Plataforma que permite a pequeños productores agrícolas publicar campañas de financiamiento y a inversionistas aportar capital a cambio de acuerdos de compra futura de la cosecha."
+      name="description"
+    />
+    <meta content="Richardson Yelstin Tantajulca Perez" name="author" />
+    <meta
+      content="agricultura, financiamiento, cosechas, inversionistas, agroconecta, compra futura, comercio justo, fintech rural"
+      name="keywords"
+    />
     <title>AGROCONECTA - Plataforma de Financiamiento y Compra Futura Agrícola</title>
-    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link href="logo.ico" rel="icon" type="image/x-icon" />
 
-    <!-- Bootstrap 5.3 CSS (CDN Oficial) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="assets/vendor/bootstrap.min.css" rel="stylesheet" />
 
-    <!-- Hoja de Estilos Personalizada en Cascada -->
-    <link rel="stylesheet" href="css/estilos.css">
-</head>
-<body>
-    <!-- ENCABEZADO Y NAVEGACIÓN RESPONSIVE -->
+    <link href="css/estilos.css" rel="stylesheet" />
+    <link href="css/chatbot.css" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-agro sticky-top py-2">
-            <div class="container-fluid px-lg-5">
-                <!-- Marca e Identidad -->
-                <a class="navbar-brand d-flex align-items-center gap-3" href="index.html">
-                    <img src="dist/imagenes/logo.png" width="48" height="48" alt="Logo de AgroConecta" class="rounded">
-                    <div>
-                        <span class="d-block fw-bold fs-4 lh-1 tracking-wide text-white" style="color: #FFFFFF !important;">AGROCONECTA</span>
-                        <small class="text-success-emphasis text-uppercase fw-semibold" style="color: #82DDB0 !important; font-size: 0.72rem; letter-spacing: 1px;">
-                            Financiamiento &bull; Compra Futura Agrícola
-                        </small>
-                    </div>
-                </a>
-
-                <!-- Botón Toggler para Móviles -->
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir navegación">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Enlaces de Navegación -->
-                <div class="collapse navbar-collapse" id="menuPrincipal">
-                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 py-3 py-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.html">&bull; Inicio &bull;</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="page/nosotros.html">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#dashboard">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#campanas">Campañas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#faq">Preguntas</a>
-                        </li>
-                        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                            <a class="btn-cosecha" href="page/contacto.html">Postular Campaña</a>
-                        </li>
-                    </ul>
-                </div>
+      <nav
+        aria-label="Navegación principal"
+        class="navbar navbar-expand-lg navbar-dark navbar-agro sticky-top py-2"
+      >
+        <div class="container-fluid px-lg-5">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="index.html">
+            <img
+              alt="Logo de AgroConecta"
+              class="rounded"
+              decoding="async"
+              height="48"
+              src="assets/imagenes/logo.webp"
+              width="48"
+            />
+            <div>
+              <span class="d-block fw-bold fs-4 lh-1 tracking-wide text-white marca-nombre"
+                >AGROCONECTA</span
+              >
+              <small class="text-success-emphasis text-uppercase fw-semibold marca-descripcion">
+                Financiamiento • Compra Futura Agrícola
+              </small>
             </div>
-        </nav>
+          </a>
 
-        <!-- Sub-barra de Acceso Rápido a Cultivos (Flexbox Deslizable en Móvil) -->
-        <nav class="subnav-cultivos py-2" aria-label="Catálogo de cultivos">
-            <div class="container-fluid px-lg-5 d-flex align-items-center gap-3 overflow-auto">
-                <span class="text-white-50 small fw-bold text-nowrap d-none d-md-inline">CATÁLOGO DE CULTIVOS:</span>
-                <div class="d-flex align-items-center gap-2">
-                    <a href="page/cafe.html">☕ Café Orgánico</a>
-                    <span class="text-white-50">&bull;</span>
-                    <a href="page/cacao.html">🍫 Cacao Criollo</a>
-                    <span class="text-white-50">&bull;</span>
-                    <a href="page/palta.html">🥑 Palta Hass</a>
-                    <span class="text-white-50">&bull;</span>
-                    <a href="page/maiz.html">🌽 Maíz Morado</a>
-                    <span class="text-white-50">&bull;</span>
-                    <a href="page/quinua.html">🌾 Quinua Real</a>
-                    <span class="text-white-50">&bull;</span>
-                    <a href="page/mango.html">🥭 Mango Kent</a>
-                </div>
-            </div>
-        </nav>
+          <button
+            aria-controls="menuPrincipal"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+            class="navbar-toggler border-0"
+            data-bs-target="#menuPrincipal"
+            data-bs-toggle="collapse"
+            type="button"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 py-3 py-lg-0">
+              <li class="nav-item">
+                <a aria-current="page" class="nav-link active" href="index.html">• Inicio •</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="page/nosotros.html">Nosotros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#dashboard">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#campanas">Campañas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#faq">Preguntas</a>
+              </li>
+              <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                <a class="btn-cosecha" href="page/contacto.html">Postular Campaña</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <nav aria-label="Catálogo de cultivos" class="subnav-cultivos py-2">
+        <div class="container-fluid px-lg-5 d-flex align-items-center gap-3 overflow-auto">
+          <span class="text-white-50 small fw-bold text-nowrap d-none d-md-inline"
+            >CATÁLOGO DE CULTIVOS:</span
+          >
+          <div class="d-flex align-items-center gap-2">
+            <a href="page/cafe.html">☕ Café Orgánico</a>
+            <span class="text-white-50">•</span>
+            <a href="page/cacao.html">🍫 Cacao Criollo</a>
+            <span class="text-white-50">•</span>
+            <a href="page/palta.html">🥑 Palta Hass</a>
+            <span class="text-white-50">•</span>
+            <a href="page/maiz.html">🌽 Maíz Morado</a>
+            <span class="text-white-50">•</span>
+            <a href="page/quinua.html">🌾 Quinua Real</a>
+            <span class="text-white-50">•</span>
+            <a href="page/mango.html">🥭 Mango Kent</a>
+          </div>
+        </div>
+      </nav>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main>
-        <!-- 1. HERO SECTION RESPONSIVE -->
-        <section class="container py-5">
-            <div class="row align-items-center g-4 g-lg-5">
-                <div class="col-12 col-lg-7 text-center text-lg-start">
-                    <span class="badge-pill-agro badge-financiamiento mb-3">
-                        Plataforma Fintech &bull; Agro Sostenible
-                    </span>
-                    <h1 class="display-hero mb-3">
-                        Donde el campo y la inversión inteligente se dan la mano
-                    </h1>
-                    <p class="subtitulo-hero mb-4">
-                        Conectamos a <strong>pequeños productores agrícolas</strong> que requieren capital de trabajo con 
-                        <strong>inversionistas y compradores</strong> mediante <em>acuerdos formales de compra futura</em> a precios garantizados.
-                    </p>
-                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
-                        <a href="page/contacto.html" class="btn-cosecha">
-                            Publicar Campaña Agrícola
-                        </a>
-                        <a href="page/nosotros.html" class="btn-bosque-outline">
-                            Conoce el Modelo de Impacto
-                        </a>
-                    </div>
-                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 gap-sm-4 mt-4 pt-2 text-muted small">
-                        <div>🔒 <strong>100% Legalizado</strong></div>
-                        <div>🌱 <strong>Comercio Justo</strong></div>
-                        <div>📈 <strong>Retornos Predecibles</strong></div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-5 text-center">
-                    <div class="position-relative">
-                        <img src="dist/imagenes/hero-campesino.png" class="img-fluid rounded-4 shadow-lg border border-3 border-white" alt="Productor agrícola peruano en campo de cultivo">
-                        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3 bg-white bg-opacity-95 px-3 py-2 rounded-3 shadow-sm d-flex align-items-center gap-2 border">
-                            <span class="badge bg-success rounded-pill">Activo</span>
-                            <small class="fw-bold text-dark">Campaña Nacional 2026</small>
-                        </div>
-                    </div>
-                </div>
+    <main id="contenido" tabindex="-1">
+      <section class="container py-5">
+        <div class="row align-items-center g-4 g-lg-5">
+          <div class="col-12 col-lg-7 text-center text-lg-start">
+            <span class="badge-pill-agro badge-financiamiento mb-3">
+              Plataforma Fintech • Agro Sostenible
+            </span>
+            <h1 class="display-hero mb-3">
+              Donde el campo y la inversión inteligente se dan la mano
+            </h1>
+            <p class="subtitulo-hero mb-4">
+              Conectamos a <strong>pequeños productores agrícolas</strong> que requieren capital de
+              trabajo con <strong>inversionistas y compradores</strong> mediante un
+              <em>modelo de compra futura</em> para planificar cada campaña.
+            </p>
+            <div
+              class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3"
+            >
+              <a class="btn-cosecha" href="page/contacto.html"> Publicar Campaña Agrícola </a>
+              <a class="btn-bosque-outline" href="page/nosotros.html">
+                Conoce el Modelo de Impacto
+              </a>
             </div>
-        </section>
-
-        <!-- 2. DASHBOARD DE IMPACTO CON GRÁFICOS EN CSS PURO & MONITOREO EN TIEMPO REAL -->
-        <section id="dashboard" class="py-5 bg-white border-top border-bottom">
-            <div class="container">
-                <!-- Cabecera de Sección -->
-                <div class="text-center mb-4">
-                    <span class="badge-pill-agro badge-cosecha-futura mb-2">Transparencia y Métricas en Tiempo Real</span>
-                    <h2 class="fw-bold">Dashboard Agrícola y Monitoreo de Cartera</h2>
-                    <p class="text-muted mx-auto" style="max-width: 720px;">Visualización verificable de avance de fondeo, hectáreas georreferenciadas, estado fenológico y retornos calculados con CSS3 nativo.</p>
-                </div>
-
-                <!-- Barra de Monitoreo en Tiempo Real & Filtros de Valle -->
-                <div class="dashboard-control-bar p-3 rounded-4 mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="dashboard-pulse-dot"></span>
-                        <small class="fw-bold text-dark">Auditoría Satelital y Póliza SBS:</small>
-                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle rounded-pill px-2 py-1 small">Actualizado Hoy • 100% En Regla</span>
-                    </div>
-                    <!-- Chips de Filtrado por Valle / Cultivo -->
-                    <div class="d-flex flex-wrap gap-1" id="filtroValleContainer">
-                        <button type="button" class="btn btn-sm btn-filtro-agro active" data-cultivo="todos">Todos los Valles</button>
-                        <button type="button" class="btn btn-sm btn-filtro-agro" data-cultivo="cafe">☕ Chanchamayo (Café)</button>
-                        <button type="button" class="btn btn-sm btn-filtro-agro" data-cultivo="palta">🥑 Huaral (Palta)</button>
-                        <button type="button" class="btn btn-sm btn-filtro-agro" data-cultivo="cacao">🍫 Quillabamba (Cacao)</button>
-                        <button type="button" class="btn btn-sm btn-filtro-agro" data-cultivo="quinua">🌾 Puno (Quinua)</button>
-                    </div>
-                </div>
-
-                <!-- 4 Tarjetas de Indicadores KPI Modernizadas -->
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
-                    <div class="col">
-                        <div class="indicador-kpi indicador-kpi-moderno h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span>Capital Colocado</span>
-                                <span class="badge bg-success-subtle text-success small rounded-pill">74.2% Meta</span>
-                            </div>
-                            <strong id="kpiCapital">S/. 185,500</strong>
-                            <div class="kpi-mini-barra mt-2 mb-2">
-                                <div class="kpi-mini-fill" style="width: 74.2%;"></div>
-                            </div>
-                            <div class="d-flex justify-content-between small text-muted">
-                                <span>Meta: S/. 250,000</span>
-                                <small class="text-success fw-bold">&uarr; 24.5% vs 2025</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="indicador-kpi indicador-kpi-moderno h-100" style="border-left-color: #B86E18;">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span>Hectáreas Auditadas</span>
-                                <span class="badge bg-warning-subtle text-warning-emphasis small rounded-pill">GPS + Satélite</span>
-                            </div>
-                            <strong id="kpiHectareas">142 Ha</strong>
-                            <div class="kpi-mini-barra mt-2 mb-2">
-                                <div class="kpi-mini-fill" style="width: 88%; background-color: #B86E18;"></div>
-                            </div>
-                            <div class="d-flex justify-content-between small text-muted">
-                                <span>6 Valles Activos</span>
-                                <small style="color: #B86E18;" class="fw-bold">🛡️ 100% Póliza SBS</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="indicador-kpi indicador-kpi-moderno h-100" style="border-left-color: #0F3027;">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span>Familias Productoras</span>
-                                <span class="badge bg-secondary-subtle text-secondary-emphasis small rounded-pill">Sin usura</span>
-                            </div>
-                            <strong id="kpiFamilias">96 Productores</strong>
-                            <div class="kpi-mini-barra mt-2 mb-2">
-                                <div class="kpi-mini-fill" style="width: 80%; background-color: #0F3027;"></div>
-                            </div>
-                            <div class="d-flex justify-content-between small text-muted">
-                                <span>Comunidades aliadas</span>
-                                <small style="color: #0F3027;" class="fw-bold">+35% Margen Neto</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="indicador-kpi indicador-kpi-moderno h-100" style="border-left-color: #1E6B52;">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span>Retorno Anual Promedio</span>
-                                <span class="badge bg-success-subtle text-success small rounded-pill">Auditado</span>
-                            </div>
-                            <strong id="kpiRetorno">13.8% E.A.</strong>
-                            <div class="kpi-mini-barra mt-2 mb-2">
-                                <div class="kpi-mini-fill" style="width: 76%; background-color: #1E6B52;"></div>
-                            </div>
-                            <div class="d-flex justify-content-between small text-muted">
-                                <span>Rango: 12% - 18%</span>
-                                <small class="text-success fw-bold">Cero Impagos</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pestañas Analíticas Interactivas (Tabs) -->
-                <div class="dashboard-tabs-container mb-4">
-                    <ul class="nav nav-pills justify-content-center gap-2 mb-4" id="dashboardTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active px-4 py-2 fw-semibold rounded-pill" id="tab-avance-tab" data-bs-toggle="pill" data-bs-target="#tab-avance" type="button" role="tab" aria-controls="tab-avance" aria-selected="true">
-                                📊 Avance Agronómico y Fondeo
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link px-4 py-2 fw-semibold rounded-pill" id="tab-simulador-tab" data-bs-toggle="pill" data-bs-target="#tab-simulador" type="button" role="tab" aria-controls="tab-simulador" aria-selected="false">
-                                🧮 Simulador de Rentabilidad en Vivo
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link px-4 py-2 fw-semibold rounded-pill" id="tab-auditoria-tab" data-bs-toggle="pill" data-bs-target="#tab-auditoria" type="button" role="tab" aria-controls="tab-auditoria" aria-selected="false">
-                                🛡️ Trazabilidad y Póliza SBS
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="dashboardTabsContent">
-                        <!-- Tab 1: Distribución Financiera y Ciclo Fenológico -->
-                        <div class="tab-pane fade show active" id="tab-avance" role="tabpanel" aria-labelledby="tab-avance-tab">
-                            <div class="row g-4 align-items-stretch">
-                                <!-- Columna 1: Barras con Estado Fenológico -->
-                                <div class="col-12 col-lg-7">
-                                    <div class="grafico-barras-agro h-100">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h4 class="fw-bold mb-0 fs-5">Distribución de Fondos y Fases de Cultivo</h4>
-                                            <span class="badge bg-light text-dark border">Campaña 2026</span>
-                                        </div>
-                                        <p class="text-muted small mb-4">Progreso de colocación de capital por cultivo con verificación fenológica en campo:</p>
-
-                                        <!-- Barra de Progreso Global -->
-                                        <div class="mb-4">
-                                            <div class="d-flex justify-content-between small fw-bold mb-1">
-                                                <span>Fondo Global 2026 (Meta: S/. 250,000)</span>
-                                                <span class="text-success fw-bold">74% alcanzado</span>
-                                            </div>
-                                            <div class="barra-progreso-css">
-                                                <div class="progreso-fill" style="width: 74%;">S/. 185,500 recaudados</div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Desglose por Cultivo con Tracker Fenológico -->
-                                        <div class="cultivo-item-card mb-3 p-3 rounded-3 border" data-cultivo="cafe">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <strong class="d-flex align-items-center gap-1">☕ Café Orgánico de Altura (Chanchamayo)</strong>
-                                                <span class="badge bg-success-subtle text-success fw-bold">88% Fondeado</span>
-                                            </div>
-                                            <div class="barra-pista mb-2">
-                                                <div class="barra-item barra-cafe" style="width: 88%;"></div>
-                                            </div>
-                                            <div class="fenologia-stepper d-flex justify-content-between small text-muted">
-                                                <span class="stepper-step completed">🌱 Siembra</span>
-                                                <span class="stepper-step completed">🌿 Crecimiento</span>
-                                                <span class="stepper-step active">🌸 Floración (Actual)</span>
-                                                <span class="stepper-step">🚜 Cosecha (Mayo)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="cultivo-item-card mb-3 p-3 rounded-3 border" data-cultivo="palta">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <strong class="d-flex align-items-center gap-1">🥑 Palta Hass de Exportación (Huaral)</strong>
-                                                <span class="badge bg-success-subtle text-success fw-bold">94% Fondeado</span>
-                                            </div>
-                                            <div class="barra-pista mb-2">
-                                                <div class="barra-item barra-palta" style="width: 94%;"></div>
-                                            </div>
-                                            <div class="fenologia-stepper d-flex justify-content-between small text-muted">
-                                                <span class="stepper-step completed">🌱 Cuaja</span>
-                                                <span class="stepper-step completed">🌿 Desarrollo</span>
-                                                <span class="stepper-step active">🥑 Maduración (Actual)</span>
-                                                <span class="stepper-step">🚜 Cosecha (Marzo)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="cultivo-item-card mb-3 p-3 rounded-3 border" data-cultivo="cacao">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <strong class="d-flex align-items-center gap-1">🍫 Cacao Criollo Fino de Aroma (Quillabamba)</strong>
-                                                <span class="badge bg-success-subtle text-success fw-bold">72% Fondeado</span>
-                                            </div>
-                                            <div class="barra-pista mb-2">
-                                                <div class="barra-item barra-cacao" style="width: 72%;"></div>
-                                            </div>
-                                            <div class="fenologia-stepper d-flex justify-content-between small text-muted">
-                                                <span class="stepper-step completed">🌱 Poda</span>
-                                                <span class="stepper-step active">🌿 Crecimiento Vainas</span>
-                                                <span class="stepper-step">🍫 Maduración</span>
-                                                <span class="stepper-step">🚜 Cosecha (Julio)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="cultivo-item-card mb-0 p-3 rounded-3 border" data-cultivo="quinua">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <strong class="d-flex align-items-center gap-1">🌾 Quinua Real del Altiplano (Puno)</strong>
-                                                <span class="badge bg-success-subtle text-success fw-bold">65% Fondeado</span>
-                                            </div>
-                                            <div class="barra-pista mb-2">
-                                                <div class="barra-item barra-quinua" style="width: 65%;"></div>
-                                            </div>
-                                            <div class="fenologia-stepper d-flex justify-content-between small text-muted">
-                                                <span class="stepper-step completed">🌱 Siembra</span>
-                                                <span class="stepper-step active">🌿 Crecimiento y Panoja</span>
-                                                <span class="stepper-step">🌾 Grano Lechoso</span>
-                                                <span class="stepper-step">🚜 Cosecha (Junio)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Columna 2: Gráfico Conic-Gradient & Hitos del Ciclo -->
-                                <div class="col-12 col-lg-5">
-                                    <div class="grafico-barras-agro h-100 d-flex flex-column justify-content-between">
-                                        <div>
-                                            <h4 class="fw-bold mb-2 fs-5">Tasa de Cumplimiento Histórico</h4>
-                                            <p class="text-muted small mb-4">Cosechas entregadas y contratos liquidados con precio justo garantizado:</p>
-
-                                            <!-- Indicador Circular CSS con conic-gradient -->
-                                            <div class="text-center mb-4">
-                                                <div class="indicador-circular-conic">
-                                                    <div class="indicador-circular-centro">
-                                                        98.6%
-                                                        <small>Efectividad</small>
-                                                    </div>
-                                                </div>
-                                                <p class="small text-muted mt-3 mb-0 fw-semibold">0% Tasa de Incumplimiento • 100% Retornos Pagados</p>
-                                            </div>
-                                        </div>
-
-                                        <!-- Hitos del Modelo Notariado -->
-                                        <div class="timeline-agro mt-3">
-                                            <div class="timeline-evento">
-                                                <strong class="d-block small text-success">1. Auditoría Agronómica y Póliza SBS</strong>
-                                                <small class="text-muted">Verificación del predio y emisión del seguro catastrófico.</small>
-                                            </div>
-                                            <div class="timeline-evento">
-                                                <strong class="d-block small text-success">2. Desembolsos Contra Avance Físico</strong>
-                                                <small class="text-muted">Insumos y jornales liberados según bitácora de campo.</small>
-                                            </div>
-                                            <div class="timeline-evento mb-0">
-                                                <strong class="d-block small text-success">3. Cosecha, Exportación y Liquidación</strong>
-                                                <small class="text-muted">Venta a compradores internacionales y depósito de utilidades.</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab 2: Simulador Interactivo de Rentabilidad (Inversionista) -->
-                        <div class="tab-pane fade" id="tab-simulador" role="tabpanel" aria-labelledby="tab-simulador-tab">
-                            <div class="simulador-card p-4 rounded-4 border shadow-sm">
-                                <div class="row g-4 align-items-center">
-                                    <div class="col-12 col-lg-6">
-                                        <span class="badge bg-success-subtle text-success mb-2 px-3 py-1 rounded-pill fw-semibold">Calculadora de Ganancias AgroConecta</span>
-                                        <h3 class="fw-bold mb-3 fs-4">Simula tu Rentabilidad de Inversión</h3>
-                                        <p class="text-muted mb-4">Ingresa el capital que deseas participar o mueve el selector. Calcula tus retornos proyectados respaldados en contratos notariados de compra futura:</p>
-
-                                        <!-- Input numérico y Slider sincronizados -->
-                                        <div class="mb-4">
-                                            <label for="simuladorMontoInput" class="form-label fw-bold d-flex justify-content-between">
-                                                <span>Monto a Invertir (Soles):</span>
-                                                <span class="text-success fs-5 fw-bold" id="simuladorMontoDisplay">S/. 2,000</span>
-                                            </label>
-                                            <div class="input-group input-group-lg mb-2">
-                                                <span class="input-group-text bg-light fw-bold">S/.</span>
-                                                <input type="number" id="simuladorMontoInput" class="form-control fw-bold fs-4 text-success" value="2000" min="500" max="50000" step="500">
-                                            </div>
-                                            <input type="range" class="form-range" id="simuladorMontoRange" min="500" max="20000" step="250" value="2000">
-                                            <div class="d-flex justify-content-between text-muted small">
-                                                <span>Mínimo: S/. 500</span>
-                                                <span>S/. 5,000</span>
-                                                <span>S/. 10,000</span>
-                                                <span>Máximo: S/. 20,000</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Selector de Cultivo -->
-                                        <div class="mb-3">
-                                            <label for="simuladorCultivoSelect" class="form-label fw-bold">Selecciona la Campaña / Cultivo:</label>
-                                            <select id="simuladorCultivoSelect" class="form-select form-select-lg">
-                                                <option value="palta" data-tasa="15.2" data-meses="8" selected>🥑 Palta Hass de Exportación (15.2% E.A. • 8 meses)</option>
-                                                <option value="cafe" data-tasa="14.5" data-meses="10">☕ Café Orgánico de Altura (14.5% E.A. • 10 meses)</option>
-                                                <option value="cacao" data-tasa="13.8" data-meses="11">🍫 Cacao Criollo Fino de Aroma (13.8% E.A. • 11 meses)</option>
-                                                <option value="quinua" data-tasa="12.5" data-meses="6">🌾 Quinua Real del Altiplano (12.5% E.A. • 6 meses)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Columna de Resultados de la Simulación -->
-                                    <div class="col-12 col-lg-6">
-                                        <div class="p-4 rounded-4 bg-light border border-success-subtle shadow-sm">
-                                            <h5 class="fw-bold mb-3 text-dark">Resumen Proyectado de Liquidación</h5>
-                                            
-                                            <div class="d-flex justify-content-between py-2 border-bottom">
-                                                <span class="text-muted">Capital Inicial Invertido:</span>
-                                                <strong class="text-dark" id="resumenCapital">S/. 2,000.00</strong>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between py-2 border-bottom">
-                                                <span class="text-muted">Tasa de Rentabilidad Estimada:</span>
-                                                <strong class="text-success" id="resumenTasa">15.2% Anual</strong>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between py-2 border-bottom">
-                                                <span class="text-muted">Ganancia Neta Proyectada:</span>
-                                                <strong class="text-success fs-5" id="resumenGanancia">+ S/. 304.00</strong>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between py-2 border-bottom">
-                                                <span class="text-muted">Plazo Estimado a la Cosecha:</span>
-                                                <span class="fw-semibold text-dark" id="resumenPlazo">8 meses</span>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between py-3 my-2 bg-white rounded-3 px-3 border border-success">
-                                                <span class="fw-bold text-dark fs-5">Monto Total a Recibir:</span>
-                                                <strong class="fs-4 text-success" id="resumenTotal">S/. 2,304.00</strong>
-                                            </div>
-
-                                            <div class="small text-muted mb-4 d-flex align-items-center gap-2">
-                                                <span>🛡️</span>
-                                                <span>Respaldado por <strong>Póliza Agrícola SBS</strong> y contrato de compra futura notariado.</span>
-                                            </div>
-
-                                            <a href="page/contacto.html" id="btnPostularSimulador" class="btn btn-success btn-lg w-100 fw-bold rounded-pill shadow-sm py-3">
-                                                💼 Invertir con este Monto Proyectado
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab 3: Trazabilidad, Auditoría Satelital y Póliza SBS -->
-                        <div class="tab-pane fade" id="tab-auditoria" role="tabpanel" aria-labelledby="tab-auditoria-tab">
-                            <div class="row g-4">
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="p-4 rounded-4 bg-white border h-100 shadow-sm">
-                                        <div class="fs-1 mb-2">🛰️</div>
-                                        <h5 class="fw-bold">Monitoreo Satelital (NDVI)</h5>
-                                        <p class="text-muted small">Imágenes multiespectrales de Sentinel-2 auditan periódicamente el vigor vegetal, humedad y clorofila en cada hectárea registrada.</p>
-                                        <span class="badge bg-success-subtle text-success">Índice Óptimo: 0.78 NDVI</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="p-4 rounded-4 bg-white border h-100 shadow-sm">
-                                        <div class="fs-1 mb-2">🛡️</div>
-                                        <h5 class="fw-bold">Póliza Catastrófica SBS</h5>
-                                        <p class="text-muted small">Convenios obligatorios con aseguradoras reguladas por la Superintendencia de Banca y Seguros (SBS) ante heladas, sequías o plagas.</p>
-                                        <span class="badge bg-success-subtle text-success">Póliza Activa: 100% Cobertura</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="p-4 rounded-4 bg-white border h-100 shadow-sm">
-                                        <div class="fs-1 mb-2">📜</div>
-                                        <h5 class="fw-bold">Contratos Notariados</h5>
-                                        <p class="text-muted small">Acuerdos formales de compra futura con validez legal firmados entre las asociaciones productoras, inversionistas y AgroConecta.</p>
-                                        <span class="badge bg-success-subtle text-success">Certeza Jurídica 100%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div
+              class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 gap-sm-4 mt-4 pt-2 text-muted small"
+            >
+              <div>🔒 <strong>Compra futura</strong></div>
+              <div>🌱 <strong>Comercio Justo</strong></div>
+              <div>📈 <strong>Simulación de retornos</strong></div>
             </div>
-        </section>
+          </div>
+          <div class="col-12 col-lg-5 text-center">
+            <div class="position-relative">
+              <img
+                alt="Productor agrícola peruano en campo de cultivo"
+                class="img-fluid rounded-4 shadow-lg border border-3 border-white"
+                decoding="async"
+                height="512"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/hero-campesino.webp"
+                srcset="
+                  assets/imagenes/hero-campesino-480.webp 480w,
+                  assets/imagenes/hero-campesino.webp     960w
+                "
+                width="960"
+              />
+              <div
+                class="position-absolute bottom-0 start-50 translate-middle-x mb-3 bg-white bg-opacity-95 px-3 py-2 rounded-3 shadow-sm d-flex align-items-center gap-2 border"
+              >
+                <span class="badge bg-success rounded-pill">Activo</span>
+                <small class="fw-bold text-dark">Campaña Nacional 2026</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <!-- 3. CATÁLOGO DE CULTIVOS CON CARDS RESPONSIVE -->
-        <section id="campanas" class="container py-5">
-            <div class="text-center mb-5">
-                <span class="badge-pill-agro badge-financiamiento mb-2">Oportunidades de Compra Futura</span>
-                <h2 class="fw-bold">Campañas Agrícolas Disponibles para Financiamiento</h2>
-                <p>Explora nuestras principales campañas y apoya a agricultores locales en diferentes valles del país.</p>
+      <section class="py-5 bg-white border-top border-bottom" id="dashboard">
+        <div class="container">
+          <div class="text-center mb-4">
+            <span class="badge-pill-agro badge-cosecha-futura mb-2">Indicadores de campaña</span>
+            <h2 class="fw-bold">Dashboard Agrícola y Monitoreo de Cartera</h2>
+            <p class="text-muted mx-auto descripcion-dashboard">
+              Visualización verificable de avance de fondeo, hectáreas georreferenciadas, estado
+              fenológico y retornos calculados con CSS3 nativo.
+            </p>
+          </div>
+
+          <div
+            class="dashboard-control-bar p-3 rounded-4 mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm"
+          >
+            <div class="d-flex align-items-center gap-2">
+              <span class="dashboard-pulse-dot"></span>
+              <small class="fw-bold text-dark">Auditoría Satelital y Póliza SBS:</small>
+              <span
+                aria-live="polite"
+                aria-atomic="true"
+                class="badge bg-success-subtle text-success-emphasis border border-success-subtle rounded-pill px-2 py-1 small"
+                id="campanaSeleccionada"
+                >Seguimiento de campañas</span
+              >
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <!-- Card 1: Café Orgánico -->
-                <div class="col">
-                    <article class="agro-card">
-                        <img src="dist/imagenes/cafe.portada.png" alt="Café Orgánico de Altura en Chanchamayo" class="mb-3" loading="lazy">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Chanchamayo, Junín</span>
-                            <span class="fw-bold text-success small">Retorno: 14.5%</span>
+            <div class="d-flex flex-wrap gap-1" id="filtroValleContainer">
+              <button class="btn btn-sm btn-filtro-agro active" data-cultivo="todos" type="button">
+                Todos los Valles
+              </button>
+              <button class="btn btn-sm btn-filtro-agro" data-cultivo="cafe" type="button">
+                ☕ Chanchamayo (Café)
+              </button>
+              <button class="btn btn-sm btn-filtro-agro" data-cultivo="palta" type="button">
+                🥑 Huaral (Palta)
+              </button>
+              <button class="btn btn-sm btn-filtro-agro" data-cultivo="cacao" type="button">
+                🍫 Quillabamba (Cacao)
+              </button>
+              <button class="btn btn-sm btn-filtro-agro" data-cultivo="quinua" type="button">
+                🌾 Puno (Quinua)
+              </button>
+            </div>
+          </div>
+
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
+            <div class="col">
+              <div class="indicador-kpi indicador-kpi-moderno h-100" data-kpi="capital">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span>Capital Colocado</span>
+                  <span class="badge bg-success-subtle text-success small rounded-pill"
+                    >74.2% Meta</span
+                  >
+                </div>
+                <strong id="kpiCapital">S/. 185,500</strong>
+                <div class="kpi-mini-barra mt-2 mb-2">
+                  <div class="kpi-mini-fill avance-capital"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-muted">
+                  <span>Meta: S/. 250,000</span>
+                  <small class="text-success fw-bold">↑ 24.5% vs 2025</small>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div
+                class="indicador-kpi indicador-kpi-moderno h-100 indicador-superficie"
+                data-kpi="hectareas"
+              >
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span>Hectáreas Auditadas</span>
+                  <span class="badge bg-warning-subtle text-warning-emphasis small rounded-pill"
+                    >GPS + Satélite</span
+                  >
+                </div>
+                <strong id="kpiHectareas">142 Ha</strong>
+                <div class="kpi-mini-barra mt-2 mb-2">
+                  <div class="kpi-mini-fill avance-superficie"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-muted">
+                  <span>6 Valles Activos</span>
+                  <small class="fw-bold texto-cosecha">🛡️ Gestión de riesgos</small>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div
+                class="indicador-kpi indicador-kpi-moderno h-100 indicador-productores"
+                data-kpi="familias"
+              >
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span>Familias Productoras</span>
+                  <span class="badge bg-secondary-subtle text-secondary-emphasis small rounded-pill"
+                    >Sin usura</span
+                  >
+                </div>
+                <strong id="kpiFamilias">96</strong>
+                <div class="kpi-mini-barra mt-2 mb-2">
+                  <div class="kpi-mini-fill avance-productores"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-muted">
+                  <span>Comunidades aliadas</span>
+                  <small class="fw-bold texto-bosque">+35% Margen Neto</small>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div
+                class="indicador-kpi indicador-kpi-moderno h-100 indicador-retorno"
+                data-kpi="retorno"
+              >
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span>Retorno Anual Promedio</span>
+                  <span class="badge bg-success-subtle text-success small rounded-pill"
+                    >Referencia</span
+                  >
+                </div>
+                <strong id="kpiRetorno">13.8%</strong>
+                <div class="kpi-mini-barra mt-2 mb-2">
+                  <div class="kpi-mini-fill avance-retorno"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-muted">
+                  <span>Tasa anual simple</span>
+                  <small class="text-success fw-bold">Proyección de campaña</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-tabs-container mb-4">
+            <ul
+              class="nav nav-pills justify-content-center gap-2 mb-4"
+              id="dashboardTabs"
+              role="tablist"
+            >
+              <li class="nav-item" role="presentation">
+                <button
+                  aria-controls="tab-avance"
+                  aria-selected="true"
+                  class="nav-link active px-4 py-2 fw-semibold rounded-pill"
+                  data-bs-target="#tab-avance"
+                  data-bs-toggle="pill"
+                  id="tab-avance-tab"
+                  role="tab"
+                  type="button"
+                >
+                  📊 Avance Agronómico y Fondeo
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  aria-controls="tab-simulador"
+                  aria-selected="false"
+                  class="nav-link px-4 py-2 fw-semibold rounded-pill"
+                  data-bs-target="#tab-simulador"
+                  data-bs-toggle="pill"
+                  id="tab-simulador-tab"
+                  role="tab"
+                  type="button"
+                >
+                  🧮 Simulador de Rentabilidad en Vivo
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  aria-controls="tab-auditoria"
+                  aria-selected="false"
+                  class="nav-link px-4 py-2 fw-semibold rounded-pill"
+                  data-bs-target="#tab-auditoria"
+                  data-bs-toggle="pill"
+                  id="tab-auditoria-tab"
+                  role="tab"
+                  type="button"
+                >
+                  🛡️ Trazabilidad y Póliza SBS
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content" id="dashboardTabsContent">
+              <div
+                aria-labelledby="tab-avance-tab"
+                class="tab-pane fade show active"
+                id="tab-avance"
+                role="tabpanel"
+              >
+                <div class="row g-4 align-items-stretch">
+                  <div class="col-12 col-lg-7">
+                    <div class="grafico-barras-agro h-100">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="fw-bold mb-0 fs-5 fs-4" id="tituloAvanceCampana">
+                          Distribución de Fondos y Fases de Cultivo
+                        </h3>
+                        <span class="badge bg-light text-dark border">Campaña 2026</span>
+                      </div>
+                      <p class="text-muted small mb-4">
+                        Progreso de colocación de capital por cultivo con verificación fenológica en
+                        campo:
+                      </p>
+
+                      <div class="mb-4">
+                        <div class="d-flex justify-content-between small fw-bold mb-1">
+                          <span id="metaAvanceCampana">Fondo Global 2026 (Meta: S/. 250,000)</span>
+                          <span class="text-success fw-bold" id="porcentajeAvanceCampana"
+                            >74.2% alcanzado</span
+                          >
                         </div>
-                        <h3 class="fs-5 mb-2">Café Orgánico de Altura</h3>
-                        <p class="text-muted small flex-grow-1">
-                            Financiamiento para 25 familias caficultoras del sector San Alberto: insumos ecológicos y secado en camas solares.
+                        <div class="barra-progreso-css">
+                          <div
+                            class="progreso-fill avance-general"
+                            data-ancho="74.2%"
+                            id="barraAvanceCampana"
+                          >
+                            S/. 185,500 recaudados
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="cultivo-item-card mb-3 p-3 rounded-3 border" data-cultivo="cafe">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                          <strong class="d-flex align-items-center gap-1"
+                            >☕ Café Orgánico de Altura (Chanchamayo)</strong
+                          >
+                          <span class="badge bg-success-subtle text-success fw-bold"
+                            >88% Fondeado</span
+                          >
+                        </div>
+                        <div class="barra-pista mb-2">
+                          <div class="barra-item barra-cafe avance-cafe"></div>
+                        </div>
+                        <div
+                          class="fenologia-stepper d-flex justify-content-between small text-muted"
+                        >
+                          <span class="stepper-step completed">🌱 Siembra</span>
+                          <span class="stepper-step completed">🌿 Crecimiento</span>
+                          <span class="stepper-step active">🌸 Floración (Actual)</span>
+                          <span class="stepper-step">🚜 Cosecha (Mayo)</span>
+                        </div>
+                      </div>
+                      <div class="cultivo-item-card mb-3 p-3 rounded-3 border" data-cultivo="palta">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                          <strong class="d-flex align-items-center gap-1"
+                            >🥑 Palta Hass de Exportación (Huaral)</strong
+                          >
+                          <span class="badge bg-success-subtle text-success fw-bold"
+                            >94% Fondeado</span
+                          >
+                        </div>
+                        <div class="barra-pista mb-2">
+                          <div class="barra-item barra-palta avance-palta"></div>
+                        </div>
+                        <div
+                          class="fenologia-stepper d-flex justify-content-between small text-muted"
+                        >
+                          <span class="stepper-step completed">🌱 Cuaja</span>
+                          <span class="stepper-step completed">🌿 Desarrollo</span>
+                          <span class="stepper-step active">🥑 Maduración (Actual)</span>
+                          <span class="stepper-step">🚜 Cosecha (Marzo)</span>
+                        </div>
+                      </div>
+                      <div class="cultivo-item-card mb-3 p-3 rounded-3 border" data-cultivo="cacao">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                          <strong class="d-flex align-items-center gap-1"
+                            >🍫 Cacao Criollo Fino de Aroma (Quillabamba)</strong
+                          >
+                          <span class="badge bg-success-subtle text-success fw-bold"
+                            >72% Fondeado</span
+                          >
+                        </div>
+                        <div class="barra-pista mb-2">
+                          <div class="barra-item barra-cacao avance-cacao"></div>
+                        </div>
+                        <div
+                          class="fenologia-stepper d-flex justify-content-between small text-muted"
+                        >
+                          <span class="stepper-step completed">🌱 Poda</span>
+                          <span class="stepper-step active">🌿 Crecimiento Vainas</span>
+                          <span class="stepper-step">🍫 Maduración</span>
+                          <span class="stepper-step">🚜 Cosecha (Julio)</span>
+                        </div>
+                      </div>
+                      <div
+                        class="cultivo-item-card mb-0 p-3 rounded-3 border"
+                        data-cultivo="quinua"
+                      >
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                          <strong class="d-flex align-items-center gap-1"
+                            >🌾 Quinua Real del Altiplano (Puno)</strong
+                          >
+                          <span class="badge bg-success-subtle text-success fw-bold"
+                            >65% Fondeado</span
+                          >
+                        </div>
+                        <div class="barra-pista mb-2">
+                          <div class="barra-item barra-quinua avance-quinua"></div>
+                        </div>
+                        <div
+                          class="fenologia-stepper d-flex justify-content-between small text-muted"
+                        >
+                          <span class="stepper-step completed">🌱 Siembra</span>
+                          <span class="stepper-step active">🌿 Crecimiento y Panoja</span>
+                          <span class="stepper-step">🌾 Grano Lechoso</span>
+                          <span class="stepper-step">🚜 Cosecha (Junio)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-5">
+                    <div class="grafico-barras-agro panel-cumplimiento">
+                      <div>
+                        <h4 class="fw-bold mb-2 fs-5">Indicador de cumplimiento</h4>
+                        <p class="text-muted small mb-4">
+                          Seguimiento de hitos y avance de cada campaña:
                         </p>
-                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Meta: <strong>S/. 25,000</strong></small>
-                            <a href="page/cafe.html" class="btn btn-outline-success btn-sm stretched-link fw-semibold">Ver Ficha Técnica &rarr;</a>
-                        </div>
-                    </article>
-                </div>
 
-                <!-- Card 2: Cacao Criollo -->
-                <div class="col">
-                    <article class="agro-card">
-                        <img src="dist/imagenes/cacao.portada.png" alt="Cacao Criollo Fino en Quillabamba" class="mb-3" loading="lazy">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Quillabamba, Cusco</span>
-                            <span class="fw-bold text-success small">Retorno: 12.0%</span>
+                        <div class="text-center mb-4">
+                          <div class="indicador-circular-conic">
+                            <div class="indicador-circular-centro">
+                              98.6%
+                              <small>Efectividad</small>
+                            </div>
+                          </div>
+                          <p class="small text-muted mt-3 mb-0 fw-semibold">
+                            Indicador de seguimiento de campaña
+                          </p>
                         </div>
-                        <h3 class="fs-5 mb-2">Cacao Criollo Fino</h3>
-                        <p class="text-muted small flex-grow-1">
-                            Cosecha selecta y fermentación controlada para exportación directa a chocolaterías finas europeas.
-                        </p>
-                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Meta: <strong>S/. 18,500</strong></small>
-                            <a href="page/cacao.html" class="btn btn-outline-success btn-sm stretched-link fw-semibold">Ver Ficha Técnica &rarr;</a>
-                        </div>
-                    </article>
-                </div>
+                      </div>
 
-                <!-- Card 3: Palta Hass -->
-                <div class="col">
-                    <article class="agro-card">
-                        <img src="dist/imagenes/palta.portada.png" alt="Palta Hass en Huaral" class="mb-3" loading="lazy">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Huaral, Lima</span>
-                            <span class="fw-bold text-success small">Retorno: 16.0%</span>
+                      <div class="timeline-agro mt-3">
+                        <div class="timeline-evento">
+                          <strong class="d-block small text-success"
+                            >1. Auditoría Agronómica y Póliza SBS</strong
+                          >
+                          <small class="text-muted"
+                            >Verificación del predio y emisión del seguro catastrófico.</small
+                          >
                         </div>
-                        <h3 class="fs-5 mb-2">Palta Hass de Exportación</h3>
-                        <p class="text-muted small flex-grow-1">
-                            Ampliación de riego por goteo presurizado y certificación GlobalGAP en 18 hectáreas familiares costeras.
-                        </p>
-                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Meta: <strong>S/. 32,000</strong></small>
-                            <a href="page/palta.html" class="btn btn-outline-success btn-sm stretched-link fw-semibold">Ver Ficha Técnica &rarr;</a>
+                        <div class="timeline-evento">
+                          <strong class="d-block small text-success"
+                            >2. Desembolsos Contra Avance Físico</strong
+                          >
+                          <small class="text-muted"
+                            >Insumos y jornales liberados según bitácora de campo.</small
+                          >
                         </div>
-                    </article>
-                </div>
-
-                <!-- Card 4: Maíz Morado -->
-                <div class="col">
-                    <article class="agro-card">
-                        <img src="dist/imagenes/maizmorado.portada.png" alt="Maíz Morado Canteño" class="mb-3" loading="lazy">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-secondary-subtle text-secondary-emphasis border px-2 py-1 rounded">Valle de Canta, Lima</span>
-                            <span class="fw-bold text-success small">Retorno: 13.0%</span>
+                        <div class="timeline-evento mb-0">
+                          <strong class="d-block small text-success"
+                            >3. Cosecha, Exportación y Liquidación</strong
+                          >
+                          <small class="text-muted"
+                            >Venta a compradores internacionales y depósito de utilidades.</small
+                          >
                         </div>
-                        <h3 class="fs-5 mb-2">Maíz Morado Canteño</h3>
-                        <p class="text-muted small flex-grow-1">
-                            Producción andina de alta concentración de antocianinas orientada a la industria nutracéutica de extractos.
-                        </p>
-                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Meta: <strong>S/. 20,000</strong></small>
-                            <a href="page/maiz.html" class="btn btn-outline-success btn-sm stretched-link fw-semibold">Ver Ficha Técnica &rarr;</a>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Card 5: Quinua Real -->
-                <div class="col">
-                    <article class="agro-card">
-                        <img src="dist/imagenes/quinua.portada.png" alt="Quinua Real en Puno" class="mb-3" loading="lazy">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-warning-subtle text-warning-emphasis border px-2 py-1 rounded">Altiplano, Puno</span>
-                            <span class="fw-bold text-success small">Retorno: 11.8%</span>
-                        </div>
-                        <h3 class="fs-5 mb-2">Quinua Real del Altiplano</h3>
-                        <p class="text-muted small flex-grow-1">
-                            Grano de oro ancestral cultivado a más de 3,800 msnm con manejo orgánico libre de pesticidas sintéticos.
-                        </p>
-                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Meta: <strong>S/. 15,000</strong></small>
-                            <a href="page/quinua.html" class="btn btn-outline-success btn-sm stretched-link fw-semibold">Ver Ficha Técnica &rarr;</a>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Card 6: Mango Kent -->
-                <div class="col">
-                    <article class="agro-card">
-                        <img src="dist/imagenes/mango.portada.png" alt="Mango Kent en Piura" class="mb-3" loading="lazy">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-success-subtle text-success border px-2 py-1 rounded">Valle de San Lorenzo, Piura</span>
-                            <span class="fw-bold text-success small">Retorno: 15.2%</span>
-                        </div>
-                        <h3 class="fs-5 mb-2">Mango Kent Orgánico</h3>
-                        <p class="text-muted small flex-grow-1">
-                            Fruta de exportación con tratamiento hidrotérmico para envío marítimo directo a mercados norteamericanos.
-                        </p>
-                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Meta: <strong>S/. 28,000</strong></small>
-                            <a href="page/mango.html" class="btn btn-outline-success btn-sm stretched-link fw-semibold">Ver Ficha Técnica &rarr;</a>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. INNOVACIÓN Y TECNOLOGÍA CON IFRAME RESPONSIVE -->
-        <section class="py-5 bg-white border-top border-bottom">
-            <div class="container text-center">
-                <span class="badge-pill-agro badge-cosecha-futura mb-2">Educación y Contexto Agrícola</span>
-                <h2 class="fw-bold">Innovación y Tecnología en el Agro Latinoamericano</h2>
-                <p class="text-muted mb-4">Descubre cómo la digitalización y el financiamiento oportuno revolucionan la productividad del campo:</p>
-                
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-9">
-                        <!-- Utilidad ratio ratio-16x9 de Bootstrap -->
-                        <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden border border-2">
-                            <iframe src="https://www.youtube.com/embed/I3K7sI_cW0M" title="Así transforma la tecnología el futuro del campo en Latinoamérica - DW Español" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-        </section>
+              </div>
 
-        <!-- 5. MULTIMEDIA NATIVA RESPONSIVE -->
-        <section class="container py-5">
-            <div class="text-center mb-5">
-                <span class="badge-pill-agro badge-financiamiento mb-2">Voces del Campo</span>
-                <h2 class="fw-bold">Cápsulas Multimedia y Testimonios Reales</h2>
-                <p>Historias de vida y transformación económica de los pequeños agricultores de AgroConecta.</p>
-            </div>
+              <div
+                aria-labelledby="tab-simulador-tab"
+                class="tab-pane fade"
+                id="tab-simulador"
+                role="tabpanel"
+              >
+                <div class="simulador-card p-4 rounded-4 border shadow-sm">
+                  <div class="row g-4 align-items-center">
+                    <div class="col-12 col-lg-6">
+                      <span
+                        class="badge bg-success-subtle text-success mb-2 px-3 py-1 rounded-pill fw-semibold"
+                        >Calculadora de Ganancias AgroConecta</span
+                      >
+                      <h3 class="fw-bold mb-3 fs-4">Simula tu Rentabilidad de Inversión</h3>
+                      <p class="text-muted mb-4">
+                        Ingresa el capital que deseas participar o mueve el selector. Calcula tus
+                        retornos proyectados respaldados en contratos notariados de compra futura:
+                      </p>
 
-            <div class="row g-4 align-items-stretch">
-                <!-- Video Informativo -->
-                <div class="col-12 col-md-6">
-                    <article class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column align-items-center text-center">
-                        <h4 class="fw-bold text-success mb-2">Video Informativo del Productor</h4>
-                        <p class="text-muted small mb-3">Reportaje audiovisual sobre el impacto del capital de trabajo directo en la economía familiar:</p>
-                        <div class="w-100 mt-auto">
-                            <video class="w-100 rounded-3 shadow-sm" controls poster="dist/imagenes/video-poster.png" preload="metadata">
-                                <source src="dist/videos/presentacion.mp4" type="video/mp4">
-                                <source src="dist/videos/presentacion.webm" type="video/webm">
-                                Tu navegador no admite el elemento video.
-                            </video>
+                      <div class="mb-4">
+                        <label
+                          class="form-label fw-bold d-flex justify-content-between"
+                          for="simuladorMontoInput"
+                          id="etiquetaMontoSimulador"
+                        >
+                          <span>Monto a Invertir (Soles):</span>
+                          <span class="text-success fs-5 fw-bold" id="simuladorMontoDisplay"
+                            >S/. 2,000</span
+                          >
+                        </label>
+                        <div class="input-group input-group-lg mb-2">
+                          <span class="input-group-text bg-light fw-bold">S/.</span>
+                          <input
+                            aria-describedby="ayudaSimulador"
+                            class="form-control fw-bold fs-4 text-success"
+                            id="simuladorMontoInput"
+                            max="50000"
+                            min="500"
+                            step="500"
+                            type="number"
+                            value="2000"
+                          />
                         </div>
-                    </article>
-                </div>
-
-                <!-- Testimonio Radial -->
-                <div class="col-12 col-md-6">
-                    <aside class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column align-items-center text-center">
-                        <h4 class="fw-bold text-success mb-2">Testimonio Radial del Agricultor</h4>
-                        <p class="text-muted small mb-3">Escucha a don Pedro Huamán, caficultor de Chanchamayo que culminó con éxito su primera campaña:</p>
-                        <div class="w-100 my-auto py-4">
-                            <audio class="w-100" controls preload="auto">
-                                <source src="dist/audios/testimonio.mp3" type="audio/mp3">
-                                Tu navegador no admite el elemento audio.
-                            </audio>
+                        <input
+                          aria-labelledby="etiquetaMontoSimulador"
+                          class="form-range"
+                          id="simuladorMontoRange"
+                          max="50000"
+                          min="500"
+                          step="500"
+                          type="range"
+                          value="2000"
+                        />
+                        <p class="small text-muted" id="ayudaSimulador">
+                          Cálculo con interés simple: capital × tasa anual × meses / 12. Montos de
+                          S/. 500 a S/. 50,000 en pasos de S/. 500.
+                        </p>
+                        <div class="d-flex justify-content-between text-muted small">
+                          <span>Mínimo: S/. 500</span>
+                          <span>S/. 5,000</span>
+                          <span>S/. 10,000</span>
+                          <span>Máximo: S/. 20,000</span>
                         </div>
-                        <div class="alert alert-success d-flex align-items-center gap-2 mb-0 py-2 w-100 text-start small">
-                            <span>🎙️</span>
-                            <span><strong>Transcripción:</strong> "Gracias a la compra futura no tuve que pedir préstamos usureros para abonar mis cafetos..."</span>
-                        </div>
-                    </aside>
-                </div>
-            </div>
-        </section>
+                      </div>
 
-        <!-- 6. CUADRO COMPARATIVO DE CAMPAÑAS RESPONSIVE -->
-        <section class="py-5 bg-white border-top border-bottom">
-            <div class="container">
-                <div class="text-center mb-4">
-                    <span class="badge-pill-agro badge-cosecha-futura mb-2">Análisis de Retornos</span>
-                    <h2 class="fw-bold">Cuadro Comparativo de Campañas Productivas</h2>
-                    <p>Transparencia total en metas de financiamiento, periodos de cosecha y estimados de retorno proyectado.</p>
-                </div>
-
-                <!-- Contenedor table-responsive de Bootstrap -->
-                <div class="d-block d-md-none text-center mb-2">
-                    <small class="text-muted"><span class="badge bg-secondary-subtle text-secondary-emphasis">👈 Desliza horizontalmente para ver la tabla completa 👉</span></small>
-                </div>
-                <div class="table-responsive shadow-sm rounded-4 border">
-                    <table class="table table-striped table-hover align-middle mb-0 tabla-agro">
-                        <caption class="p-3 text-muted small bg-light">Tabla Comparativa de Rendimiento y Financiamiento por Campaña (Periodo 2026)</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Cultivo</th>
-                                <th scope="col">Región / Valle</th>
-                                <th scope="col" class="text-end">Meta Financiera</th>
-                                <th scope="col" class="text-center">Retorno Proyectado</th>
-                                <th scope="col">Mes de Cosecha</th>
-                                <th scope="col" class="text-center">Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold">☕ Café Orgánico</td>
-                                <td>Chanchamayo, Junín</td>
-                                <td class="text-end fw-semibold">S/. 25,000.00</td>
-                                <td class="text-center"><span class="badge text-bg-success px-2 py-1">14.5% anual</span></td>
-                                <td><time datetime="2026-06">Junio 2026</time></td>
-                                <td class="text-center"><span class="badge rounded-pill text-bg-warning">85% financiado</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">🍫 Cacao Criollo</td>
-                                <td>Quillabamba, Cusco</td>
-                                <td class="text-end fw-semibold">S/. 18,500.00</td>
-                                <td class="text-center"><span class="badge text-bg-success px-2 py-1">12.0% anual</span></td>
-                                <td><time datetime="2026-08">Agosto 2026</time></td>
-                                <td class="text-center"><span class="badge rounded-pill text-bg-warning">60% financiado</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">🥑 Palta Hass</td>
-                                <td>Huaral, Lima</td>
-                                <td class="text-end fw-semibold">S/. 32,000.00</td>
-                                <td class="text-center"><span class="badge text-bg-success px-2 py-1">16.0% anual</span></td>
-                                <td><time datetime="2026-05">Mayo 2026</time></td>
-                                <td class="text-center"><span class="badge rounded-pill text-bg-success">100% financiado</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">🌾 Quinua Real</td>
-                                <td>Altiplano, Puno</td>
-                                <td class="text-end fw-semibold">S/. 15,000.00</td>
-                                <td class="text-center"><span class="badge text-bg-success px-2 py-1">11.8% anual</span></td>
-                                <td><time datetime="2026-07">Julio 2026</time></td>
-                                <td class="text-center"><span class="badge rounded-pill text-bg-warning">45% financiado</span></td>
-                            </tr>
-                        </tbody>
-                        <tfoot class="table-light fw-bold">
-                            <tr>
-                                <td colspan="2" class="text-end text-uppercase">Total Proyectado en Cartera:</td>
-                                <td class="text-end text-success fs-6">S/. 90,500.00</td>
-                                <td class="text-center text-success">13.6% promedio</td>
-                                <td colspan="2" class="text-center text-muted">4 Campañas activas en ejecución</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. PREGUNTAS FRECUENTES CON ACCORDION BOOTSTRAP -->
-        <section id="faq" class="container py-5">
-            <div class="text-center mb-5">
-                <span class="badge-pill-agro badge-financiamiento mb-2">Resolvemos tus Dudas</span>
-                <h2 class="fw-bold">Preguntas Frecuentes (FAQ)</h2>
-                <p>Todo lo que necesitas conocer sobre el modelo de compra futura, garantías y liquidación de cosechas.</p>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-12 col-lg-10">
-                    <div class="accordion shadow-sm rounded-4 overflow-hidden" id="faqAgroConecta">
-                        <!-- FAQ 1 -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    ¿Qué es exactamente un acuerdo de compra futura agrícola?
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAgroConecta">
-                                <div class="accordion-body text-muted">
-                                    Es un contrato formal mediante el cual el inversionista o comprador comercial adelanta el capital necesario para fertilización ecológica, jornales y certificación. A cambio, el productor garantiza la entrega prioritaria de la cosecha a un precio preestablecido y justo, evitando la intermediación abusiva y blindando la rentabilidad del financiador.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 2 -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    ¿Qué garantías existen ante contingencias climáticas o plagas?
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAgroConecta">
-                                <div class="accordion-body text-muted">
-                                    Todas las campañas publicadas en AgroConecta cuentan obligatoriamente con una póliza de seguro agrícola catastrófico contratada con aseguradoras reguladas por la SBS, sumado al acompañamiento agronómico continuo de nuestro equipo técnico en cada valle.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 3 -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    ¿Cuál es el monto mínimo para participar y cómo se desembolsa el dinero?
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAgroConecta">
-                                <div class="accordion-body text-muted">
-                                    Cualquier persona puede participar desde <strong>S/. 500.00</strong> en campañas colectivas. Los fondos recaudados no se entregan en una sola exhibición al productor; se liberan en armadas progresivas contra verificación fotográfica y técnica de hitos de campo (siembra, floración y cosecha).
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 4 -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    ¿Cuándo y cómo se liquida el retorno de inversión?
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAgroConecta">
-                                <div class="accordion-body text-muted">
-                                    Al culminar el acopio y comercialización del lote (entre mayo y agosto según el cultivo), el capital inicial y la ganancia acordada (entre 11.8% y 16.0% anual) se transfieren directamente a la cuenta bancaria del participante, con reporte de liquidación oficial.
-                                </div>
-                            </div>
-                        </div>
+                      <div class="mb-3">
+                        <label class="form-label fw-bold" for="simuladorCultivoSelect"
+                          >Selecciona la Campaña / Cultivo:</label
+                        >
+                        <select class="form-select form-select-lg" id="simuladorCultivoSelect">
+                          <option
+                            data-meses="8"
+                            data-nombre="Palta Hass de Exportación (Huaral)"
+                            data-tasa="15.2"
+                            selected=""
+                            value="palta"
+                          >
+                            🥑 Palta Hass de Exportación (15.2% anual simple • 8 meses)
+                          </option>
+                          <option
+                            data-meses="10"
+                            data-nombre="Café Orgánico de Altura (Chanchamayo)"
+                            data-tasa="14.5"
+                            value="cafe"
+                          >
+                            ☕ Café Orgánico de Altura (14.5% anual simple • 10 meses)
+                          </option>
+                          <option
+                            data-meses="11"
+                            data-nombre="Cacao Criollo de Aroma (Quillabamba)"
+                            data-tasa="13.8"
+                            value="cacao"
+                          >
+                            🍫 Cacao Criollo Fino de Aroma (13.8% anual simple • 11 meses)
+                          </option>
+                          <option
+                            data-meses="6"
+                            data-nombre="Quinua Real del Altiplano (Puno)"
+                            data-tasa="12.5"
+                            value="quinua"
+                          >
+                            🌾 Quinua Real del Altiplano (12.5% anual simple • 6 meses)
+                          </option>
+                        </select>
+                      </div>
                     </div>
+
+                    <div class="col-12 col-lg-6">
+                      <div class="p-4 rounded-4 bg-light border border-success-subtle shadow-sm">
+                        <h4 class="fw-bold mb-3 text-dark fs-5">
+                          Resumen Proyectado de Liquidación
+                        </h4>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                          <span class="text-muted">Capital Inicial Invertido:</span>
+                          <strong class="text-dark" id="resumenCapital">S/. 2,000.00</strong>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                          <span class="text-muted">Tasa de Rentabilidad Estimada:</span>
+                          <strong class="text-success" id="resumenTasa">15.2% Anual</strong>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                          <span class="text-muted">Ganancia Neta Proyectada:</span>
+                          <strong class="text-success fs-5" id="resumenGanancia"
+                            >+ S/. 304.00</strong
+                          >
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                          <span class="text-muted">Plazo Estimado a la Cosecha:</span>
+                          <span class="fw-semibold text-dark" id="resumenPlazo">8 meses</span>
+                        </div>
+                        <div
+                          class="d-flex justify-content-between py-3 my-2 bg-white rounded-3 px-3 border border-success"
+                        >
+                          <span class="fw-bold text-dark fs-5">Monto Total a Recibir:</span>
+                          <strong
+                            aria-atomic="true"
+                            aria-live="polite"
+                            class="fs-4 text-success"
+                            id="resumenTotal"
+                            >S/. 2,304.00</strong
+                          >
+                        </div>
+                        <div class="small text-muted mb-4 d-flex align-items-center gap-2">
+                          <span>🛡️</span>
+                          <span
+                            >Respaldado por <strong>Póliza Agrícola SBS</strong> y contrato de
+                            compra futura notariado.</span
+                          >
+                        </div>
+                        <a
+                          class="btn btn-success btn-lg w-100 fw-bold rounded-pill shadow-sm py-3 enlace-postulacion"
+                          href="page/contacto.html"
+                          id="btnPostularSimulador"
+                          >Probar postulación con estos datos</a
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              <div
+                aria-labelledby="tab-auditoria-tab"
+                class="tab-pane fade"
+                id="tab-auditoria"
+                role="tabpanel"
+              >
+                <div class="row g-4">
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="p-4 rounded-4 bg-white border h-100 shadow-sm">
+                      <div class="fs-1 mb-2">🛰️</div>
+                      <h5 class="fw-bold">Monitoreo Satelital (NDVI)</h5>
+                      <p class="text-muted small">
+                        El índice NDVI permite interpretar el vigor vegetal y apoyar el seguimiento
+                        de los cultivos.
+                      </p>
+                      <span class="badge bg-success-subtle text-success"
+                        >NDVI de referencia: 0.78</span
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="p-4 rounded-4 bg-white border h-100 shadow-sm">
+                      <div class="fs-1 mb-2">🛡️</div>
+                      <h5 class="fw-bold">Gestión de riesgos propuesta</h5>
+                      <p class="text-muted small">
+                        La planificación de la campaña incluye la evaluación de riesgos climáticos,
+                        de producción y comercialización.
+                      </p>
+                      <span class="badge bg-success-subtle text-success"
+                        >Evaluación de riesgos</span
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="p-4 rounded-4 bg-white border h-100 shadow-sm">
+                      <div class="fs-1 mb-2">📜</div>
+                      <h5 class="fw-bold">Modelo de acuerdo</h5>
+                      <p class="text-muted small">
+                        Consulta los elementos del acuerdo de compra futura: cultivo, volumen, plazo
+                        de entrega y precio pactado.
+                      </p>
+                      <span class="badge bg-success-subtle text-success"
+                        >Condiciones del acuerdo</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-5" id="campanas">
+        <div class="text-center mb-5">
+          <span class="badge-pill-agro badge-financiamiento mb-2"
+            >Oportunidades de Compra Futura</span
+          >
+          <h2 class="fw-bold">Campañas Agrícolas</h2>
+          <p>Explora los cultivos y sus fichas técnicas en diferentes valles del país.</p>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <div class="col">
+            <article class="agro-card">
+              <img
+                alt="Café Orgánico de Altura en Chanchamayo"
+                class="mb-3"
+                decoding="async"
+                height="1440"
+                loading="lazy"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/cafe.portada.webp"
+                srcset="
+                  assets/imagenes/cafe.portada-480.webp 480w,
+                  assets/imagenes/cafe.portada.webp     960w
+                "
+                width="960"
+              />
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span
+                  class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded"
+                  >Chanchamayo, Junín</span
+                >
+                <span class="fw-bold text-success small">Retorno: 14.5%</span>
+              </div>
+              <h3 class="fs-5 mb-2">Café Orgánico de Altura</h3>
+              <p class="text-muted small flex-grow-1">
+                Financiamiento para 25 familias caficultoras del sector San Alberto: insumos
+                ecológicos y secado en camas solares.
+              </p>
+              <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted">Meta: <strong>S/. 25,000</strong></small>
+                <a
+                  class="btn btn-outline-success btn-sm stretched-link fw-semibold"
+                  href="page/cafe.html"
+                  >Ver Ficha Técnica →</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="agro-card">
+              <img
+                alt="Cacao Criollo Fino en Quillabamba"
+                class="mb-3"
+                decoding="async"
+                height="1440"
+                loading="lazy"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/cacao.portada.webp"
+                srcset="
+                  assets/imagenes/cacao.portada-480.webp 480w,
+                  assets/imagenes/cacao.portada.webp     960w
+                "
+                width="960"
+              />
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span
+                  class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded"
+                  >Quillabamba, Cusco</span
+                >
+                <span class="fw-bold text-success small">Retorno: 12.0%</span>
+              </div>
+              <h3 class="fs-5 mb-2">Cacao Criollo Fino</h3>
+              <p class="text-muted small flex-grow-1">
+                Cosecha selecta y fermentación controlada para exportación directa a chocolaterías
+                finas europeas.
+              </p>
+              <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted">Meta: <strong>S/. 18,500</strong></small>
+                <a
+                  class="btn btn-outline-success btn-sm stretched-link fw-semibold"
+                  href="page/cacao.html"
+                  >Ver Ficha Técnica →</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="agro-card">
+              <img
+                alt="Palta Hass en Huaral"
+                class="mb-3"
+                decoding="async"
+                height="1440"
+                loading="lazy"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/palta.portada.webp"
+                srcset="
+                  assets/imagenes/palta.portada-480.webp 480w,
+                  assets/imagenes/palta.portada.webp     960w
+                "
+                width="960"
+              />
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span
+                  class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded"
+                  >Huaral, Lima</span
+                >
+                <span class="fw-bold text-success small">Retorno: 16.0%</span>
+              </div>
+              <h3 class="fs-5 mb-2">Palta Hass de Exportación</h3>
+              <p class="text-muted small flex-grow-1">
+                Ampliación de riego por goteo presurizado y certificación GlobalGAP en 18 hectáreas
+                familiares costeras.
+              </p>
+              <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted">Meta: <strong>S/. 32,000</strong></small>
+                <a
+                  class="btn btn-outline-success btn-sm stretched-link fw-semibold"
+                  href="page/palta.html"
+                  >Ver Ficha Técnica →</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="agro-card">
+              <img
+                alt="Maíz Morado Canteño"
+                class="mb-3"
+                decoding="async"
+                height="1440"
+                loading="lazy"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/maizmorado.portada.webp"
+                srcset="
+                  assets/imagenes/maizmorado.portada-480.webp 480w,
+                  assets/imagenes/maizmorado.portada.webp     960w
+                "
+                width="960"
+              />
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span
+                  class="badge bg-secondary-subtle text-secondary-emphasis border px-2 py-1 rounded"
+                  >Valle de Canta, Lima</span
+                >
+                <span class="fw-bold text-success small">Retorno: 13.0%</span>
+              </div>
+              <h3 class="fs-5 mb-2">Maíz Morado Canteño</h3>
+              <p class="text-muted small flex-grow-1">
+                Producción andina de alta concentración de antocianinas orientada a la industria
+                nutracéutica de extractos.
+              </p>
+              <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted">Meta: <strong>S/. 20,000</strong></small>
+                <a
+                  class="btn btn-outline-success btn-sm stretched-link fw-semibold"
+                  href="page/maiz.html"
+                  >Ver Ficha Técnica →</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="agro-card">
+              <img
+                alt="Quinua Real en Puno"
+                class="mb-3"
+                decoding="async"
+                height="1440"
+                loading="lazy"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/quinua.portada.webp"
+                srcset="
+                  assets/imagenes/quinua.portada-480.webp 480w,
+                  assets/imagenes/quinua.portada.webp     960w
+                "
+                width="960"
+              />
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-warning-subtle text-warning-emphasis border px-2 py-1 rounded"
+                  >Altiplano, Puno</span
+                >
+                <span class="fw-bold text-success small">Retorno: 11.8%</span>
+              </div>
+              <h3 class="fs-5 mb-2">Quinua Real del Altiplano</h3>
+              <p class="text-muted small flex-grow-1">
+                Grano de oro ancestral cultivado a más de 3,800 msnm con manejo orgánico libre de
+                pesticidas sintéticos.
+              </p>
+              <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted">Meta: <strong>S/. 15,000</strong></small>
+                <a
+                  class="btn btn-outline-success btn-sm stretched-link fw-semibold"
+                  href="page/quinua.html"
+                  >Ver Ficha Técnica →</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="agro-card">
+              <img
+                alt="Mango Kent en Piura"
+                class="mb-3"
+                decoding="async"
+                height="1440"
+                loading="lazy"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 600px"
+                src="assets/imagenes/mango.portada.webp"
+                srcset="
+                  assets/imagenes/mango.portada-480.webp 480w,
+                  assets/imagenes/mango.portada.webp     960w
+                "
+                width="960"
+              />
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-success-subtle text-success border px-2 py-1 rounded"
+                  >Valle de San Lorenzo, Piura</span
+                >
+                <span class="fw-bold text-success small">Retorno: 15.2%</span>
+              </div>
+              <h3 class="fs-5 mb-2">Mango Kent Orgánico</h3>
+              <p class="text-muted small flex-grow-1">
+                Fruta de exportación con tratamiento hidrotérmico para envío marítimo directo a
+                mercados norteamericanos.
+              </p>
+              <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted">Meta: <strong>S/. 28,000</strong></small>
+                <a
+                  class="btn btn-outline-success btn-sm stretched-link fw-semibold"
+                  href="page/mango.html"
+                  >Ver Ficha Técnica →</a
+                >
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="descarga-catalogo">
+          <a
+            class="btn-descarga-ficha"
+            download=""
+            href="assets/documentos/ficha-tecnica-referencial.txt"
+          >
+            <svg
+              aria-hidden="true"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4" />
+            </svg>
+            <span>Descargar ficha informativa</span>
+            <span class="formato-descarga">TXT</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="py-5 bg-white border-top border-bottom">
+        <div class="container text-center">
+          <span class="badge-pill-agro badge-cosecha-futura mb-2"
+            >Educación y Contexto Agrícola</span
+          >
+          <h2 class="fw-bold">Innovación y Tecnología en el Agro Latinoamericano</h2>
+          <p class="text-muted mb-4">
+            Descubre cómo la digitalización y el financiamiento oportuno revolucionan la
+            productividad del campo:
+          </p>
+          <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+              <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden border border-2">
+                <iframe
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  src="https://www.youtube.com/embed/I3K7sI_cW0M"
+                  title="Así transforma la tecnología el futuro del campo en Latinoamérica - DW Español"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-5">
+        <div class="text-center mb-5">
+          <span class="badge-pill-agro badge-financiamiento mb-2">Voces del Campo</span>
+          <h2 class="fw-bold">Cápsulas multimedia de demostración</h2>
+          <p>
+            Historias de vida y transformación económica de los pequeños agricultores de
+            AgroConecta.
+          </p>
+        </div>
+        <div class="row g-4 align-items-stretch">
+          <div class="col-12 col-md-6">
+            <article
+              class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column align-items-center text-center"
+            >
+              <h3 class="fw-bold text-success mb-2 fs-4">Video Informativo del Productor</h3>
+              <p class="text-muted small mb-3">
+                Reportaje audiovisual sobre el impacto del capital de trabajo directo en la economía
+                familiar:
+              </p>
+              <div class="w-100">
+                <video
+                  class="video-campana w-100 rounded-3 shadow-sm"
+                  width="1280"
+                  height="720"
+                  controls=""
+                  poster="assets/imagenes/video-poster.webp"
+                  preload="metadata"
+                >
+                  <source src="assets/videos/presentacion.mp4" type="video/mp4" />
+                  <source src="assets/videos/presentacion.webm" type="video/webm" />
+                  Tu navegador no admite el elemento video.
+                  <track
+                    default=""
+                    kind="captions"
+                    label="Español"
+                    src="assets/videos/presentacion.es.vtt"
+                    srclang="es"
+                  />
+                </video>
+                <details class="text-start mt-3">
+                  <summary>Transcripción y descripción del vídeo</summary>
+                  <p>
+                    ¿Sabías que muchos agricultores no tienen capital para sembrar? Con AgroConecta
+                    conectamos a pequeños productores con inversionistas mediante compras futuras,
+                    asegurando financiamiento directo y cosechas justas para todos.
+                  </p>
+                  <p>
+                    Descripción visual: un presentador con sombrero habla frente a un campo de
+                    cultivo y sostiene una tableta con una interfaz agrícola.
+                  </p>
+                </details>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <aside
+              class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column align-items-center text-center"
+            >
+              <h4 class="fw-bold text-success mb-2">Testimonio Radial del Agricultor</h4>
+              <p class="text-muted small mb-3">
+                Conoce el modelo de compra futura desde la perspectiva del productor.
+              </p>
+              <div class="w-100 py-3">
+                <audio class="w-100" controls="" preload="metadata">
+                  <source src="assets/audios/testimonio.mp3" type="audio/mpeg" />
+                  Tu navegador no admite el elemento audio.
+                </audio>
+              </div>
+              <div
+                class="alert alert-success d-flex align-items-center gap-2 mb-0 py-2 w-100 text-start small"
+              >
+                <details>
+                  <summary>Leer transcripción completa del audio</summary>
+                  <p>
+                    Antes, para empezar la campaña, era buscar préstamo por aquí, por allá, y la
+                    cosecha ya quedaba comprometida. Ahora, con AgroConecta, hemos tenido ese apoyo
+                    para comprar nuestros insumos, pagar los jornales y trabajar tranquilos la
+                    chacra. Cuando llegó la cosecha, ya teníamos a quién vender y a un precio
+                    acordado; eso nos ayuda bastante, pues. Ya no estamos vendiendo apurados ni
+                    malbaratando nuestro producto; así uno trabaja con más confianza, pues.
+                  </p>
+                </details>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-5 bg-white border-top border-bottom">
+        <div class="container">
+          <div class="text-center mb-4">
+            <span class="badge-pill-agro badge-cosecha-futura mb-2">Análisis de Retornos</span>
+            <h2 class="fw-bold">Cuadro Comparativo de Campañas Productivas</h2>
+            <p>
+              Transparencia total en metas de financiamiento, periodos de cosecha y estimados de
+              retorno proyectado.
+            </p>
+          </div>
+
+          <div class="d-block d-md-none text-center mb-2">
+            <small class="text-muted"
+              ><span class="badge bg-secondary-subtle text-secondary-emphasis"
+                >👈 Desliza horizontalmente para ver la tabla completa 👉</span
+              ></small
+            >
+          </div>
+          <div
+            class="table-responsive shadow-sm rounded-4 border"
+            tabindex="0"
+            role="region"
+            aria-label="Comparación de escenarios de inversión"
+          >
+            <table class="table table-striped table-hover align-middle mb-0 tabla-agro">
+              <caption class="p-3 text-muted small bg-light">
+                Tabla Comparativa de Rendimiento y Financiamiento por Campaña (Periodo 2026)
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Cultivo</th>
+                  <th scope="col">Región / Valle</th>
+                  <th class="text-end" scope="col">Meta Financiera</th>
+                  <th class="text-center" scope="col">Retorno Proyectado</th>
+                  <th scope="col">Mes de Cosecha</th>
+                  <th class="text-center" scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-bold">☕ Café Orgánico</td>
+                  <td>Chanchamayo, Junín</td>
+                  <td class="text-end fw-semibold">S/. 25,000.00</td>
+                  <td class="text-center">
+                    <span class="badge text-bg-success px-2 py-1">14.5% anual</span>
+                  </td>
+                  <td><time datetime="2026-06">Junio 2026</time></td>
+                  <td class="text-center">
+                    <span class="badge rounded-pill text-bg-warning">85% financiado</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">🍫 Cacao Criollo</td>
+                  <td>Quillabamba, Cusco</td>
+                  <td class="text-end fw-semibold">S/. 18,500.00</td>
+                  <td class="text-center">
+                    <span class="badge text-bg-success px-2 py-1">12.0% anual</span>
+                  </td>
+                  <td><time datetime="2026-08">Agosto 2026</time></td>
+                  <td class="text-center">
+                    <span class="badge rounded-pill text-bg-warning">60% financiado</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">🥑 Palta Hass</td>
+                  <td>Huaral, Lima</td>
+                  <td class="text-end fw-semibold">S/. 32,000.00</td>
+                  <td class="text-center">
+                    <span class="badge text-bg-success px-2 py-1">16.0% anual</span>
+                  </td>
+                  <td><time datetime="2026-05">Mayo 2026</time></td>
+                  <td class="text-center">
+                    <span class="badge rounded-pill text-bg-success">100% financiado</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">🌾 Quinua Real</td>
+                  <td>Altiplano, Puno</td>
+                  <td class="text-end fw-semibold">S/. 15,000.00</td>
+                  <td class="text-center">
+                    <span class="badge text-bg-success px-2 py-1">11.8% anual</span>
+                  </td>
+                  <td><time datetime="2026-07">Julio 2026</time></td>
+                  <td class="text-center">
+                    <span class="badge rounded-pill text-bg-warning">45% financiado</span>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot class="table-light fw-bold">
+                <tr>
+                  <td class="text-end text-uppercase" colspan="2">Total Proyectado en Cartera:</td>
+                  <td class="text-end text-success fs-6">S/. 90,500.00</td>
+                  <td class="text-center text-success">13.6% promedio</td>
+                  <td class="text-center text-muted" colspan="2">
+                    4 Campañas activas en ejecución
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-5" id="faq">
+        <div class="text-center mb-5">
+          <span class="badge-pill-agro badge-financiamiento mb-2">Resolvemos tus Dudas</span>
+          <h2 class="fw-bold">Preguntas Frecuentes (FAQ)</h2>
+          <p>
+            Todo lo que necesitas conocer sobre el modelo de compra futura, garantías y liquidación
+            de cosechas.
+          </p>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10">
+            <div class="accordion shadow-sm rounded-4 overflow-hidden" id="faqAgroConecta">
+              <div class="accordion-item">
+                <h3 class="accordion-header fs-2" id="headingOne">
+                  <button
+                    aria-controls="collapseOne"
+                    aria-expanded="true"
+                    class="accordion-button fw-bold text-success"
+                    data-bs-target="#collapseOne"
+                    data-bs-toggle="collapse"
+                    type="button"
+                  >
+                    ¿Qué es exactamente un acuerdo de compra futura agrícola?
+                  </button>
+                </h3>
+                <div
+                  aria-labelledby="headingOne"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#faqAgroConecta"
+                  id="collapseOne"
+                >
+                  <div class="accordion-body text-muted">
+                    El modelo de compra futura contempla un anticipo para una campaña a cambio de
+                    una entrega acordada. Sus condiciones incluyen cultivo, volumen, precio y plazo
+                    de entrega.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h3 class="accordion-header fs-2" id="headingTwo">
+                  <button
+                    aria-controls="collapseTwo"
+                    aria-expanded="false"
+                    class="accordion-button collapsed fw-bold text-success"
+                    data-bs-target="#collapseTwo"
+                    data-bs-toggle="collapse"
+                    type="button"
+                  >
+                    ¿Qué garantías existen ante contingencias climáticas o plagas?
+                  </button>
+                </h3>
+                <div
+                  aria-labelledby="headingTwo"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAgroConecta"
+                  id="collapseTwo"
+                >
+                  <div class="accordion-body text-muted">
+                    La evaluación de cada campaña debe considerar sus riesgos climáticos y
+                    productivos, así como las condiciones y exclusiones de cualquier cobertura que
+                    se proponga.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h3 class="accordion-header fs-2" id="headingThree">
+                  <button
+                    aria-controls="collapseThree"
+                    aria-expanded="false"
+                    class="accordion-button collapsed fw-bold text-success"
+                    data-bs-target="#collapseThree"
+                    data-bs-toggle="collapse"
+                    type="button"
+                  >
+                    ¿Cuál es el monto mínimo para participar y cómo se desembolsa el dinero?
+                  </button>
+                </h3>
+                <div
+                  aria-labelledby="headingThree"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAgroConecta"
+                  id="collapseThree"
+                >
+                  <div class="accordion-body text-muted">
+                    El simulador permite ensayar desde <strong>S/. 500.00</strong>. No recibe dinero
+                    ni realiza desembolsos. Los hitos de siembra, floración y cosecha muestran un
+                    flujo propuesto de seguimiento.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h3 class="accordion-header fs-2" id="headingFour">
+                  <button
+                    aria-controls="collapseFour"
+                    aria-expanded="false"
+                    class="accordion-button collapsed fw-bold text-success"
+                    data-bs-target="#collapseFour"
+                    data-bs-toggle="collapse"
+                    type="button"
+                  >
+                    ¿Cuándo y cómo se liquida el retorno de inversión?
+                  </button>
+                </h3>
+                <div
+                  aria-labelledby="headingFour"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAgroConecta"
+                  id="collapseFour"
+                >
+                  <div class="accordion-body text-muted">
+                    El simulador calcula una proyección de interés simple según el capital, la tasa
+                    y el plazo seleccionados. Las condiciones de liquidación se revisan en el
+                    acuerdo correspondiente.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <!-- PIE DE PÁGINA CORPORATIVO RESPONSIVE -->
-    <footer class="bg-dark text-white pt-5 pb-4 border-top" style="background-color: var(--color-primario) !important;">
-        <div class="container">
-            <div class="row g-4 mb-4">
-                <!-- Columna 1: Marca y RUC -->
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <img src="dist/imagenes/logo.png" width="44" height="44" alt="Logo de AgroConecta" loading="lazy">
-                        <div>
-                            <span class="fs-5 fw-bold d-block text-white">AGROCONECTA</span>
-                            <small style="color: #82DDB0;">COMPRA FUTURA AGRÍCOLA</small>
-                        </div>
-                    </div>
-                    <p class="text-white-50 small mb-2">
-                        Plataforma peruana de financiamiento colaborativo que conecta a pequeños productores agrarios con inversionistas mediante contratos formales de compra futura.
-                    </p>
-                    <p class="small text-white-50">
-                        <strong>RUC:</strong> 20609876541 &bull; <strong>Sede:</strong> Lima, Perú
-                    </p>
-                </div>
-
-                <!-- Columna 2: Navegación -->
-                <div class="col-6 col-md-6 col-lg-3">
-                    <h5 class="fw-bold mb-3 text-white">PLATAFORMA</h5>
-                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
-                        <li><a href="index.html" class="text-white-50 text-decoration-none">&rarr; Inicio</a></li>
-                        <li><a href="page/nosotros.html" class="text-white-50 text-decoration-none">&rarr; Quiénes Somos</a></li>
-                        <li><a href="#dashboard" class="text-white-50 text-decoration-none">&rarr; Dashboard Agrícola</a></li>
-                        <li><a href="#campanas" class="text-white-50 text-decoration-none">&rarr; Campañas Activas</a></li>
-                        <li><a href="#faq" class="text-white-50 text-decoration-none">&rarr; Preguntas Frecuentes</a></li>
-                        <li><a href="page/contacto.html" class="text-white-50 text-decoration-none">&rarr; Postular Campaña</a></li>
-                    </ul>
-                </div>
-
-                <!-- Columna 3: Cultivos -->
-                <div class="col-6 col-md-6 col-lg-3">
-                    <h5 class="fw-bold mb-3 text-white">CULTIVOS DISPONIBLES</h5>
-                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
-                        <li><a href="page/cafe.html" class="text-white-50 text-decoration-none">&bull; Café Orgánico (Junín)</a></li>
-                        <li><a href="page/cacao.html" class="text-white-50 text-decoration-none">&bull; Cacao Criollo (Cusco)</a></li>
-                        <li><a href="page/palta.html" class="text-white-50 text-decoration-none">&bull; Palta Hass (Lima)</a></li>
-                        <li><a href="page/maiz.html" class="text-white-50 text-decoration-none">&bull; Maíz Morado (Canta)</a></li>
-                        <li><a href="page/quinua.html" class="text-white-50 text-decoration-none">&bull; Quinua Real (Puno)</a></li>
-                        <li><a href="page/mango.html" class="text-white-50 text-decoration-none">&bull; Mango Kent (Piura)</a></li>
-                    </ul>
-                </div>
-
-                <!-- Columna 4: Contacto y Soporte -->
-                <div class="col-12 col-md-6 col-lg-3">
-                    <h5 class="fw-bold mb-3 text-white">CENTRAL DE ATENCIÓN</h5>
-                    <p class="small text-white-50 mb-2"><strong>Dirección:</strong> Av. Javier Prado Este 2465, San Borja, Lima</p>
-                    <p class="small text-white-50 mb-2"><strong>Correo:</strong> <a href="mailto:contacto@agroconecta.pe" style="color: #82DDB0;">contacto@agroconecta.pe</a></p>
-                    <p class="small text-white-50 mb-2"><strong>Teléfono:</strong> <a href="tel:+51930736214" style="color: #82DDB0;">+51 930 736 214</a></p>
-                    <p class="small text-white-50"><strong>Horario:</strong> Lunes a Viernes de 8:30 am a 6:00 pm</p>
-                </div>
+    <footer class="bg-dark text-white pt-5 pb-4 border-top pie-agro">
+      <div class="container">
+        <div class="row g-4 mb-4">
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <img
+                alt="Logo de AgroConecta"
+                decoding="async"
+                height="48"
+                loading="lazy"
+                src="assets/imagenes/logo.webp"
+                width="48"
+              />
+              <div>
+                <span class="fs-5 fw-bold d-block text-white">AGROCONECTA</span>
+                <small class="pie-descripcion">COMPRA FUTURA AGRÍCOLA</small>
+              </div>
             </div>
+            <p class="text-white-50 small mb-2">
+              Plataforma peruana de financiamiento colaborativo que conecta a pequeños productores
+              agrarios con inversionistas mediante contratos formales de compra futura.
+            </p>
+            <p class="small text-white-50">
+              <strong>RUC:</strong> 20609876541 • <strong>Sede:</strong> Lima, Perú
+            </p>
+          </div>
 
-            <hr class="border-secondary opacity-25">
+          <div class="col-6 col-md-6 col-lg-3">
+            <h2 class="fw-bold mb-3 text-white fs-5">PLATAFORMA</h2>
+            <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+              <li><a class="text-white-50 text-decoration-none" href="index.html">→ Inicio</a></li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/nosotros.html"
+                  >→ Quiénes Somos</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="#dashboard"
+                  >→ Dashboard Agrícola</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="#campanas"
+                  >→ Campañas Activas</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="#faq">→ Preguntas Frecuentes</a>
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/contacto.html"
+                  >→ Postular Campaña</a
+                >
+              </li>
+            </ul>
+          </div>
 
-            <div class="row align-items-center small text-white-50 pt-2">
-                <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
-                    &copy; <time datetime="2026">2026</time> <strong>AGROCONECTA S.A.C.</strong> Todos los derechos reservados.
-                </div>
-                <div class="col-12 col-md-6 text-center text-md-end">
-                    Desarrollado por <strong class="text-white">Richardson Yelstin Tantajulca Perez</strong> | IDAT
-                </div>
-            </div>
+          <div class="col-6 col-md-6 col-lg-3">
+            <h2 class="fw-bold mb-3 text-white fs-5">CULTIVOS DISPONIBLES</h2>
+            <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/cafe.html"
+                  >• Café Orgánico (Junín)</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/cacao.html"
+                  >• Cacao Criollo (Cusco)</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/palta.html"
+                  >• Palta Hass (Lima)</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/maiz.html"
+                  >• Maíz Morado (Canta)</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/quinua.html"
+                  >• Quinua Real (Puno)</a
+                >
+              </li>
+              <li>
+                <a class="text-white-50 text-decoration-none" href="page/mango.html"
+                  >• Mango Kent (Piura)</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <h2 class="fw-bold mb-3 text-white fs-5">CENTRAL DE ATENCIÓN</h2>
+            <p class="small text-white-50 mb-2">
+              <strong>Dirección:</strong> Av. Javier Prado Este 2465, San Borja, Lima
+            </p>
+            <p class="small text-white-50 mb-2">
+              <strong>Correo:</strong>
+              <a class="pie-descripcion" href="mailto:contacto@agroconecta.pe"
+                >contacto@agroconecta.pe</a
+              >
+            </p>
+            <p class="small text-white-50 mb-2">
+              <strong>Teléfono:</strong>
+              <a class="pie-descripcion" href="tel:+51930736214">+51 930 736 214</a>
+            </p>
+            <p class="small text-white-50">
+              <strong>Horario:</strong> Lunes a Viernes de 8:30 am a 6:00 pm
+            </p>
+          </div>
         </div>
+        <hr class="border-secondary opacity-25" />
+        <div class="row align-items-center small text-white-50 pt-2">
+          <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+            © <time datetime="2026">2026</time> <strong>AGROCONECTA S.A.C.</strong> Todos los
+            derechos reservados.
+          </div>
+          <div class="col-12 col-md-6 text-center text-md-end">
+            Desarrollado por
+            <strong class="text-white">Richardson Yelstin Tantajulca Perez</strong> | IDAT
+          </div>
+        </div>
+      </div>
     </footer>
 
-    <!-- Bootstrap 5.3 Bundle con Popper (CDN Oficial) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="assets/vendor/bootstrap.bundle.min.js"></script>
 
-    <!-- Configuración Segura de Entorno (Ignorado en git) -->
-    <script src="js/config.js" onerror="console.info('[AgroConecta] Archivo local js/config.js no presente. Usando configuración por defecto o motor semántico local.');"></script>
+    <script src="js/config.public.js"></script>
 
-    <!-- Script de Funcionalidad y Validación Visual Propia -->
     <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
 
-    <!-- Asistente Virtual Flotante (AgroBot) -->
     <script src="js/chatbot.js?v=2.4"></script>
-</body>
+  </body>
 </html>

@@ -1,0 +1,307 @@
+.agrobot-floating-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #0f3027);
+  color: #ffffff !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1050;
+  transition:
+    transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.25s ease;
+  box-shadow: 0 8px 24px rgba(15, 48, 39, 0.35);
+}
+
+.agrobot-floating-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(15, 48, 39, 0.45);
+}
+
+.agrobot-floating-btn:active {
+  transform: scale(0.95);
+}
+
+.agrobot-badge-pulse {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: #ef4444;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: agrobot-pulse 2s 2;
+}
+
+@keyframes agrobot-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.agrobot-tooltip-pill {
+  position: fixed;
+  bottom: 34px;
+  right: 92px;
+  background-color: #0f3027;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 1049;
+  pointer-events: none;
+  animation: agrobot-fadein 0.5s ease 1s backwards;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes agrobot-fadein {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.agrobot-chat-window {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  width: 375px;
+  max-width: calc(100vw - 32px);
+  height: 520px;
+  max-height: calc(100vh - 120px);
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 16px 48px rgba(15, 48, 39, 0.25);
+  z-index: 1051;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.94);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease;
+}
+
+.agrobot-chat-window.agrobot-window-active {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.agrobot-header {
+  background: linear-gradient(135deg, #0f3027 0%, #143d32 60%, #10b981 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff !important;
+}
+
+.agrobot-header h6,
+.agrobot-header #agrobot-title,
+.agrobot-header span,
+.agrobot-header strong {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.agrobot-header small {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.agrobot-msg-bot .agrobot-bubble {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+.agrobot-msg-bot .agrobot-bubble p,
+.agrobot-msg-bot .agrobot-bubble li,
+.agrobot-msg-bot .agrobot-bubble div {
+  color: #1e293b !important;
+}
+
+.agrobot-msg-bot .agrobot-bubble strong {
+  color: #065f46 !important;
+}
+
+.agrobot-msg-bot .agrobot-bubble a {
+  color: #059669 !important;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.agrobot-msg-user .agrobot-bubble {
+  background: linear-gradient(135deg, #10b981, #065f46) !important;
+  color: #ffffff !important;
+}
+
+.agrobot-msg-user .agrobot-bubble p {
+  color: #ffffff !important;
+}
+
+.agrobot-ai-badge {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.agrobot-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+.agrobot-body {
+  background-color: #f8faf9;
+  scroll-behavior: smooth;
+}
+
+.agrobot-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.agrobot-body::-webkit-scrollbar-thumb {
+  background-color: rgba(16, 185, 129, 0.3);
+  border-radius: 4px;
+}
+
+.agrobot-bubble {
+  word-wrap: break-word;
+  font-size: 0.9rem;
+}
+
+.agrobot-chip-btn {
+  font-size: 0.76rem !important;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem !important;
+  border-color: #a7f3d0 !important;
+  color: #065f46 !important;
+  background-color: #ecfdf5;
+  transition: all 0.2s ease;
+}
+
+.agrobot-chip-btn:hover {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+  transform: translateY(-1px);
+}
+
+.agrobot-typing-indicator {
+  background-color: #f8faf9;
+}
+
+.agrobot-dots span {
+  animation: agrobot-blink 1.4s infinite both;
+  font-size: 1.2rem;
+  line-height: 0;
+  margin: 0 1px;
+}
+
+.agrobot-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.agrobot-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes agrobot-blink {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.agrobot-send-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.agrobot-send-btn:hover {
+  transform: scale(1.08);
+}
+
+@media (max-width: 575.98px) {
+  .agrobot-floating-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+  .agrobot-chat-window {
+    bottom: 76px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+    height: 480px;
+  }
+  .agrobot-tooltip-pill {
+    display: none !important;
+  }
+}
+
+.agrobot-icon-close,
+.agrobot-typing-indicator {
+  display: none;
+}
+.agrobot-subtitulo {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.72rem;
+}
+.agrobot-msg-user .agrobot-bubble {
+  max-width: 82%;
+}
+.agrobot-respuesta .agrobot-bubble {
+  max-width: 88%;
+}
+.agrobot-bot-content {
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.agrobot-msg-user .agrobot-time,
+.agrobot-respuesta .agrobot-time {
+  font-size: 0.68rem;
+}

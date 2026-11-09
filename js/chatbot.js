@@ -1,432 +1,168 @@
-/**
- * AGROCONECTA - AgroBot (Asistente Virtual Inteligente con Soporte LLM Meta Muse Spark 1.3)
- * Chatbot flotante con motor dual: Integración de LLM en la nube y motor semántico local de respaldo.
- */
-
 (function () {
   'use strict';
 
-  // Detección de ruta relativa según si nos encontramos en la raíz o dentro de /page/
-  const isSubdir = window.location.pathname.includes('/page/') || 
-                   window.location.pathname.endsWith('.html') && !window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/');
+  const isSubdir =
+    window.location.pathname.includes('/page/') ||
+    (window.location.pathname.endsWith('.html') &&
+      !window.location.pathname.endsWith('index.html') &&
+      !window.location.pathname.endsWith('/'));
   const BASE_PAGE_URL = isSubdir ? '' : 'page/';
-  const BASE_IMG_URL = isSubdir ? '../dist/imagenes/' : 'dist/imagenes/';
+  const BASE_IMG_URL = isSubdir ? '../assets/imagenes/' : 'assets/imagenes/';
 
-  // ==============================================================================
-  // CONFIGURACIÓN DEL LLM (Meta Muse Spark 1.3 Contributor)
-  // ==============================================================================
-  function obtenerConfiguracionLLM() {
-    const cfg = (typeof window !== 'undefined' && window.AGROCONECTA_CONFIG) || {};
-    const isLocalOrFile = typeof window !== 'undefined' && (
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1' ||
-      window.location.protocol === 'file:'
-    );
-    // En producción (Vercel) usamos la ruta relativa '/api/chat'.
-    // En local (Live Server o file://) nos conectamos al proxy serverless activo en Vercel con CORS habilitado.
-    const defaultProxy = isLocalOrFile
-      ? 'https://agroconecta-two-drab.vercel.app/api/chat'
-      : '/api/chat';
-
+  function obtenerConfiguracionChat() {
+    const cfg = window.AGROCONECTA_CONFIG || {};
     return {
-      apiKey: (window.AGROCONECTA_LLM_KEY || cfg.LLM_API_KEY || '').trim(),
-      endpoint: (window.AGROCONECTA_LLM_ENDPOINT || cfg.LLM_ENDPOINT || 'https://api.meta.ai/v1/responses').trim(),
-      model: (window.AGROCONECTA_LLM_MODEL || cfg.LLM_MODEL || 'muse-spark-1.3-contributor').trim(),
-      proxyUrl: (window.AGROCONECTA_LLM_PROXY || cfg.AGROBOT_PROXY_URL || defaultProxy).trim()
+      proxyUrl: typeof cfg.AGROBOT_PROXY_URL === 'string' ? cfg.AGROBOT_PROXY_URL.trim() : ''
     };
   }
 
-  const SYSTEM_PROMPT = `Eres AgroBot, el Asistente de IA oficial de AGROCONECTA (agroconecta.pe), plataforma peruana de financiamiento colaborativo y contratos de compra futura agrícola.
-
-Tu misión es asesorar con empatía, profesionalismo y precisión técnica a tres tipos de usuarios:
-1. Pequeños Productores Agrarios: Explica cómo postular sus cosechas, requisitos (DNI/RUC, predio demostrable, mín 0.5 Ha), financiamiento oportuno sin usura bancaria, venta asegurada a Precio Justo pactado antes de la siembra (25%-40% más margen neto frente a intermediarios), y cobertura de seguro agrícola catastrófico (SBS).
-2. Inversionistas / Compradores Futuros: Explica cómo invertir desde S/. 500, retornos anuales proyectados entre el 12% y 18% respaldados por cosechas físicas, y opciones de compra de lotes exportables.
-3. Cooperativas / Asociaciones: Explica financiamiento consolidado para acopio, infraestructura y certificaciones (Orgánico, Fairtrade).
-
-Portafolio de 7 cultivos en Perú:
-• Café Orgánico de Altura (Chanchamayo, Junín)
-• Cacao Criollo de Aroma (Quillabamba, Cusco)
-• Palta Hass de Exportación (Huaral, Lima)
-• Maíz Morado Canteño (Canta, Lima)
-• Quinua Real del Altiplano (Puno)
-• Mango Kent Orgánico (Valle del Chira, Piura)
-• Espárrago Verde (Ica)
-
-Canales oficiales:
-• WhatsApp: +51 930 736 214
-• Correo: contacto@agroconecta.pe / financiamiento@agroconecta.pe
-• Formulario Oficial de Postulación y Registro
-
-Directrices de respuesta:
-• Responde siempre en español, con tono cercano, profesional y positivo.
-• Utiliza formato legible con viñetas, negritas y emojis agrícolas.
-• Para WhatsApp, indica siempre el número '+51 930 736 214'.
-• Para postular o registrarse, invita siempre al usuario a ingresar al Formulario Oficial de Postulación. NUNCA escribas la ruta técnica 'page/contacto.html' en texto plano; di 'Formulario Oficial de Postulación' o [Ir al Formulario](contacto.html).
-• Mantén las respuestas concisas (máximo 2 a 3 párrafos breves) para que se lean cómodamente en el widget móvil.`;
-
-  // Historial multi-turno de conversación con ventana deslizante
   const MAX_HISTORIAL = 20;
-  const historialConversacion = [
-    { role: 'system', content: SYSTEM_PROMPT }
-  ];
+  const historialConversacion = [];
 
-  /**
-   * Agrega un mensaje al historial conservando el prompt de sistema y limitando a MAX_HISTORIAL
-   * @param {'user'|'assistant'} rol Rol del remitente
-   * @param {string} contenido Mensaje
-   */
   function agregarAlHistorial(rol, contenido) {
     historialConversacion.push({ role: rol, content: contenido });
-    if (historialConversacion.length > MAX_HISTORIAL + 1) {
-      historialConversacion.splice(1, historialConversacion.length - MAX_HISTORIAL - 1);
+    if (historialConversacion.length > MAX_HISTORIAL) {
+      historialConversacion.splice(0, historialConversacion.length - MAX_HISTORIAL);
     }
   }
 
-  // Base de Conocimiento Local de Respaldo (Funciona 100% offline o sin API key)
+  const QUICK_QUESTIONS = [
+    { label: 'Cómo postular', query: 'Cómo postular' },
+    { label: 'Simular un retorno', query: 'Simular inversión' },
+    { label: 'Cultivos', query: 'Cultivos disponibles' },
+    { label: 'Alcance y privacidad', query: 'Seguridad y privacidad' }
+  ];
   const KNOWLEDGE_BASE = [
     {
-      keywords: ['como postular', 'cómo postular', 'postulacion', 'postulación', 'postular', 'inscribirme', 'inscribir', 'registro', 'solicitar', 'pasos'],
-      title: '¿Cómo postular mi campaña en AgroConecta?',
-      response: `Postular es muy rápido y 100% gratuito. Sigue estos 4 pasos:<br><br>
-        1️⃣ Ingresa a nuestro <a href="${BASE_PAGE_URL}contacto.html" class="fw-bold text-success text-decoration-underline">Formulario Oficial de Postulación</a>.<br>
-        2️⃣ Selecciona tu perfil (Pequeño Productor, Inversionista o Cooperativa).<br>
-        3️⃣ Completa tu correo y datos agronómicos o financieros requeridos.<br>
-        4️⃣ Adjunta tu documento de posesión o regante (opcional en el primer contacto).<br><br>
-        ⏱️ Nuestro equipo técnico evaluará tu solicitud en un plazo máximo de <strong>48 horas hábiles</strong>.`
+      keywords: ['postul', 'requisit', 'productor'],
+      response: `Para completar la postulación elige tu perfil, completa los campos visibles y revisa el resumen. <a href="${BASE_PAGE_URL}contacto.html">Abrir formulario</a>.`
     },
     {
-      keywords: ['invertir', 'inversión', 'inversion', 'inversionista', 'inversor', '2000 soles', '2000', '1000', '500', 'soles para invertir', 'fondos'],
-      title: '¿Cómo postular e invertir capital (ej. S/. 2,000) en AgroConecta?',
-      response: `¡Excelente iniciativa! En <strong>AgroConecta</strong> puedes participar como <strong>Inversionista</strong> desde <strong>S/. 500</strong> hasta montos como <strong>S/. 2,000</strong> o más, con una rentabilidad anual proyectada entre el <strong>12% y 18%</strong> respaldada en cosechas reales.<br><br>
-        🌱 <strong>¿Cómo funciona tu postulación e inversión?</strong><br>
-        1️⃣ Ingresa a nuestro <a href="${BASE_PAGE_URL}contacto.html" class="fw-bold text-success text-decoration-underline">Formulario Oficial de Postulación</a> y selecciona el perfil <strong>"Inversionista"</strong>.<br>
-        2️⃣ Indica tu monto a invertir (ej. S/. 2,000) y tu preferencia de cultivo (Café, Cacao, Palta Hass, Mango o Quinua).<br>
-        3️⃣ Tu inversión cuenta con respaldo de <strong>Póliza de Seguro Agrícola Catastrófico (SBS)</strong> y contrato formal notariado de compra futura.<br>
-        4️⃣ Tras la cosecha y exportación, recibes tu capital más las utilidades pactadas.<br><br>
-        ⏱️ Un asesor de nuestra mesa de financiamiento te contactará en menos de 24 horas.`
+      keywords: ['inver', 'ganan', 'retorno', 'capital', 'monto', 'soles'],
+      response: `El simulador calcula interés simple con montos de S/. 500 a S/. 50,000. Puedes ajustar el capital, el cultivo y el plazo, y trasladarlos al formulario.`
     },
     {
-      keywords: ['cuanto se gana', 'cuánto se gana', 'ganancia', 'rentabilidad', 'ganar', 'ganancias', 'retorno', 'precio', 'utilidad', 'margen', 'precio justo', 'rendimiento', 'rendimientos', 'rendimiento promedio', 'promedio anual', 'rendimiento anual', 'anual', 'tasa', 'interés', 'interes', 'porcentaje'],
-      title: '¿Cuánto se gana y cuál es la rentabilidad?',
-      response: `Los beneficios económicos y rendimientos dependen de tu rol en AgroConecta:<br><br>
-        🌾 <strong>Para Pequeños Productores:</strong><br>
-        • Aseguras la compra de tu cosecha a <em>Precio Justo</em> pactado antes de la siembra.<br>
-        • Eliminas intermediarios, obteniendo entre un <strong>25% y 40% más de margen neto</strong> frente a la venta tradicional en chacra.<br>
-        • Recibes financiamiento oportuno para semillas, abonos y jornales.<br><br>
-        💼 <strong>Para Inversionistas / Compradores Futuros:</strong><br>
-        • El <strong>rendimiento promedio anual proyectado se ubica entre el 12% y 18%</strong>, respaldado por contratos de compra futura notariados y cosechas reales exportables.<br>
-        • Cobertura adicional mediante Seguro Agrícola Catastrófico regulado por la SBS.`
+      keywords: ['cultiv', 'cafe', 'café', 'cacao', 'palta', 'mango', 'quinua', 'maíz', 'maiz'],
+      response: `El catálogo contiene seis cultivos: café, cacao, palta, maíz morado, quinua y mango. Consulta sus fichas para conocer las características de cada campaña.`
     },
     {
-      keywords: ['requisito', 'requisitos', 'que necesito', 'qué necesito', 'documento', 'documentos', 'papeles', 'condiciones', 'hectareas', 'hectáreas'],
-      title: '¿Cuáles son los requisitos para participar?',
-      response: `Los requisitos básicos son muy accesibles:<br><br>
-        ✅ <strong>Productores Agrarios:</strong><br>
-        • DNI o RUC vigente.<br>
-        • Predio agrícola demostrable (título, constancia de posesión comunal o carnet de regante).<br>
-        • Mínimo <strong>0.5 hectáreas</strong> disponibles para cultivo.<br>
-        • Experiencia demostrada en el cultivo.<br><br>
-        ✅ <strong>Inversionistas:</strong><br>
-        • Ser mayor de 18 años con DNI o RUC.<br>
-        • Participación accesible desde <strong>S/. 500</strong> en campañas activas.<br><br>
-        ✅ <strong>Cooperativas:</strong><br>
-        • RUC 20 institucional, mínimo 5 socios y vigencia de poder Sunarp.`
+      keywords: ['segur', 'riesgo', 'sbs', 'garant', 'legal', 'poliza', 'póliza'],
+      response: `Consulta las condiciones de la campaña y los documentos del acuerdo para conocer sus riesgos, obligaciones y posibles coberturas.`
     },
     {
-      keywords: ['cultivo', 'cultivos', 'que cultivos', 'qué cultivos', 'productos', 'cafe', 'café', 'cacao', 'palta', 'maiz', 'maíz', 'quinua', 'mango', 'esparrago', 'espárrago', 'campañas activas', 'campanas activas', 'campaña activa', 'campañas', 'campanas'],
-      title: '¿Qué campañas y cultivos financia actualmente AgroConecta?',
-      response: `¡En <strong>AGROCONECTA</strong> tenemos <strong>7 campañas activas</strong> 🌱!<br><br>
-        Financiamos cadenas productivas estratégicas de alto valor exportable y consumo nacional:<br><br>
-        • ☕ <a href="${BASE_PAGE_URL}cafe.html" class="text-success fw-semibold">Café Orgánico de Altura</a> (Chanchamayo, Junín)<br>
-        • 🍫 <a href="${BASE_PAGE_URL}cacao.html" class="text-success fw-semibold">Cacao Criollo de Aroma</a> (Quillabamba, Cusco)<br>
-        • 🥑 <a href="${BASE_PAGE_URL}palta.html" class="text-success fw-semibold">Palta Hass de Exportación</a> (Huaral, Lima)<br>
-        • 🌽 <a href="${BASE_PAGE_URL}maiz.html" class="text-success fw-semibold">Maíz Morado Canteño</a> (Canta, Lima)<br>
-        • 🌾 <a href="${BASE_PAGE_URL}quinua.html" class="text-success fw-semibold">Quinua Real del Altiplano</a> (Puno)<br>
-        • 🥭 <a href="${BASE_PAGE_URL}mango.html" class="text-success fw-semibold">Mango Kent Orgánico</a> (Valle del Chira, Piura)<br>
-        • 🌿 <strong>Espárrago Verde</strong> (Ica)`
+      keywords: ['cooper', 'asocia'],
+      response: `El perfil Cooperativa incluye los datos de la asociación y su representante. Revisa los campos obligatorios antes de continuar.`
     },
     {
-      keywords: ['seguro', 'garantia', 'garantía', 'garantias', 'garantías', 'seguridad', 'riesgo', 'helada', 'plaga', 'sbs'],
-      title: '¿Tienen seguro agrario y garantías?',
-      response: `🛡️ <strong>¡Totalmente respaldado!</strong><br><br>
-        1. <strong>Seguro Agrícola Catastrófico:</strong> Todas nuestras campañas cuentan obligatoriamente con una póliza contratada con aseguradoras reguladas por la <em>SBS</em>, protegiendo ante sequías, plagas o heladas.<br>
-        2. <strong>Contratos Notariados:</strong> Convenios formales de compra futura con validez legal.<br>
-        3. <strong>Supervisión en Campo:</strong> Ingenieros agrónomos de AgroConecta auditan periódicamente el predio durante todo el ciclo vegetativo.`
-    },
-    {
-      keywords: ['compra futura', 'como funciona', 'cómo funciona', 'modelo', 'ecosistema', 'explicame', 'explícame'],
-      title: '¿Cómo funciona el modelo de Compra Futura?',
-      response: `Es un modelo colaborativo ganar-ganar en 3 etapas:<br><br>
-        🌱 <strong>1. Financiamiento Anticipado:</strong> Inversionistas adquieren por adelantado un porcentaje de la cosecha proyectada, entregando al productor el capital necesario para insumos y jornales.<br>
-        🚜 <strong>2. Acompañamiento Agronómico:</strong> AgroConecta supervisa la floración, riego y sanidad vegetal en el valle.<br>
-        📦 <strong>3. Cosecha y Liquidación:</strong> Al cosechar, se vende a precio internacional o se entrega al comprador pactado, liquidando las utilidades con total transparencia.`
-    },
-    {
-      keywords: ['contacto', 'telefono', 'teléfono', 'whatsapp', 'correo', 'email', 'oficina', 'direccion', 'dirección', 'asesor', 'humano', 'hablar con alguien'],
-      title: 'Canales de Atención Directa y Asesoría',
-      response: `Si deseas comunicarte directamente con uno de nuestros asesores técnicos:<br><br>
-        📞 <strong>Teléfono / WhatsApp:</strong> <a href="https://wa.me/51930736214" target="_blank" class="text-success fw-bold">+51 930 736 214</a><br>
-        ✉️ <strong>Correo Oficial:</strong> <a href="mailto:contacto@agroconecta.pe" class="text-success">contacto@agroconecta.pe</a><br>
-        💼 <strong>Mesa de Financiamiento:</strong> <a href="mailto:financiamiento@agroconecta.pe" class="text-success">financiamiento@agroconecta.pe</a><br>
-        🏢 <strong>Sede Central:</strong> Av. Javier Prado Este 2465, San Borja, Lima<br>
-        🕒 <strong>Horario:</strong> Lunes a Viernes de 8:30 am a 6:00 pm`
+      keywords: ['correo', 'seguim', 'código', 'codigo', 'adjunto', 'archivo', 'privacidad'],
+      response: `La demostración no envía correos ni sube adjuntos. Su referencia comienza por DEMO. El registro real solo puede activarse con un backend configurado y validado; el formulario debe confirmar explícitamente el guardado.`
     }
   ];
 
-  // Preguntas sugeridas en botones rápidos
-  const QUICK_QUESTIONS = [
-    { label: '🚀 ¿Cómo postular mi campaña?', query: 'como postular' },
-    { label: '💰 ¿Cuánto se gana / rentabilidad?', query: 'cuanto se gana' },
-    { label: '📋 ¿Cuáles son los requisitos?', query: 'requisitos' },
-    { label: '🌱 ¿Qué cultivos financian?', query: 'cultivos' },
-    { label: '🛡️ ¿Tienen seguro agrario?', query: 'seguro' },
-    { label: '📞 Contactar a un asesor', query: 'contacto' }
-  ];
+  async function obtenerRespuesta(mensajeUsuario) {
+    const configuracionChat = obtenerConfiguracionChat();
 
-  /**
-   * Consulta al modelo Meta Muse Spark 1.3 mediante protocolo seguro
-   * Soporta tanto Proxy Serverless (Protocolo Estricto de Seguridad) como llamada directa oficial a https://api.meta.ai/v1/responses
-   * @param {string} mensajeUsuario Texto enviado por el usuario
-   * @returns {Promise<string>} Respuesta en HTML
-   */
-  async function consultarMetaMuseSpark(mensajeUsuario) {
-    const llmCfg = obtenerConfiguracionLLM();
-
-    // Sanitización básica y límite de tamaño para seguridad
     const mensajeSanitizado = (mensajeUsuario || '').toString().slice(0, 1000).trim();
     if (!mensajeSanitizado) return '';
 
-    // Guardar en el historial multi-turno
     agregarAlHistorial('user', mensajeSanitizado);
 
-    // OPCIÓN A: Conexión mediante Proxy Seguro (Recomendado bajo Protocolo Estricto)
-    // El navegador NUNCA posee la clave MODEL_API_KEY, evitando su exposición en DevTools
-    if (llmCfg.proxyUrl) {
+    if (configuracionChat.proxyUrl) {
       try {
-        console.info(`[AgroBot Security Protocol] Conectando a través de Proxy (${llmCfg.proxyUrl})...`);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 18000);
-
-        const proxyRes = await fetch(llmCfg.proxyUrl, {
+        const proxyRes = await fetch(configuracionChat.proxyUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             mensaje: mensajeSanitizado,
             historial: historialConversacion
           }),
-          signal: controller.signal
+          signal: AbortSignal.timeout(18000)
         });
-
-        clearTimeout(timeoutId);
 
         const proxyData = await proxyRes.json().catch(() => null);
 
         if (proxyRes.ok && proxyData && (proxyData.reply || proxyData.text)) {
           const respuestaTexto = (proxyData.reply || proxyData.text).trim();
-          console.info('[AgroBot Proxy] Respuesta recibida con éxito de Meta Muse Spark 1.3.');
           agregarAlHistorial('assistant', respuestaTexto);
-          return formatearMarkdownAHTML(respuestaTexto);
+          return convertirTextoAHTML(respuestaTexto);
         } else {
-          console.warn('[AgroBot Proxy] No se pudo obtener respuesta del modelo:', proxyData?.error || `HTTP ${proxyRes.status}. Usando motor local.`);
+          console.warn(
+            '[AgroBot Proxy] No se pudo obtener respuesta del modelo:',
+            proxyData?.error || `HTTP ${proxyRes.status}. Usando motor local.`
+          );
         }
       } catch (proxyErr) {
         console.warn('[AgroBot Proxy] Excepción en llamada a Proxy:', proxyErr.message);
       }
     }
 
-    // OPCIÓN B: Conexión Directa a la API de Meta AI (para pruebas locales protegidas por .gitignore)
-    if (llmCfg.apiKey && !llmCfg.apiKey.includes('TU_MODEL_API_KEY') && !llmCfg.apiKey.includes('TU_API_KEY')) {
-      try {
-        console.info(`[AgroBot LLM] Consultando Meta AI Responses API (${llmCfg.model})...`);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 18000);
-
-        const isMetaResponsesApi = llmCfg.endpoint.includes('/responses') || llmCfg.endpoint.includes('meta.ai');
-        
-        // Filtrar mensajes para que 'input' contenga solo user y assistant
-        const metaInput = historialConversacion
-          .filter(msg => msg.role === 'user' || msg.role === 'assistant')
-          .map(msg => ({
-            role: msg.role === 'assistant' ? 'assistant' : 'user',
-            content: [{ type: 'input_text', text: msg.content }]
-          }));
-
-        const requestBody = isMetaResponsesApi
-          ? {
-              model: llmCfg.model || 'muse-spark-1.3-contributor',
-              input: metaInput,
-              stream: false
-            }
-          : {
-              model: llmCfg.model,
-              messages: historialConversacion,
-              temperature: 0.6,
-              max_tokens: 650
-            };
-
-        const response = await fetch(llmCfg.endpoint, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${llmCfg.apiKey.trim()}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(requestBody),
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        if (response.ok) {
-          const data = await response.json();
-          const contenidoRespuesta = extraerTextoRespuestaMeta(data);
-
-          if (contenidoRespuesta) {
-            agregarAlHistorial('assistant', contenidoRespuesta);
-            return formatearMarkdownAHTML(contenidoRespuesta);
-          }
-        } else {
-          const errBody = await response.text().catch(() => '');
-          console.warn('[AgroBot LLM] Error en API Meta AI (' + response.status + '):', errBody);
-        }
-      } catch (llmErr) {
-        console.warn('[AgroBot LLM] Excepción en llamada Meta AI (posible restricción CORS o red):', llmErr.message);
-      }
-    }
-
-    // OPCIÓN C: Motor Semántico Local de Respaldo (100% resiliente y privado)
     const respuestaLocal = buscarRespuestaLocal(mensajeSanitizado);
     agregarAlHistorial('assistant', respuestaLocal);
     return respuestaLocal;
   }
 
-  /**
-   * Extractor robusto de texto compatible con Meta Responses API y OpenAI
-   */
-  function extraerTextoRespuestaMeta(data) {
-    if (!data) return '';
+  function convertirTextoAHTML(texto) {
+    return escaparHTML(String(texto)).replace(/\n/g, '<br>');
+  }
 
-    if (Array.isArray(data.output)) {
-      for (const item of data.output) {
-        if (item.type === 'output_text' && typeof item.text === 'string' && item.text.trim()) {
-          return item.text.trim();
+  function sanitizarHTML(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    const permitidos = new Set(['A', 'P', 'BR', 'STRONG', 'EM', 'UL', 'OL', 'LI']);
+    const limpiar = (parent) => {
+      [...parent.children].forEach((el) => {
+        if (!permitidos.has(el.tagName)) {
+          el.replaceWith(document.createTextNode(el.textContent));
+          return;
         }
-        if (Array.isArray(item.content)) {
-          for (const block of item.content) {
-            if ((block.type === 'output_text' || !block.type) && typeof block.text === 'string' && block.text.trim()) {
-              return block.text.trim();
+        const href = el.getAttribute('href');
+        [...el.attributes].forEach((a) => el.removeAttribute(a.name));
+        if (el.tagName === 'A' && href) {
+          try {
+            const url = new URL(href, location.href);
+            if (['http:', 'https:', 'mailto:', 'tel:'].includes(url.protocol)) {
+              el.setAttribute('href', url.href);
+              el.setAttribute('rel', 'noopener noreferrer');
             }
+          } catch (_) {
+            /* Enlace inválido: conservar solo texto. */
           }
         }
-        if (typeof item.text === 'string' && item.text.trim()) {
-          return item.text.trim();
-        }
-      }
-    }
-
-    if (data.choices?.[0]?.message?.content) {
-      return data.choices[0].message.content.trim();
-    }
-
-    if (typeof data.reply === 'string' && data.reply.trim()) return data.reply.trim();
-    if (typeof data.response === 'string' && data.response.trim()) return data.response.trim();
-    if (typeof data.text === 'string' && data.text.trim()) return data.text.trim();
-
-    return '';
+        limpiar(el);
+      });
+    };
+    limpiar(template.content);
+    return template.innerHTML;
   }
 
-  /**
-   * Convierte texto en formato Markdown a HTML limpio y estilizado
-   * Transforma números de WhatsApp en enlaces directos y rutas de formulario en microbotones interactivos
-   * @param {string} markdown Texto plano con formato Markdown
-   * @returns {string} HTML renderizable
-   */
-  function formatearMarkdownAHTML(markdown) {
-    if (!markdown) return '';
-    let html = markdown;
-
-    // 1. Negrita y Cursiva
-    html = html
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>');
-
-    // 2. Enlaces Markdown [texto](url)
-    html = html.replace(/\[(.*?)\]\((.*?)\)/g, function(match, text, url) {
-      if (url.includes('contacto.html')) {
-        return `<a href="${BASE_PAGE_URL}contacto.html" class="agrobot-micro-btn" title="${text}"><span class="me-1">📝</span>${text}</a>`;
-      }
-      if (url.includes('wa.me') || url.includes('whatsapp')) {
-        return `<a href="${url}" class="agrobot-wa-link" target="_blank" rel="noopener noreferrer">${text}</a>`;
-      }
-      return `<a href="${url}" class="text-success fw-bold text-decoration-underline" target="_blank">${text}</a>`;
-    });
-
-    // 3. Reemplazar menciones de WhatsApp o número telefónico con enlace directo a WhatsApp
-    const waSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -1px; margin-right: 4px;"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.017-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.707 1.916.807 2.05c.099.133 1.39 2.123 3.37 2.975.471.203.839.324 1.126.415.473.151.903.13 1.243.079.379-.058 1.17-.479 1.336-.942.166-.464.166-.861.116-.943-.049-.082-.182-.133-.38-.232"/></svg>`;
-
-    html = html.replace(/(?:WhatsApp:?\s*)?(\+?51\s*930\s*736\s*214|930\s*736\s*214)/gi, function() {
-      return `<a href="https://wa.me/51930736214?text=Hola%20AgroConecta,%20deseo%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" class="agrobot-wa-link" title="Abrir chat en WhatsApp">${waSvg}WhatsApp: +51 930 736 214</a>`;
-    });
-
-    // 4. Reemplazar menciones sueltas de "page/contacto.html" o "contacto.html" por microbotón interactivo
-    html = html.replace(/(?:page\/)?contacto\.html/gi, function(match, offset, fullStr) {
-      const prevText = fullStr.slice(0, offset);
-      if (/href\s*=\s*["'][^"']*$/.test(prevText)) {
-        return match;
-      }
-      return `<a href="${BASE_PAGE_URL}contacto.html" class="agrobot-micro-btn" title="Ir al Formulario Oficial de Postulación"><span class="me-1">📝</span>Ir al Formulario</a>`;
-    });
-
-    // 5. Viñetas con guión o asterisco
-    html = html.replace(/(?:^|\n)[-*]\s+(.*)/g, '<li class="mb-1">$1</li>');
-    // Saltos de línea
-    html = html.replace(/\n\n+/g, '<br><br>').replace(/\n/g, '<br>');
-
-    // Envolver listas <li> si existen
-    if (html.includes('<li')) {
-      html = html.replace(/(<li.*<\/li>)/s, '<ul class="ps-3 mb-2">$1</ul>');
-    }
-
-    return html;
-  }
-
-  /**
-   * Sanitiza código HTML para mitigar vectores XSS en respuestas generadas por LLM
-   * Conserva enlaces y formato visual seguro de Bootstrap
-   * @param {string} html
-   * @returns {string} HTML sanitizado
-   */
-  function sanitizarHTML(html) {
-    if (!html) return '';
-    return html
-      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
-      .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, '')
-      .replace(/<object\b[^>]*>[\s\S]*?<\/object>/gi, '')
-      .replace(/<embed\b[^>]*>[\s\S]*?<\/embed>/gi, '')
-      .replace(/\bon\w+\s*=\s*(?:'[^']*'|"[^"]*"|[^\s>]+)/gi, '')
-      .replace(/href\s*=\s*["']?\s*javascript\s*:[^"'>]*/gi, 'href="#"');
-  }
-
-  // Motor de Búsqueda de Respuestas Inteligente Local
   function buscarRespuestaLocal(mensaje) {
     const texto = mensaje.toLowerCase().trim();
     const palabras = texto.split(/\s+/).filter(Boolean);
 
-    // Solo devolver saludo genérico si el mensaje es ÚNICAMENTE un saludo sin consulta sustantiva
-    const esPuroSaludo = (/^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos)[\s\.,!¡¿?]*$/i.test(texto) || palabras.length <= 2) &&
-      !/(postul|invert|invers|ganan|requisit|cultiv|segur|campa|soles|dinero|cuanto|como)/i.test(texto);
+    const esPuroSaludo =
+      (/^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos|ola|holaa)[\s\.,!¡¿?]*$/i.test(
+        texto
+      ) ||
+        palabras.length <= 2) &&
+      !/(postul|invert|invers|ganan|requisit|cultiv|segur|campa|soles|dinero|cuanto|como)/i.test(
+        texto
+      );
 
-    if (esPuroSaludo && /^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos)/i.test(texto)) {
+    if (
+      esPuroSaludo &&
+      /^(hola|buenos dias|buenas tardes|buenas noches|que tal|buenas|saludos)/i.test(texto)
+    ) {
       return `¡Hola! 👋 Soy <strong>AgroBot</strong>, el asistente virtual de <em>AgroConecta</em>.<br><br>
         Estoy aquí para ayudarte a postular tu predio, conocer las ganancias de compra futura, requisitos o cultivos disponibles.<br><br>
         ¿Sobre qué tema te gustaría consultar hoy? Puedes elegir una de las opciones de abajo o escribirme tu consulta.`;
     }
 
-    // Agradecimiento o despedida
-    if (/^(gracias|muchas gracias|excelente|perfecto|genial|ok|adios|chao|hasta luego)/i.test(texto)) {
+    if (
+      /^(gracias|muchas gracias|excelente|perfecto|genial|ok|adios|chao|hasta luego)/i.test(texto)
+    ) {
       return `¡Con mucho gusto! 🌾 Recuerda que en <strong>AgroConecta</strong> estamos comprometidos con el crecimiento del agro nacional. Si estás listo para empezar, ¡<a href="${BASE_PAGE_URL}contacto.html" class="text-success fw-bold">postula tu campaña aquí</a>!`;
     }
 
-    // Coincidencia por palabras clave
     let mejorCoincidencia = null;
     let maxPuntaje = 0;
 
@@ -447,7 +183,6 @@ Directrices de respuesta:
       return mejorCoincidencia.response;
     }
 
-    // Respuesta de respaldo con sugerencias útiles
     return `Gracias por tu consulta. Para brindarte la información más exacta sobre <em>"${escaparHTML(mensaje)}"</em>, te sugiero explorar estos temas clave:<br><br>
       • <a href="${BASE_PAGE_URL}contacto.html" class="text-success fw-semibold">Formulario de Postulación de Campañas</a><br>
       • <a href="${BASE_PAGE_URL}nosotros.html" class="text-success fw-semibold">Conoce nuestro Modelo de Compra Futura</a><br><br>
@@ -460,52 +195,43 @@ Directrices de respuesta:
     });
   }
 
-  // Creación e Inyección del Widget en el DOM
   function inicializarWidgetChatbot() {
     if (document.getElementById('agrobot-widget-container')) return;
 
     const container = document.createElement('div');
     container.id = 'agrobot-widget-container';
     container.innerHTML = `
-      <!-- Tooltip Descriptivo Flotante -->
       <div id="agrobot-tooltip" class="agrobot-tooltip-pill shadow-sm" aria-hidden="true">
         <span>💬 ¿Dudas? Asistente Virtual</span>
       </div>
-
-      <!-- Botón Flotante en la Esquina Inferior Derecha -->
       <button id="agrobot-toggle-btn" class="agrobot-floating-btn shadow-lg" type="button" aria-label="Abrir asistente virtual AgroBot" aria-expanded="false" title="Chatear con AgroBot">
         <span class="agrobot-badge-pulse"></span>
-        <!-- Icono de Chat (visible cuando está cerrado) -->
         <span class="agrobot-icon-open">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
         </span>
-        <!-- Icono de Cerrar (visible cuando está abierto) -->
-        <span class="agrobot-icon-close" style="display: none;">
+        <span class="agrobot-icon-close">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </span>
       </button>
-
-      <!-- Ventana de Chat Flotante -->
-      <div id="agrobot-window" class="agrobot-chat-window shadow-lg" role="dialog" aria-labelledby="agrobot-title" aria-hidden="true">
-        <!-- Encabezado del Chatbot con Contraste Blanco Puro Blindado -->
+      <div id="agrobot-window" class="agrobot-chat-window shadow-lg" role="dialog" aria-labelledby="agrobot-title" aria-hidden="true" inert>
         <div class="agrobot-header d-flex align-items-center justify-content-between p-3 text-white">
           <div class="d-flex align-items-center gap-2">
             <div class="position-relative">
-              <img src="${BASE_IMG_URL}logo.png" width="38" height="38" alt="AgroBot" class="rounded-circle bg-white p-1">
+              <img src="${BASE_IMG_URL}logo.webp" width="38" height="38" alt="AgroBot" class="rounded-circle bg-white p-1">
               <span class="agrobot-online-dot"></span>
             </div>
             <div>
-              <h6 class="mb-0 fw-bold fs-6 text-white" id="agrobot-title" style="color: #FFFFFF !important;">
+              <h6 class="mb-0 fw-bold fs-6 text-white" id="agrobot-title">
                 AgroBot &bull; AgroConecta
               </h6>
               <div class="d-flex align-items-center gap-1 mt-1">
-                <span class="agrobot-ai-badge">Asistente IA</span>
-                <small style="color: rgba(255, 255, 255, 0.9) !important; font-size: 0.72rem;">En línea 🟢</small>
+                <span class="agrobot-ai-badge">Asistente</span>
+                <small class="agrobot-subtitulo">Asistente de AgroConecta</small>
               </div>
             </div>
           </div>
@@ -516,40 +242,33 @@ Directrices de respuesta:
             </svg>
           </button>
         </div>
-
-        <!-- Área de Historial de Mensajes -->
-        <div id="agrobot-messages" class="agrobot-body p-3 overflow-auto flex-grow-1">
-          <!-- Mensaje de Bienvenida Inicial -->
+        <div id="agrobot-messages" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversación con AgroBot" class="agrobot-body p-3 overflow-auto flex-grow-1">
           <div class="agrobot-msg agrobot-msg-bot mb-3">
             <div class="agrobot-bubble p-3 rounded-4 shadow-sm">
               <p class="mb-2">¡Hola! 🌱 Te doy la bienvenida a <strong>AgroConecta</strong>.</p>
-              <p class="mb-2">Soy <strong>AgroBot</strong>, el asesor virtual de <strong>AgroConecta</strong>. Estoy capacitado para responder todas tus dudas sobre cómo postular, requisitos, rentabilidad, compra futura o líneas de cultivo.</p>
+              <p class="mb-2">Soy <strong>AgroBot</strong>, el asistente de AgroConecta. Puedo orientarte sobre el formulario, el catálogo de cultivos y el simulador.</p>
               <span class="agrobot-time text-muted small d-block text-end">Justo ahora</span>
             </div>
           </div>
-
-          <!-- Sugerencias de Preguntas Frecuentes (Chips) -->
           <div class="agrobot-chips-container mb-3" id="agrobot-quick-chips">
             <p class="small text-muted fw-bold mb-2">Preguntas frecuentes:</p>
             <div class="d-flex flex-wrap gap-1">
-              ${QUICK_QUESTIONS.map(q => `
+              ${QUICK_QUESTIONS.map(
+                (q) => `
                 <button type="button" class="btn btn-sm btn-outline-success rounded-pill agrobot-chip-btn" data-query="${q.query}">
                   ${q.label}
                 </button>
-              `).join('')}
+              `
+              ).join('')}
             </div>
           </div>
         </div>
-
-        <!-- Indicador de Escritura "Escribiendo..." -->
-        <div id="agrobot-typing" class="agrobot-typing-indicator px-3 py-1" style="display: none;">
+        <div id="agrobot-typing" class="agrobot-typing-indicator px-3 py-1">
           <small class="text-muted d-flex align-items-center gap-1">
             <span>AgroBot está escribiendo</span>
             <span class="agrobot-dots"><span>.</span><span>.</span><span>.</span></span>
           </small>
         </div>
-
-        <!-- Pie de Entrada de Texto -->
         <form id="agrobot-form" class="agrobot-footer p-2 border-top bg-white d-flex align-items-center gap-2">
           <input type="text" id="agrobot-input" class="form-control form-control-sm rounded-pill px-3 py-2 border-success-subtle" placeholder="Pregúntale a AgroBot..." autocomplete="off" aria-label="Escribe tu mensaje">
           <button type="submit" class="btn btn-success rounded-circle agrobot-send-btn d-flex align-items-center justify-content-center p-2" aria-label="Enviar mensaje">
@@ -566,7 +285,6 @@ Directrices de respuesta:
     vincularEventosChatbot();
   }
 
-  // Vincular eventos interactivos del Chatbot
   function vincularEventosChatbot() {
     const toggleBtn = document.getElementById('agrobot-toggle-btn');
     const closeBtn = document.getElementById('agrobot-close-btn');
@@ -584,23 +302,30 @@ Directrices de respuesta:
     const badgePulse = toggleBtn.querySelector('.agrobot-badge-pulse');
 
     let estaAbierto = false;
+    let respondiendo = false;
 
     function abrirChat() {
       estaAbierto = true;
       chatWindow.classList.add('agrobot-window-active');
+      chatWindow.inert = false;
       chatWindow.setAttribute('aria-hidden', 'false');
       toggleBtn.setAttribute('aria-expanded', 'true');
       if (iconOpen) iconOpen.style.display = 'none';
       if (iconClose) iconClose.style.display = 'block';
       if (badgePulse) badgePulse.style.display = 'none';
       if (tooltip) tooltip.style.display = 'none';
-      if (input) setTimeout(() => input.focus(), 300);
+      if (input)
+        setTimeout(() => {
+          if (estaAbierto) input.focus();
+        }, 300);
       scrollAlFondo();
     }
 
     function cerrarChat() {
       estaAbierto = false;
       chatWindow.classList.remove('agrobot-window-active');
+      toggleBtn.focus();
+      chatWindow.inert = true;
       chatWindow.setAttribute('aria-hidden', 'true');
       toggleBtn.setAttribute('aria-expanded', 'false');
       if (iconOpen) iconOpen.style.display = 'block';
@@ -613,8 +338,13 @@ Directrices de respuesta:
     });
 
     if (closeBtn) closeBtn.addEventListener('click', cerrarChat);
+    chatWindow.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        cerrarChat();
+      }
+    });
 
-    // Enviar mensaje del usuario
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const texto = input.value.trim();
@@ -625,7 +355,6 @@ Directrices de respuesta:
       await procesarRespuestaBot(texto);
     });
 
-    // Delegación de clics en píldoras de preguntas rápidas
     document.addEventListener('click', async (e) => {
       const chipBtn = e.target.closest('.agrobot-chip-btn');
       if (chipBtn) {
@@ -640,9 +369,9 @@ Directrices de respuesta:
       msgDiv.className = 'agrobot-msg agrobot-msg-user mb-3 text-end';
       const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       msgDiv.innerHTML = `
-        <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-white d-inline-block text-start" style="max-width: 82%;">
-          <p class="mb-1" style="color: #FFFFFF !important;">${escaparHTML(texto)}</p>
-          <span class="agrobot-time text-white-50 small d-block text-end" style="font-size: 0.68rem;">${hora}</span>
+        <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-white d-inline-block text-start">
+          <p class="mb-1 text-white">${escaparHTML(texto)}</p>
+          <span class="agrobot-time text-white-50 small d-block text-end">${hora}</span>
         </div>
       `;
       messagesContainer.appendChild(msgDiv);
@@ -650,23 +379,26 @@ Directrices de respuesta:
     }
 
     async function procesarRespuestaBot(consulta) {
+      if (respondiendo) return;
+      respondiendo = true;
+      form.querySelector('button[type=submit]').disabled = true;
       if (typingIndicator) typingIndicator.style.display = 'block';
       scrollAlFondo();
 
       try {
-        const respuestaHTML = await consultarMetaMuseSpark(consulta);
+        const respuestaHTML = await obtenerRespuesta(consulta);
         const respuestaSegura = sanitizarHTML(respuestaHTML);
 
         if (typingIndicator) typingIndicator.style.display = 'none';
         const msgDiv = document.createElement('div');
-        msgDiv.className = 'agrobot-msg agrobot-msg-bot mb-3';
+        msgDiv.className = 'agrobot-msg agrobot-msg-bot agrobot-respuesta mb-3';
         const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         msgDiv.innerHTML = `
-          <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-dark" style="max-width: 88%;">
-            <div class="agrobot-bot-content mb-1" style="font-size: 0.88rem; line-height: 1.45;">
+          <div class="agrobot-bubble p-3 rounded-4 shadow-sm text-dark">
+            <div class="agrobot-bot-content mb-1">
               ${respuestaSegura}
             </div>
-            <span class="agrobot-time text-muted small d-block text-end" style="font-size: 0.68rem;">${hora}</span>
+            <span class="agrobot-time text-muted small d-block text-end">${hora}</span>
           </div>
         `;
         messagesContainer.appendChild(msgDiv);
@@ -674,6 +406,9 @@ Directrices de respuesta:
       } catch (err) {
         if (typingIndicator) typingIndicator.style.display = 'none';
         console.error('[AgroBot Error]:', err);
+      } finally {
+        respondiendo = false;
+        form.querySelector('button[type=submit]').disabled = false;
       }
     }
 
@@ -684,17 +419,15 @@ Directrices de respuesta:
     }
   }
 
-  // Inicializar al cargar el DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarWidgetChatbot);
   } else {
     inicializarWidgetChatbot();
   }
 
-  // Exponer API global opcional
   window.AgroBot = {
     init: inicializarWidgetChatbot,
-    preguntar: consultarMetaMuseSpark,
+    preguntar: obtenerRespuesta,
     preguntarLocal: buscarRespuestaLocal
   };
 })();
