@@ -2,5 +2,5 @@
 window.AGROCONECTA_CONFIG = {
   DEMO_MODE: true,
   BACKEND_API_URL: '', // URL HTTPS de la función postulaciones cuando se habilite.
-  AGROBOT_PROXY_URL: '' // '/api/chat' para habilitar IA mediante Vercel.
+  AGROBOT_PROXY_URL: '/api/chat' // La clave del proveedor se configura en Vercel.
 };

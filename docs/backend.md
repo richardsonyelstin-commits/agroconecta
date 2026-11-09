@@ -34,9 +34,9 @@ Para descargar un documento se usa una sesión administrativa autorizada o una U
 
 ## Activar el chat remoto
 
-Completar `AGROBOT_PROXY_URL` en la configuración pública. Se puede usar `api/chat.js` en Vercel o la función `agrobot-chat` de Supabase. Las instrucciones y credenciales del proveedor quedan en el servidor. Con la dirección vacía, el chat mantiene sus respuestas locales.
+`AGROBOT_PROXY_URL` apunta a `/api/chat` para usar `api/chat.js` en Vercel. El proyecto necesita `MODEL_API_KEY` o `META_MODEL_API_KEY` en las variables del servidor. También se puede indicar la dirección de la función `agrobot-chat` de Supabase. Las instrucciones y credenciales del proveedor quedan en el servidor. La apertura directa de los HTML y el servidor estático de `npm start` mantienen las respuestas locales; para consultar IA hace falta el endpoint desplegado.
 
-Las cuotas se guardan en Postgres para que no dependan de la memoria de una instancia. Si falla ese servicio, el proxy no consulta al proveedor. Las cabeceras de IP deben venir del gateway de confianza.
+El chat admite hasta 15 consultas por IP y 300 en total por minuto en cada instancia. Estos contadores se reinician al cambiar de minuto o al reiniciarse la instancia; no son un límite global entre instancias. Para cuotas persistentes compartidas, configurar `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` y `RATE_LIMIT_SALT` junto con el esquema SQL. Si se configura ese servicio y falla, el proxy no consulta al proveedor. Las cuotas de postulaciones siempre requieren Postgres. Las cabeceras de IP deben venir del gateway de confianza.
 
 ## Estado de la entrega
 

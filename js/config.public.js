@@ -2,5 +2,5 @@
 window.AGROCONECTA_CONFIG = {
   DEMO_MODE: true,
   BACKEND_API_URL: '',
-  AGROBOT_PROXY_URL: '' // Vacío: asistente local, sin consumo de IA.
+  AGROBOT_PROXY_URL: '/api/chat'
 };

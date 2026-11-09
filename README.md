@@ -37,7 +37,7 @@ Las rutas de `page/` se mantienen para que los enlaces existentes sigan funciona
 
 ## Configuración
 
-Por defecto, `DEMO_MODE` está activado: el formulario valida los campos y muestra una simulación, sin enviar datos ni adjuntos. El chat responde con información local. Para conectar servicios, seguir [la configuración del backend](docs/backend.md).
+Por defecto, `DEMO_MODE` está activado: el formulario valida los campos y muestra una simulación, sin enviar datos ni adjuntos. El chat consulta `/api/chat` en Vercel y conserva respuestas locales si el servicio no está disponible. Para conectar servicios, seguir [la configuración del backend](docs/backend.md).
 
 El navegador solo carga `js/config.public.js`. `js/config.example.js` sirve de referencia. Las claves privadas van en el servidor y no forman parte de la entrega.
 
